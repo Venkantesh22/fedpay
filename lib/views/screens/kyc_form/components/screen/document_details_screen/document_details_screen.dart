@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:lekra/controllers/kyc_controller/form_controller.dart';
+import 'package:get/get.dart';
+import 'package:lekra/controllers/kyc_controller/document_details_controller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
@@ -20,7 +20,8 @@ class DocumentDetailsScreen extends StatefulWidget {
   });
 
   @override
-  State<DocumentDetailsScreen> createState() => _DocumentDetailsScreenState();
+  State<DocumentDetailsScreen> createState() =>
+      _DocumentDetailsScreenState();
 }
 
 class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
@@ -28,8 +29,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<FormController>(
-      builder: (formController) {
+    return GetBuilder<DocumentDetailsController>(
+      builder: (documentController) {
         return Form(
           key: formKey,
           child: Column(
@@ -66,7 +67,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: formController.aadhaarNumberController,
+                controller:
+                    documentController.aadhaarNumberController,
                 heading: 'Aadhaar Number',
                 hindText: 'Enter 12 digit Aadhaar number',
                 isRequired: true,
@@ -77,7 +79,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                 ],
                 textInputAction: TextInputAction.next,
                 validator: (value) {
-                  final String text = value?.trim() ?? '';
+                  final String text =
+                      value?.trim() ?? '';
 
                   if (text.isEmpty) {
                     return 'Please enter Aadhaar number';
@@ -98,7 +101,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: formController.panNumberController,
+                controller:
+                    documentController.panNumberController,
                 heading: 'PAN Number',
                 hindText: 'Enter PAN number',
                 isRequired: true,
@@ -112,7 +116,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                   UpperCaseTextFormatter(),
                 ],
                 validator: (value) {
-                  final String pan = value?.trim().toUpperCase() ?? '';
+                  final String pan =
+                      value?.trim().toUpperCase() ?? '';
 
                   if (pan.isEmpty) {
                     return 'Please enter PAN number';
@@ -135,7 +140,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: formController.gstNumberController,
+                controller:
+                    documentController.gstNumberController,
                 heading: 'GSTIN',
                 hindText: 'Enter GSTIN (if applicable)',
                 isRequired: false,
@@ -146,7 +152,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                   UpperCaseTextFormatter(),
                 ],
                 validator: (value) {
-                  final String gstin = value?.trim().toUpperCase() ?? '';
+                  final String gstin =
+                      value?.trim().toUpperCase() ?? '';
 
                   if (gstin.isEmpty) {
                     return null;
@@ -167,9 +174,11 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: formController.tradeLicenseNumberController,
+                controller:
+                    documentController.tradeLicenseNumberController,
                 heading: 'Trade Licence Number',
-                hindText: 'Enter trade licence number (if applicable)',
+                hindText:
+                    'Enter trade licence number (if applicable)',
                 isRequired: false,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
@@ -185,9 +194,11 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: formController.msmeNumberController,
+                controller:
+                    documentController.msmeNumberController,
                 heading: 'MSME / Udyam Registration Number',
-                hindText: 'Enter MSME number (if applicable)',
+                hindText:
+                    'Enter MSME number (if applicable)',
                 isRequired: false,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
@@ -209,7 +220,7 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                 gradient: LinearGradient(
                   colors: [
                     primaryColor,
-                    const Color(0xFFE91E63),
+                    secondaryColor,
                   ],
                 ),
                 onTap: () {
@@ -220,12 +231,14 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                     return;
                   }
 
-                  final bool success = formController.completeDocumentDetails();
+                  final bool success =
+                      documentController.validateDocumentDetails();
 
                   if (!success) {
                     return;
                   }
 
+                  // Navigation remains controlled by FormController.
                   widget.onCompleteChanged(true);
                 },
               ),
