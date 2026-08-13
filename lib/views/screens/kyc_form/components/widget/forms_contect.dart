@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:lekra/controllers/form_controller.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/document_details_screen/document_details_screen.dart';
 
-import 'package:lekra/views/screens/kyc_form/components/Personal_details_form.dart';
-import 'package:lekra/views/screens/kyc_form/components/bank_details_form.dart';
-import 'package:lekra/views/screens/kyc_form/components/business_form_section.dart';
-
-
+import 'package:lekra/views/screens/kyc_form/components/screen/kyc_document_upload/kyc_document_upload_screen.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/registration_details_form.dart';
 
 class FormsContent extends StatelessWidget {
   const FormsContent({super.key});
@@ -22,9 +20,8 @@ class FormsContent extends StatelessWidget {
             // STEP 1 - BASIC DETAILS
             // ==================================================
 
-            PersonalDetailsForm(
-              isComplete:
-                  formController.completed[0],
+            RegistrationDetailForm(
+              isComplete: formController.completed[0],
               onCompleteChanged: (value) {
                 _completeStep(
                   formController,
@@ -34,117 +31,26 @@ class FormsContent extends StatelessWidget {
               },
             ),
 
-            // ==================================================
-            // STEP 2 - KYC DOCUMENTS
-            // ==================================================
-
-            // KycDocumentUploadForm(
-            //   isComplete:
-            //       formController.completed[1],
-            //   onCompleteChanged: (value) {
-            //     _completeStep(
-            //       formController,
-            //       1,
-            //       value,
-            //     );
-            //   },
-            // ),
-
-            // // ==================================================
-            // // STEP 3 - DOCUMENT DETAILS
-            // // ==================================================
-
-            // DocumentDetailsForm(
-            //   isComplete:
-            //       formController.completed[2],
-            //   onCompleteChanged: (value) {
-            //     _completeStep(
-            //       formController,
-            //       2,
-            //       value,
-            //     );
-            //   },
-            // ),
-
-            // // ==================================================
-            // // STEP 4 - BUSINESS
-            // // ==================================================
-
-            // BusinessForm(
-            //   isComplete:
-            //       formController.completed[3],
-            //   onCompleteChanged: (value) {
-            //     _completeStep(
-            //       formController,
-            //       3,
-            //       value,
-            //     );
-            //   },
-            // ),
-
-            // // ==================================================
-            // // STEP 5 - SHOP VERIFICATION
-            // // ==================================================
-
-            // ShopVerificationForm(
-            //   isComplete:
-            //       formController.completed[4],
-            //   onCompleteChanged: (value) {
-            //     _completeStep(
-            //       formController,
-            //       4,
-            //       value,
-            //     );
-            //   },
-            // ),
-
-            // // ==================================================
-            // // STEP 6 - SELF VERIFICATION
-            // // ==================================================
-
-            // SelfVerificationForm(
-            //   isComplete:
-            //       formController.completed[5],
-            //   onCompleteChanged: (value) {
-            //     _completeStep(
-            //       formController,
-            //       5,
-            //       value,
-            //     );
-            //   },
-            // ),
-
-            // // ==================================================
-            // // STEP 7 - BANK DETAILS
-            // // ==================================================
-
-            // BankDetailsForm(
-            //   isComplete:
-            //       formController.completed[6],
-            //   onCompleteChanged: (value) {
-            //     _completeStep(
-            //       formController,
-            //       6,
-            //       value,
-            //     );
-            //   },
-            // ),
-
-            // // ==================================================
-            // // STEP 8 - BANK DOCUMENT
-            // // ==================================================
-
-            // BankDocumentUploadForm(
-            //   isComplete:
-            //       formController.completed[7],
-            //   onCompleteChanged: (value) {
-            //     _completeStep(
-            //       formController,
-            //       7,
-            //       value,
-            //     );
-            //   },
-            // ),
+            KycDocumentUploadScreen(
+              isComplete: formController.completed[1],
+              onCompleteChanged: (value) {
+                _completeStep(
+                  formController,
+                  0,
+                  value,
+                );
+              },
+            ),
+            DocumentDetailsScreen(
+              isComplete: formController.completed[2],
+              onCompleteChanged: (value) {
+                _completeStep(
+                  formController,
+                  0,
+                  value,
+                );
+              },
+            ),
           ],
         );
       },

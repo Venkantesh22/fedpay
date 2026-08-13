@@ -155,11 +155,7 @@ class HeadingsBar extends StatelessWidget {
                                 fontWeight: isCurrent
                                     ? FontWeight.w700
                                     : FontWeight.w500,
-                                color: isCurrent
-                                    ? primaryColor
-                                    : grey.withValues(
-                                        alpha: 0.85,
-                                      ),
+                                color: isCurrent ? primaryColor : greyDark,
                               ),
                             ),
                           ),

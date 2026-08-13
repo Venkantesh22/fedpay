@@ -1,6 +1,7 @@
 // ignore_for_file: strict_top_level_inference, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:lekra/main.dart';
 import 'package:lekra/services/route_helper.dart';
@@ -24,6 +25,18 @@ class PriceConverter {
     final format = NumberFormat("#,##,##,##0.00", "en_IN");
     return '₹ ${format.format(price)}';
   }
+}
+
+Widget sizedBoxHeight({required double height}) {
+  return SizedBox(
+    height: height.h,
+  );
+}
+
+Widget sizedBoxWidth({required double width}) {
+  return SizedBox(
+    width: width.w,
+  );
 }
 
 class Helper {
@@ -261,5 +274,4 @@ class AppConstants {
   static const String fcmToken = 'fcm_token';
   static const String soundNotificationIsOn = 'sound_notification_on';
   static const String soundNotificationLanguage = 'sound_notification_language';
-
 }

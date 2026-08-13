@@ -50,13 +50,16 @@ class _KycFormScreenState extends State<KycFormScreen> {
                                 pop(context);
                               },
                               icon: const Icon(Icons.arrow_back)),
-                          CustomText(
-                            "Upload KYC",
-                            style:
-                                Helper(context).textTheme.bodySmall?.copyWith(
-                                      fontSize: 22.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                          Expanded(
+                            child: CustomText(
+                              "Upload KYC",
+                              textAlign: TextAlign.center,
+                              style:
+                                  Helper(context).textTheme.bodySmall?.copyWith(
+                                        fontSize: 22.sp,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                            ),
                           ),
                         ],
                       ),

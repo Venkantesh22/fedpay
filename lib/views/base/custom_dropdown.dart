@@ -67,17 +67,15 @@ class CustomDropDownList<T> extends StatelessWidget {
         if (heading != null || headingWidget != null) ...[
           Row(
             children: [
-              Expanded(
-                child: headingWidget ??
-                    Text(
-                      heading!,
-                      overflow: TextOverflow.clip,
-                      style: Helper(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
-                    ),
-              ),
+              headingWidget ??
+                  Text(
+                    heading!,
+                    overflow: TextOverflow.clip,
+                    style: Helper(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
               const SizedBox(width: 4),
               if (isRequired)
                 const Text(

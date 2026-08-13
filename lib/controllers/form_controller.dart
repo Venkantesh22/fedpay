@@ -1,226 +1,9 @@
-// import 'dart:developer';
 
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:get/get_connect/http/src/response/response.dart';
-// import 'package:get/get_state_manager/get_state_manager.dart';
-// import 'package:lekra/controllers/permission_controller.dart';
-// import 'package:lekra/data/models/district_model.dart';
-// import 'package:lekra/data/models/response/response_model.dart';
-// import 'package:lekra/data/models/status_model.dart';
-// import 'package:lekra/data/repositories/form_repo.dart';
-// import 'package:lekra/services/constants.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-// class FormController extends GetxController implements GetxService {
-//   final FormRepo formRepo;
-
-//   FormController({required this.formRepo});
-
-//   bool isLoading = false;
-
-//   /// selected heading index (0..2)
-//   int selectedIndex = 0;
-
-//   /// completion state for each section
-//   final List<bool> completed = [false, false, false];
-
-//   /// select a heading
-//   void selectIndex(int i) {
-//     if (i < 0 || i >= completed.length) return;
-//     selectedIndex = i;
-//     update(); // notify GetBuilder / GetBuilder listeners
-//   }
-
-//   /// explicitly set completion for a section
-//   void setComplete(int idx, bool value, {bool advanceIfTrue = false}) {
-//     if (idx < 0 || idx >= completed.length) return;
-//     completed[idx] = value;
-//     update();
-//     if (advanceIfTrue && value) {
-//       if (selectedIndex < completed.length - 1) {
-//         selectedIndex++;
-//         update();
-//       }
-//     }
-//   }
-
-//   /// toggle completion (handy for testing buttons)
-//   void toggleComplete(int idx) {
-//     if (idx < 0 || idx >= completed.length) return;
-//     completed[idx] = !completed[idx];
-//     update();
-//   }
-
-//   /// optional: mark all complete
-//   void markAllComplete() {
-//     for (var i = 0; i < completed.length; i++) {
-//       completed[i] = true;
-//     }
-//     update();
-//   }
-
-// // ============================================================
-// // REGISTER & BASIC DETAILS
-// // ============================================================
-
-//   TextEditingController sellerIdentifierController = TextEditingController();
-//   TextEditingController businessNameController = TextEditingController();
-//   TextEditingController businessNumberController = TextEditingController();
-//   TextEditingController businessEmailController = TextEditingController();
-//   TextEditingController businessMCCController = TextEditingController();
-//   String? turnoverType;
-//   String? acceptanceType;
-//   String? ownershipType;
-//   TextEditingController dateOfIncorporationController = TextEditingController();
-//   List<String> turnoverTypeList = [
-//     "SMALL",
-//     'LARGE',
-//   ];
-//   List<String> acceptanceTypeList = [
-//     "ONLINE",
-//     'OFFLINE',
-//   ];
-//   List<String> ownershipTypeList = [
-//     "PROPRIETARY",
-//     'PARTNERSHIP',
-//     'PRIVATE',
-//     'LLP',
-//     'SOCIETY',
-//     'TRUST',
-//     'GOVT',
-//     'HUF',
-//     'BOI',
-//     'AOP',
-//     'AJP',
-//   ];
-
-//   TextEditingController panNumberController = TextEditingController();
-//   TextEditingController gstNumberController = TextEditingController();
-//   TextEditingController settlementAccountNameController =
-//       TextEditingController();
-//   TextEditingController settlementAccountNumberController =
-//       TextEditingController();
-//   TextEditingController settlementAccountIFSCController =
-//       TextEditingController();
-//   TextEditingController dateOfBirthController = TextEditingController();
-
-//   StateModel? selectState;
-//   DistrictModel? selectDistrict;
-//   TextEditingController cityController = TextEditingController();
-//   TextEditingController pincodeController = TextEditingController();
-//   TextEditingController addressLine1Controller = TextEditingController();
-//   TextEditingController addressLine2Controller = TextEditingController();
-
-//   Future<ResponseModel> postUploadKYC(BuildContext context) async {
-//     log('----------- postUploadKYC Called ----------');
-
-//     ResponseModel responseModel;
-//     isLoading = true;
-//     update();
-
-//     try {
-//       final sharedPreferences = await SharedPreferences.getInstance();
-//       // location
-//       final permissionController = Get.find<PermissionController>();
-//       if (permissionController.latitude == null ||
-//           permissionController.longitude == null) {
-//         await permissionController.requestLocationPermissionAndFetch(context);
-//       }
-//       Map<String, dynamic> data = {
-//         'api_token': sharedPreferences.getString(AppConstants.apiToken),
-//         'seller_identifier': sellerIdentifierController.text.trim(),
-//         'business_name': businessNameController.text.trim(),
-//         'mobile_number': businessNumberController.text.trim(),
-//         'email': businessEmailController.text.trim(),
-//         'mcc': businessMCCController.text.trim(),
-//         'turnover_type': turnoverType,
-//         'acceptance_type': acceptanceType,
-//         'ownership_type': ownershipType,
-//         'state_id': selectState?.stateId,
-//         'district_id': selectDistrict?.districtId,
-//         'city': cityController.text.trim(),
-//         'pincode': pincodeController.text.trim(),
-//         'pan_number': panNumberController.text.trim(),
-//         'gst_number': gstNumberController.text.trim(),
-//         'settlement_account_name': settlementAccountNameController.text.trim(),
-//         'settlement_account_number':
-//             settlementAccountNumberController.text.trim(),
-//         'settlement_account_ifsc': settlementAccountIFSCController.text.trim(),
-//         'dob': dateOfBirthController.text.trim(),
-//         'doi': dateOfIncorporationController.text.trim(),
-//         'address_line1': addressLine1Controller.text.trim(),
-//         'address_line2': addressLine2Controller.text.trim(),
-//         'latitude': permissionController.latitude,
-//         'longitude': permissionController.longitude,
-//       };
-//       Response response = await formRepo.postUploadKYC(data: FormData(data));
-
-//       if (response.statusCode == 200 && response.body['status'] == "success") {
-//         responseModel = ResponseModel(
-//             true, response.body['message'] ?? "success postUploadKYC ");
-//         panNumberController.clear();
-//         gstNumberController.clear();
-//         settlementAccountNameController.clear();
-//         settlementAccountNumberController.clear();
-//         settlementAccountIFSCController.clear();
-//         dateOfBirthController.clear();
-//         businessNameController.clear();
-//         sellerIdentifierController.clear();
-//         businessNumberController.clear();
-//         businessEmailController.clear();
-//         businessMCCController.clear();
-//         turnoverType = "";
-//         acceptanceType = "";
-//         ownershipType = "";
-//         dateOfIncorporationController.clear();
-//         cityController.clear();
-//         pincodeController.clear();
-//         addressLine1Controller.clear();
-//         addressLine2Controller.clear();
-//         selectState = null;
-//         selectDistrict = null;
-//       } else {
-//         String errorMessage = "seller_identifier";
-//         if (response.body['errors'] is Map) {
-//           var errors = response.body['errors'] as Map;
-//           if (errors.isNotEmpty) {
-//             var firstKey = errors.keys.first;
-//             errorMessage = errors[firstKey][0].toString();
-//           }
-//         } else {
-//           errorMessage = response.body['message'] ?? "Unknown Error";
-//         }
-//         responseModel = ResponseModel(false, errorMessage);
-//       }
-//     } catch (e) {
-//       log('ERROR AT postUploadKYC(): $e');
-//       responseModel = ResponseModel(false, "Error while postUploadKYC  $e");
-//     }
-
-//     isLoading = false;
-//     update();
-//     return responseModel;
-//   }
-
-//   void setTurnoverType(String? v) {
-//     turnoverType = v;
-//     update();
-//   }
-
-//   void setAcceptanceType(String? v) {
-//     acceptanceType = v;
-//     update();
-//   }
-
-//   void setOwnershipType(String? v) {
-//     ownershipType = v;
-//     update();
-//   }
-// }
 
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
@@ -389,47 +172,255 @@ class FormController extends GetxController implements GetxService {
   final TextEditingController sellerIdentifierController =
       TextEditingController();
 
-  final TextEditingController firstNameController =
-      TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
 
-  final TextEditingController lastNameController =
-      TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
 
-  final TextEditingController businessNameController =
-      TextEditingController();
+  final TextEditingController businessNameController = TextEditingController();
 
   final TextEditingController businessNumberController =
       TextEditingController();
 
-  final TextEditingController businessEmailController =
-      TextEditingController();
+  final TextEditingController businessEmailController = TextEditingController();
 
-  final TextEditingController businessMCCController =
-      TextEditingController();
+  final TextEditingController businessMCCController = TextEditingController();
 
-  final TextEditingController shopAddressController =
-      TextEditingController();
+  final TextEditingController shopAddressController = TextEditingController();
 
-  final TextEditingController cityController =
-      TextEditingController();
+  final TextEditingController cityController = TextEditingController();
 
-  final TextEditingController pincodeController =
-      TextEditingController();
+  final TextEditingController pincodeController = TextEditingController();
 
-  final TextEditingController addressLine1Controller =
-      TextEditingController();
+  final TextEditingController addressLine1Controller = TextEditingController();
 
-  final TextEditingController addressLine2Controller =
-      TextEditingController();
+  final TextEditingController addressLine2Controller = TextEditingController();
 
-  TextEditingController dateOfBirthController =
-      TextEditingController();
+  TextEditingController dateOfBirthController = TextEditingController();
 
-  TextEditingController dateOfIncorporationController =
-      TextEditingController();
+  TextEditingController dateOfIncorporationController = TextEditingController();
 
   StateModel? selectState;
   DistrictModel? selectDistrict;
+
+  // ============================================================
+// KYC DOCUMENT UPLOAD
+// ============================================================
+
+  final List<String> kycDocumentNames = [
+    'Aadhaar Front',
+    'Aadhaar Back',
+    'PAN Card',
+    'Passport-size Photo',
+    'GST Certificate',
+    'Trade Licence',
+    'MSME / Udyam Certificate',
+  ];
+
+  final List<String> kycDocumentDescriptions = [
+    'Upload front side',
+    'Upload back side',
+    'Upload PAN card',
+    'Upload passport-size photo',
+    'Upload GST certificate',
+    'Upload trade licence',
+    'Upload Udyam certificate',
+  ];
+
+  /// Stores selected files.
+  /// Index:
+  /// 0 = Aadhaar Front
+  /// 1 = Aadhaar Back
+  /// 2 = PAN Card
+  /// 3 = Passport Photo
+  /// 4 = GST Certificate
+  /// 5 = Trade Licence
+  /// 6 = MSME / Udyam
+  final List<File?> kycDocuments = List<File?>.filled(
+    7,
+    null,
+  );
+
+  /// Currently uploading document
+  int? uploadingDocumentIndex;
+
+  /// Whether a document is currently being uploaded
+  bool get isUploadingDocument => uploadingDocumentIndex != null;
+
+// ============================================================
+// PICK KYC DOCUMENT
+// ============================================================
+
+  Future<void> pickKycDocument(int index) async {
+    if (index < 0 || index >= kycDocuments.length) {
+      return;
+    }
+
+    try {
+      final bool isPassportPhoto = index == 3;
+
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowMultiple: false,
+        allowedExtensions: isPassportPhoto
+            ? [
+                'jpg',
+                'jpeg',
+                'png',
+              ]
+            : [
+                'pdf',
+                'jpg',
+                'jpeg',
+                'png',
+              ],
+      );
+
+      if (result == null ||
+          result.files.isEmpty ||
+          result.files.first.path == null) {
+        return;
+      }
+
+      final String path = result.files.first.path!;
+
+      final File file = File(path);
+
+      // ----------------------------------------------------------
+      // FILE SIZE VALIDATION
+      // ----------------------------------------------------------
+
+      final int fileSize = await file.length();
+
+      // Maximum 10 MB
+      const int maxFileSize = 10 * 1024 * 1024;
+
+      if (fileSize > maxFileSize) {
+        Get.snackbar(
+          'File too large',
+          'Please select a file smaller than 10 MB.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+
+        return;
+      }
+
+      // ----------------------------------------------------------
+      // SAVE FILE
+      // ----------------------------------------------------------
+
+      kycDocuments[index] = file;
+
+      update();
+    } catch (e) {
+      log(
+        'ERROR pickKycDocument(): $e',
+      );
+
+      Get.snackbar(
+        'Error',
+        'Unable to select document.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+// ============================================================
+// REMOVE KYC DOCUMENT
+// ============================================================
+
+  void removeKycDocument(int index) {
+    if (index < 0 || index >= kycDocuments.length) {
+      return;
+    }
+
+    kycDocuments[index] = null;
+
+    update();
+  }
+
+// ============================================================
+// CHECK DOCUMENT UPLOADED
+// ============================================================
+
+  bool isKycDocumentUploaded(int index) {
+    if (index < 0 || index >= kycDocuments.length) {
+      return false;
+    }
+
+    return kycDocuments[index] != null;
+  }
+
+// ============================================================
+// GET FILE NAME
+// ============================================================
+
+  String getKycDocumentFileName(int index) {
+    if (index < 0 || index >= kycDocuments.length) {
+      return '';
+    }
+
+    final File? file = kycDocuments[index];
+
+    if (file == null) {
+      return '';
+    }
+
+    return file.path.split(Platform.pathSeparator).last;
+  }
+
+// ============================================================
+// DOCUMENT COUNT
+// ============================================================
+
+  int get uploadedDocumentCount {
+    return kycDocuments.where((file) => file != null).length;
+  }
+
+// ============================================================
+// ALL DOCUMENTS UPLOADED
+// ============================================================
+
+  bool get allKycDocumentsUploaded {
+    return kycDocuments.every(
+      (file) => file != null,
+    );
+  }
+
+// ============================================================
+// DOCUMENT STEP COMPLETE
+// ============================================================
+
+  bool completeKycDocumentStep() {
+    if (!allKycDocumentsUploaded) {
+      Get.snackbar(
+        'Documents Required',
+        'Please upload all required documents.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+
+      return false;
+    }
+
+    completed[1] = true;
+
+    update();
+
+    return true;
+  }
+
+// ============================================================
+// CLEAR KYC DOCUMENTS
+// ============================================================
+
+  void clearKycDocuments() {
+    for (int i = 0; i < kycDocuments.length; i++) {
+      kycDocuments[i] = null;
+    }
+
+    uploadingDocumentIndex = null;
+
+    update();
+  }
 
   // ============================================================
   // BASIC DROPDOWNS
@@ -463,24 +454,80 @@ class FormController extends GetxController implements GetxService {
     'AJP',
   ];
 
+//! ============================================================
+//! DOCUMENT DETAILS - SCREEN 3
+//! ============================================================
+
   // ============================================================
-  // KYC DOCUMENT NUMBERS
-  // ============================================================
+// DOCUMENT DETAILS - SCREEN 3
+// ============================================================
 
-  final TextEditingController aadhaarNumberController =
-      TextEditingController();
+final TextEditingController aadhaarNumberController =
+    TextEditingController();
 
-  final TextEditingController panNumberController =
-      TextEditingController();
+final TextEditingController panNumberController =
+    TextEditingController();
 
-  final TextEditingController gstNumberController =
-      TextEditingController();
+final TextEditingController gstNumberController =
+    TextEditingController();
 
-  final TextEditingController tradeLicenseNumberController =
-      TextEditingController();
+final TextEditingController tradeLicenseNumberController =
+    TextEditingController();
 
-  final TextEditingController msmeNumberController =
-      TextEditingController();
+final TextEditingController msmeNumberController =
+    TextEditingController();
+
+// ============================================================
+// DOCUMENT DETAILS VALIDATION
+// ============================================================
+
+  bool validateDocumentDetails() {
+    if (aadhaarNumberController.text.trim().isEmpty) {
+      return false;
+    }
+
+    if (aadhaarNumberController.text.trim().length != 12) {
+      return false;
+    }
+
+    if (panNumberController.text.trim().isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
+// ============================================================
+// COMPLETE DOCUMENT DETAILS
+// ============================================================
+
+  bool completeDocumentDetails() {
+    if (!validateDocumentDetails()) {
+      return false;
+    }
+
+    completed[2] = true;
+
+    update();
+
+    return true;
+  }
+
+// ============================================================
+// CLEAR DOCUMENT DETAILS
+// ============================================================
+
+  void clearDocumentDetails() {
+    aadhaarNumberController.clear();
+    panNumberController.clear();
+    gstNumberController.clear();
+    tradeLicenseNumberController.clear();
+    msmeNumberController.clear();
+
+    completed[2] = false;
+
+    update();
+  }
 
   // ============================================================
   // BUSINESS DETAILS
@@ -569,11 +616,9 @@ class FormController extends GetxController implements GetxService {
   final TextEditingController settlementAccountIFSCController =
       TextEditingController();
 
-  final TextEditingController bankNameController =
-      TextEditingController();
+  final TextEditingController bankNameController = TextEditingController();
 
-  final TextEditingController branchNameController =
-      TextEditingController();
+  final TextEditingController branchNameController = TextEditingController();
 
   final TextEditingController bankRegisteredMobileController =
       TextEditingController();
@@ -821,8 +866,7 @@ class FormController extends GetxController implements GetxService {
       // STEP 8 - BANK DOCUMENT
       // --------------------------------------------------------
       case 7:
-        return cancelledChequePath != null ||
-            bankStatementPath != null;
+        return cancelledChequePath != null || bankStatementPath != null;
 
       default:
         return false;
@@ -875,215 +919,168 @@ class FormController extends GetxController implements GetxService {
   // API
   // ============================================================
 
-  Future<ResponseModel> postUploadKYC(
-    BuildContext context,
-  ) async {
-    log('----------- postUploadKYC Called ----------');
+  // Future<ResponseModel> postUploadKYC(
+  //   BuildContext context,
+  // ) async {
+  //   log('----------- postUploadKYC Called ----------');
 
-    ResponseModel responseModel;
+  //   ResponseModel responseModel;
 
-    isLoading = true;
-    update();
+  //   isLoading = true;
+  //   update();
 
-    try {
-      final sharedPreferences =
-          await SharedPreferences.getInstance();
+  //   try {
+  //     final sharedPreferences = await SharedPreferences.getInstance();
 
-      final permissionController =
-          Get.find<PermissionController>();
+  //     final permissionController = Get.find<PermissionController>();
 
-      if (permissionController.latitude == null ||
-          permissionController.longitude == null) {
-        await permissionController
-            .requestLocationPermissionAndFetch(context);
-      }
+  //     if (permissionController.latitude == null ||
+  //         permissionController.longitude == null) {
+  //       await permissionController.requestLocationPermissionAndFetch(context);
+  //     }
 
-      final Map<String, dynamic> data = {
-        'api_token': sharedPreferences.getString(
-          AppConstants.apiToken,
-        ),
+  //     final Map<String, dynamic> data = {
+  //       'api_token': sharedPreferences.getString(
+  //         AppConstants.apiToken,
+  //       ),
 
-        // BASIC
-        'seller_identifier':
-            sellerIdentifierController.text.trim(),
+  //       // BASIC
+  //       'seller_identifier': sellerIdentifierController.text.trim(),
 
-        'first_name':
-            firstNameController.text.trim(),
+  //       'first_name': firstNameController.text.trim(),
 
-        'last_name':
-            lastNameController.text.trim(),
+  //       'last_name': lastNameController.text.trim(),
 
-        'business_name':
-            businessNameController.text.trim(),
+  //       'business_name': businessNameController.text.trim(),
 
-        'mobile_number':
-            businessNumberController.text.trim(),
+  //       'mobile_number': businessNumberController.text.trim(),
 
-        'email':
-            businessEmailController.text.trim(),
+  //       'email': businessEmailController.text.trim(),
 
-        'mcc':
-            businessMCCController.text.trim(),
+  //       'mcc': businessMCCController.text.trim(),
 
-        'turnover_type':
-            turnoverType,
+  //       'turnover_type': turnoverType,
 
-        'acceptance_type':
-            acceptanceType,
+  //       'acceptance_type': acceptanceType,
 
-        'ownership_type':
-            ownershipType,
+  //       'ownership_type': ownershipType,
 
-        'state_id':
-            selectState?.stateId,
+  //       'state_id': selectState?.stateId,
 
-        'district_id':
-            selectDistrict?.districtId,
+  //       'district_id': selectDistrict?.districtId,
 
-        'city':
-            cityController.text.trim(),
+  //       'city': cityController.text.trim(),
 
-        'pincode':
-            pincodeController.text.trim(),
+  //       'pincode': pincodeController.text.trim(),
 
-        'address_line1':
-            addressLine1Controller.text.trim(),
+  //       'address_line1': addressLine1Controller.text.trim(),
 
-        'address_line2':
-            addressLine2Controller.text.trim(),
+  //       'address_line2': addressLine2Controller.text.trim(),
 
-        // KYC NUMBERS
-        'aadhaar_number':
-            aadhaarNumberController.text.trim(),
+  //       // KYC NUMBERS
+  //       'aadhaar_number': aadhaarNumberController.text.trim(),
 
-        'pan_number':
-            panNumberController.text.trim(),
+  //       'pan_number': panNumberController.text.trim(),
 
-        'gst_number':
-            gstNumberController.text.trim(),
+  //       'gst_number': gstNumberController.text.trim(),
 
-        'trade_license_number':
-            tradeLicenseNumberController.text.trim(),
+  //       'trade_license_number': tradeLicenseNumberController.text.trim(),
 
-        'msme_number':
-            msmeNumberController.text.trim(),
+  //       'msme_number': msmeNumberController.text.trim(),
 
-        // BUSINESS
-        'business_category':
-            businessCategory,
+  //       // BUSINESS
+  //       'business_category': businessCategory,
 
-        'nature_of_business':
-            natureOfBusiness,
+  //       'nature_of_business': natureOfBusiness,
 
-        'business_description':
-            businessDescriptionController.text.trim(),
+  //       'business_description': businessDescriptionController.text.trim(),
 
-        'business_start_date':
-            businessStartDateController.text.trim(),
+  //       'business_start_date': businessStartDateController.text.trim(),
 
-        'expected_monthly_transaction_volume':
-            expectedMonthlyTransactionVolume,
+  //       'expected_monthly_transaction_volume': expectedMonthlyTransactionVolume,
 
-        'business_ownership_type':
-            businessOwnershipType,
+  //       'business_ownership_type': businessOwnershipType,
 
-        // BANK
-        'settlement_account_name':
-            settlementAccountNameController.text.trim(),
+  //       // BANK
+  //       'settlement_account_name': settlementAccountNameController.text.trim(),
 
-        'settlement_account_number':
-            settlementAccountNumberController.text.trim(),
+  //       'settlement_account_number':
+  //           settlementAccountNumberController.text.trim(),
 
-        'settlement_account_ifsc':
-            settlementAccountIFSCController.text.trim(),
+  //       'settlement_account_ifsc': settlementAccountIFSCController.text.trim(),
 
-        'bank_name':
-            bankNameController.text.trim(),
+  //       'bank_name': bankNameController.text.trim(),
 
-        'branch_name':
-            branchNameController.text.trim(),
+  //       'branch_name': branchNameController.text.trim(),
 
-        'account_type':
-            accountType,
+  //       'account_type': accountType,
 
-        'bank_registered_mobile':
-            bankRegisteredMobileController.text.trim(),
+  //       'bank_registered_mobile': bankRegisteredMobileController.text.trim(),
 
-        // EXISTING
-        'dob':
-            dateOfBirthController.text.trim(),
+  //       // EXISTING
+  //       'dob': dateOfBirthController.text.trim(),
 
-        'doi':
-            dateOfIncorporationController.text.trim(),
+  //       'doi': dateOfIncorporationController.text.trim(),
 
-        // LOCATION
-        'latitude':
-            permissionController.latitude,
+  //       // LOCATION
+  //       'latitude': permissionController.latitude,
 
-        'longitude':
-            permissionController.longitude,
+  //       'longitude': permissionController.longitude,
 
-        // DECLARATION
-        'declaration_accepted':
-            declarationAccepted,
-      };
+  //       // DECLARATION
+  //       'declaration_accepted': declarationAccepted,
+  //     };
 
-      final Response response = await formRepo.postUploadKYC(
-        data: FormData(data),
-      );
+  //     final Response response = await formRepo.postUploadKYC(
+  //       data: FormData(data),
+  //     );
 
-      if (response.statusCode == 200 &&
-          response.body['status'] == 'success') {
-        responseModel = ResponseModel(
-          true,
-          response.body['message'] ??
-              'KYC submitted successfully',
-        );
+  //     if (response.statusCode == 200 && response.body['status'] == 'success') {
+  //       responseModel = ResponseModel(
+  //         true,
+  //         response.body['message'] ?? 'KYC submitted successfully',
+  //       );
 
-        kycStatus = 'kyc_submitted';
-        isSubmitted = true;
+  //       kycStatus = 'kyc_submitted';
+  //       isSubmitted = true;
 
-        update();
-      } else {
-        String errorMessage = 'seller_identifier';
+  //       update();
+  //     } else {
+  //       String errorMessage = 'seller_identifier';
 
-        if (response.body['errors'] is Map) {
-          final errors =
-              response.body['errors'] as Map;
+  //       if (response.body['errors'] is Map) {
+  //         final errors = response.body['errors'] as Map;
 
-          if (errors.isNotEmpty) {
-            final firstKey = errors.keys.first;
+  //         if (errors.isNotEmpty) {
+  //           final firstKey = errors.keys.first;
 
-            errorMessage =
-                errors[firstKey][0].toString();
-          }
-        } else {
-          errorMessage =
-              response.body['message'] ??
-                  'Unknown Error';
-        }
+  //           errorMessage = errors[firstKey][0].toString();
+  //         }
+  //       } else {
+  //         errorMessage = response.body['message'] ?? 'Unknown Error';
+  //       }
 
-        responseModel = ResponseModel(
-          false,
-          errorMessage,
-        );
-      }
-    } catch (e) {
-      log(
-        'ERROR AT postUploadKYC(): $e',
-      );
+  //       responseModel = ResponseModel(
+  //         false,
+  //         errorMessage,
+  //       );
+  //     }
+  //   } catch (e) {
+  //     log(
+  //       'ERROR AT postUploadKYC(): $e',
+  //     );
 
-      responseModel = ResponseModel(
-        false,
-        'Error while postUploadKYC $e',
-      );
-    }
+  //     responseModel = ResponseModel(
+  //       false,
+  //       'Error while postUploadKYC $e',
+  //     );
+  //   }
 
-    isLoading = false;
-    update();
+  //   isLoading = false;
+  //   update();
 
-    return responseModel;
-  }
+  //   return responseModel;
+  // }
 
   // ============================================================
   // RESET FORM
