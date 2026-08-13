@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:lekra/controllers/kyc_controller/form_controller.dart';
+import 'package:get/get.dart';
+
+import 'package:lekra/controllers/kyc_controller/kyc_document_upload_controller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
@@ -21,8 +21,8 @@ class KycDocumentUploadScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<FormController>(
-      builder: (formController) {
+    return GetBuilder<KycDocumentUploadController>(
+      builder: (documentController) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -32,7 +32,10 @@ class KycDocumentUploadScreen extends StatelessWidget {
 
             CustomText(
               'KYC Document Upload',
-              style: Helper(context).textTheme.bodyMedium?.copyWith(
+              style: Helper(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.black87,
@@ -43,7 +46,10 @@ class KycDocumentUploadScreen extends StatelessWidget {
 
             CustomText(
               'Upload clear and valid documents',
-              style: Helper(context).textTheme.bodyMedium?.copyWith(
+              style: Helper(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.copyWith(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w400,
                     color: greyDark,
@@ -57,26 +63,28 @@ class KycDocumentUploadScreen extends StatelessWidget {
             // ====================================================
 
             ...List.generate(
-              formController.kycDocumentNames.length,
+              documentController.kycDocumentNames.length,
               (index) {
                 return Padding(
-                  padding: EdgeInsets.only(bottom: 10.h),
+                  padding:
+                      EdgeInsets.only(bottom: 10.h),
                   child: DocumentUploadCardWidget(
                     index: index,
-                    title: formController.kycDocumentNames[index],
-                    subtitle: formController.kycDocumentDescriptions[index],
-                    file: formController.kycDocuments[index],
-
-                    // Required documents
+                    title:
+                        documentController.kycDocumentNames[index],
+                    subtitle:
+                        documentController.kycDocumentDescriptions[index],
+                    file:
+                        documentController.kycDocuments[index],
                     isRequired:
-                        index == 0 || index == 1 || index == 2 || index == 3,
-
+                        documentController.isDocumentRequired(index),
                     onUpload: () {
-                      formController.pickKycDocument(index);
+                      documentController
+                          .pickKycDocument(index);
                     },
-
                     onRemove: () {
-                      formController.removeKycDocument(index);
+                      documentController
+                          .removeKycDocument(index);
                     },
                   ),
                 );
@@ -86,7 +94,7 @@ class KycDocumentUploadScreen extends StatelessWidget {
             SizedBox(height: 8.h),
 
             // ====================================================
-            // INFO MESSAGE
+            // UPLOAD COUNT
             // ====================================================
 
             Container(
@@ -99,10 +107,10 @@ class KycDocumentUploadScreen extends StatelessWidget {
                 color: primaryColor.withValues(
                   alpha: 0.08,
                 ),
-                borderRadius: BorderRadius.circular(10.r),
+                borderRadius:
+                    BorderRadius.circular(10.r),
               ),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(
                     Icons.info_outline,
@@ -112,8 +120,15 @@ class KycDocumentUploadScreen extends StatelessWidget {
                   SizedBox(width: 8.w),
                   Expanded(
                     child: CustomText(
-                      'You can preview and replace documents before final submission.',
-                      style: Helper(context).textTheme.bodyMedium?.copyWith(
+                      '${documentController.uploadedDocumentCount}'
+                      ' of '
+                      '${documentController.totalDocuments}'
+                      ' documents selected. '
+                      'You can replace documents before submission.',
+                      style: Helper(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(
                             fontSize: 11.sp,
                             color: primaryColor,
                             fontWeight: FontWeight.w500,
@@ -127,7 +142,7 @@ class KycDocumentUploadScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             // ====================================================
-            // CONTINUE BUTTON
+            // CONTINUE
             // ====================================================
 
             CustomButton(
@@ -137,15 +152,20 @@ class KycDocumentUploadScreen extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   primaryColor,
-                  const Color(0xFFE91E63),
+                  secondaryColor,
                 ],
               ),
               onTap: () {
-                final bool success = formController.completeKycDocumentStep();
+                final bool success =
+                    documentController
+                        .validateAndComplete();
 
                 if (!success) {
                   return;
                 }
+
+                // Only navigation is handled outside
+                // this screen.
                 onCompleteChanged(true);
               },
             ),

@@ -6,6 +6,7 @@ import 'package:lekra/controllers/dashboard_controller.dart';
 import 'package:lekra/controllers/dispute_controller.dart';
 import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/controllers/kyc_controller.dart';
+import 'package:lekra/controllers/kyc_controller/kyc_document_upload_controller.dart';
 import 'package:lekra/controllers/kyc_controller/registration_kyc_form_controller.dart';
 import 'package:lekra/controllers/mobile_service_controller.dart';
 import 'package:lekra/controllers/product_controller.dart';
@@ -99,6 +100,7 @@ class Init {
 
       //KYC controller list
       Get.lazyPut(() => RegistrationKycFromController());
+      Get.lazyPut(() => KycDocumentUploadController());
     } catch (e) {
       log('---- ${e.toString()} ----', name: "ERROR AT initialize()");
     }
