@@ -28,14 +28,14 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
                 ?.copyWith(fontWeight: FontWeight.w600, fontSize: 26),
             children: [
               TextSpan(
-                text: "\nTPi",
+                text: "\nBanking point",
                 style: Helper(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 26,
                     color: primaryColor),
               ),
               TextSpan(
-                text: "Pay",
+                text: " 24",
                 style: Helper(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 26,
