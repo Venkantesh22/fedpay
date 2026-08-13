@@ -6,6 +6,7 @@ import 'package:lekra/controllers/dashboard_controller.dart';
 import 'package:lekra/controllers/dispute_controller.dart';
 import 'package:lekra/controllers/form_controller.dart';
 import 'package:lekra/controllers/kyc_controller.dart';
+import 'package:lekra/controllers/kyc_controller/registration_kyc_form_controller.dart';
 import 'package:lekra/controllers/mobile_service_controller.dart';
 import 'package:lekra/controllers/product_controller.dart';
 import 'package:lekra/controllers/recharge_controller.dart';
@@ -95,6 +96,9 @@ class Init {
           authRepo: Get.find(),
           sharedPreferences: sharedPreferences));
       Get.lazyPut(() => VoiceServiceController());
+
+      //KYC controller list
+      Get.lazyPut(() => RegistrationKycFromController());
     } catch (e) {
       log('---- ${e.toString()} ----', name: "ERROR AT initialize()");
     }

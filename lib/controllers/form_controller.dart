@@ -455,12 +455,8 @@ class FormController extends GetxController implements GetxService {
   ];
 
 //! ============================================================
-//! DOCUMENT DETAILS - SCREEN 3
+//! DOCUMENT DETAILS - SCREEN 3 ---------------------------------------------------------------------------------------
 //! ============================================================
-
-  // ============================================================
-// DOCUMENT DETAILS - SCREEN 3
-// ============================================================
 
 final TextEditingController aadhaarNumberController =
     TextEditingController();
@@ -529,9 +525,9 @@ final TextEditingController msmeNumberController =
     update();
   }
 
-  // ============================================================
-  // BUSINESS DETAILS
-  // ============================================================
+  //! ============================================================
+  //! BUSINESS DETAILS - 4 **************************************************************************
+  //! ============================================================
 
   String? businessCategory;
   String? natureOfBusiness;
@@ -557,10 +553,13 @@ final TextEditingController msmeNumberController =
   ];
 
   final List<String> businessOwnershipTypeList = [
+
     'Owned',
     'Rented',
     'Other',
   ];
+
+  
 
   // ============================================================
   // DOCUMENT FILES
