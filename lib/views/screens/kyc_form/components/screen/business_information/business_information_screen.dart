@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:lekra/controllers/kyc_controller/form_controller.dart';
+import 'package:get/get.dart';
+
+import 'package:lekra/controllers/kyc_controller/business_information_controller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
@@ -25,13 +26,15 @@ class BusinessInformationScreen extends StatefulWidget {
       _BusinessInformationScreenState();
 }
 
-class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+class _BusinessInformationScreenState
+    extends State<BusinessInformationScreen> {
+  final GlobalKey<FormState> formKey =
+      GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<FormController>(
-      builder: (formController) {
+    return GetBuilder<BusinessInformationController>(
+      builder: (businessController) {
         return Form(
           key: formKey,
           child: Column(
@@ -43,7 +46,10 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
 
               CustomText(
                 'Business Information',
-                style: Helper(context).textTheme.bodyMedium?.copyWith(
+                style: Helper(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                       color: Colors.black87,
@@ -54,7 +60,10 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
 
               CustomText(
                 'Provide information about your business',
-                style: Helper(context).textTheme.bodyMedium?.copyWith(
+                style: Helper(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       color: greyDark,
@@ -70,14 +79,12 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               CustomDropDownList<String>(
                 heading: 'Business Category',
                 isRequired: true,
-                items: formController.businessCategoryList,
-                value: formController.businessCategory,
+                items: businessController.businessCategoryList,
+                value: businessController.businessCategory,
                 hintText: 'Select business category',
                 bgColor: primaryColorLight,
                 borderColor: primaryColor,
-                onChanged: (value) {
-                  formController.setBusinessCategory(value);
-                },
+                onChanged: businessController.setBusinessCategory,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select business category';
@@ -96,14 +103,12 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               CustomDropDownList<String>(
                 heading: 'Nature of Business',
                 isRequired: true,
-                items: formController.natureOfBusinessList,
-                value: formController.natureOfBusiness,
+                items: businessController.natureOfBusinessList,
+                value: businessController.natureOfBusiness,
                 hintText: 'Select nature of business',
                 bgColor: primaryColorLight,
                 borderColor: primaryColor,
-                onChanged: (value) {
-                  formController.setNatureOfBusiness(value);
-                },
+                onChanged: businessController.setNatureOfBusiness,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select nature of business';
@@ -122,14 +127,14 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               CustomDropDownList<String>(
                 heading: 'Expected Monthly Transaction Volume',
                 isRequired: true,
-                items: formController.transactionVolumeList,
-                value: formController.expectedMonthlyTransactionVolume,
+                items: businessController.transactionVolumeList,
+                value:
+                    businessController.expectedMonthlyTransactionVolume,
                 hintText: 'Select monthly transaction volume',
                 bgColor: primaryColorLight,
                 borderColor: primaryColor,
-                onChanged: (value) {
-                  formController.setExpectedMonthlyTransactionVolume(value);
-                },
+                onChanged:
+                    businessController.setExpectedMonthlyTransactionVolume,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select transaction volume';
@@ -148,14 +153,14 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               CustomDropDownList<String>(
                 heading: 'Business Ownership Type',
                 isRequired: true,
-                items: formController.businessOwnershipTypeList,
-                value: formController.businessOwnershipType,
+                items:
+                    businessController.businessOwnershipTypeList,
+                value: businessController.businessOwnershipType,
                 hintText: 'Select ownership type',
                 bgColor: primaryColorLight,
                 borderColor: primaryColor,
-                onChanged: (value) {
-                  formController.setBusinessOwnershipType(value);
-                },
+                onChanged:
+                    businessController.setBusinessOwnershipType,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select ownership type';
@@ -172,9 +177,11 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: formController.businessDescriptionController,
+                controller:
+                    businessController.businessDescriptionController,
                 heading: 'Business Description',
-                hindText: 'Enter a brief description of your business',
+                hindText:
+                    'Enter a brief description of your business',
                 keyboardType: TextInputType.multiline,
                 maxLines: 4,
                 textInputAction: TextInputAction.newline,
@@ -183,9 +190,6 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(500),
                 ],
-                validator: (value) {
-                  return null;
-                },
               ),
 
               SizedBox(height: 18.h),
@@ -195,7 +199,8 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: formController.businessStartDateController,
+                controller:
+                    businessController.businessStartDateController,
                 heading: 'Business Start Date',
                 hindText: 'Select business start date',
                 isRequired: true,
@@ -208,13 +213,27 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
                   color: primaryColor,
                 ),
                 onTap: () async {
-                  await _selectBusinessStartDate(
-                    context,
-                    formController,
+                  final DateTime now = DateTime.now();
+
+                  final DateTime? pickedDate =
+                      await showDatePicker(
+                    context: context,
+                    initialDate: now,
+                    firstDate: DateTime(1900),
+                    lastDate: now,
+                  );
+
+                  if (pickedDate == null) {
+                    return;
+                  }
+
+                  businessController.setBusinessStartDate(
+                    pickedDate,
                   );
                 },
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
+                  if (value == null ||
+                      value.trim().isEmpty) {
                     return 'Please select business start date';
                   }
 
@@ -225,7 +244,7 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
               SizedBox(height: 24.h),
 
               // ==================================================
-              // CONTINUE BUTTON
+              // CONTINUE
               // ==================================================
 
               CustomButton(
@@ -235,25 +254,25 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
                 gradient: LinearGradient(
                   colors: [
                     primaryColor,
-                    const Color(0xFFE91E63),
+                    secondaryColor,
                   ],
                 ),
                 onTap: () {
                   FocusScope.of(context).unfocus();
 
-                  final bool valid = formKey.currentState?.validate() ?? false;
+                  final bool valid =
+                      formKey.currentState?.validate() ?? false;
 
                   if (!valid) {
                     return;
                   }
 
-                  // final bool success =
-                  //     formController.completeBusinessInformation();
+                  if (!businessController
+                      .validateBusinessInformation()) {
+                    return;
+                  }
 
-                  // if (!success) {
-                  //   return;
-                  // }
-
+                  // Navigation remains in FormController.
                   widget.onCompleteChanged(true);
                 },
               ),
@@ -262,37 +281,5 @@ class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
         );
       },
     );
-  }
-
-  // ============================================================
-  // DATE PICKER
-  // ============================================================
-
-  Future<void> _selectBusinessStartDate(
-    BuildContext context,
-    FormController formController,
-  ) async {
-    final DateTime now = DateTime.now();
-
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: now,
-      firstDate: DateTime(1900),
-      lastDate: now,
-    );
-
-    if (pickedDate == null) {
-      return;
-    }
-
-    final String day = pickedDate.day.toString().padLeft(2, '0');
-
-    final String month = pickedDate.month.toString().padLeft(2, '0');
-
-    final String year = pickedDate.year.toString();
-
-    formController.businessStartDateController.text = '$day/$month/$year';
-
-    formController.update();
   }
 }
