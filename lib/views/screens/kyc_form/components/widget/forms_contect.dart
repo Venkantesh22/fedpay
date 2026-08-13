@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:lekra/controllers/form_controller.dart';
+import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/business_information/business_information_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/document_details_screen/document_details_screen.dart';
 

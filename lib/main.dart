@@ -119,8 +119,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               themeMode: ThemeMode.light,
               theme: CustomTheme.light,
               debugShowCheckedModeBanner: false,
-              // home: const DashboardScreen(),
-              home: const SplashScreen(),
+              home: const DashboardScreen(),
+              // home: const SplashScreen(),
               // home: const PinResetSuccessfullyAndFailsScreen(),
             );
           }),

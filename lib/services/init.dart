@@ -4,7 +4,7 @@ import 'package:lekra/controllers/basic_controlller.dart';
 import 'package:lekra/controllers/card_controller.dart';
 import 'package:lekra/controllers/dashboard_controller.dart';
 import 'package:lekra/controllers/dispute_controller.dart';
-import 'package:lekra/controllers/form_controller.dart';
+import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/controllers/kyc_controller.dart';
 import 'package:lekra/controllers/kyc_controller/registration_kyc_form_controller.dart';
 import 'package:lekra/controllers/mobile_service_controller.dart';
