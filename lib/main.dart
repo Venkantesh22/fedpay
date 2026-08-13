@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 // 🔴 NEW: Import Firebase Messaging so main.dart can use it
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lekra/firebase/get_Fcm_token.dart'; // Ensure this contains firebaseMessagingBackgroundHandler
 import 'package:lekra/firebase_options.dart';
 import 'package:lekra/firebase_options_second.dart';
@@ -107,16 +108,40 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return ToastificationWrapper(
-      child: MaterialApp(
-        title: AppConstants.appName,
-        navigatorKey: navigatorKey,
-        themeMode: ThemeMode.light,
-        theme: CustomTheme.light,
-        debugShowCheckedModeBanner: false,
-        home: const DashboardScreen(),
-        // home: const SplashScreen(),
-        // home: const PinResetSuccessfullyAndFailsScreen(),
+      child: ScreenUtilInit(
+                designSize: Size(432.0, 960.0),
+        minTextAdapt: true,
+        // splitScreenMode: true,
+        builder: (_, child) {
+          return MaterialApp(
+            title: AppConstants.appName,
+            navigatorKey: navigatorKey,
+            themeMode: ThemeMode.light,
+            theme: CustomTheme.light,
+            debugShowCheckedModeBanner: false,
+            home: const DashboardScreen(),
+            // home: const SplashScreen(),
+            // home: const PinResetSuccessfullyAndFailsScreen(),
+          );
+        }
       ),
     );
   }
 }
+
+
+// | Property              | Use         |
+// | --------------------- | ----------- |
+// | Width                 | `100.w`     |
+// | Height                | `50.h`      |
+// | Font Size             | `14.sp`     |
+// | Border Radius         | `12.r`      |
+// | Icon Size             | `24.sp`     |
+// | Border Width          | `1` (fixed) |
+// | Divider Thickness     | `1` (fixed) |
+// | Horizontal Padding    | `16.w`      |
+// | Vertical Padding      | `12.h`      |
+// | Margin Left/Right     | `16.w`      |
+// | Margin Top/Bottom     | `12.h`      |
+// | Square Padding/Margin | `12.w`      |
+

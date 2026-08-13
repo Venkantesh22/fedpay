@@ -5,6 +5,7 @@ import 'package:lekra/controllers/card_controller.dart';
 import 'package:lekra/controllers/dashboard_controller.dart';
 import 'package:lekra/controllers/dispute_controller.dart';
 import 'package:lekra/controllers/form_controller.dart';
+import 'package:lekra/controllers/kyc_controller.dart';
 import 'package:lekra/controllers/mobile_service_controller.dart';
 import 'package:lekra/controllers/product_controller.dart';
 import 'package:lekra/controllers/recharge_controller.dart';
@@ -14,6 +15,7 @@ import 'package:lekra/controllers/wallet_controller.dart';
 import 'package:lekra/data/repositories/card_repo.dart';
 import 'package:lekra/data/repositories/dispute_repo.dart';
 import 'package:lekra/data/repositories/form_repo.dart';
+import 'package:lekra/data/repositories/kyc_repo.dart';
 import 'package:lekra/data/repositories/mobile_service_repo.dart';
 import 'package:lekra/data/repositories/product_repo.dart';
 import 'package:lekra/data/repositories/recharge_repo.dart';
@@ -62,6 +64,7 @@ class Init {
       Get.lazyPut(() =>
           RechargeRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
       Get.lazyPut(() => DisputeRepo(apiClient: Get.find()));
+      Get.lazyPut(() => KycRepo(apiClient: Get.find()));
       Get.lazyPut(() => MobileServiceRepo(apiClient: Get.find()));
       Get.lazyPut(() => CardRepo(
             apiClient: Get.find(),
@@ -85,6 +88,8 @@ class Init {
           disputeRepo: Get.find(), sharedPreferences: sharedPreferences));
       Get.lazyPut(() => MobileServiceController(
           mobileServiceRepo: Get.find(), sharedPreferences: sharedPreferences));
+      Get.lazyPut(() => KycController(
+          kycRepo: Get.find(), sharedPreferences: sharedPreferences));
       Get.lazyPut(() => CardController(
           cardRepo: Get.find(),
           authRepo: Get.find(),

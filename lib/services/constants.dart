@@ -262,6 +262,4 @@ class AppConstants {
   static const String soundNotificationIsOn = 'sound_notification_on';
   static const String soundNotificationLanguage = 'sound_notification_language';
 
-//! API key
-   String azureSpeechKey = "YOUR_REAL_KEY";
 }

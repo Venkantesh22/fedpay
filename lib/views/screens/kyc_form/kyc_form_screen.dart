@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/basic_controlller.dart';
 import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
-import 'package:lekra/views/screens/kyc_form/components/kyc_form_section.dart';
+import 'package:lekra/views/screens/kyc_form/components/widget/forms_contect.dart';
+import 'package:lekra/views/screens/kyc_form/components/widget/headings_bar.dart';
 
 class KycFormScreen extends StatefulWidget {
   const KycFormScreen({super.key});
@@ -28,7 +31,6 @@ class _KycFormScreenState extends State<KycFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: greyBackGround,
-        // appBar: const ,
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
@@ -38,8 +40,8 @@ class _KycFormScreenState extends State<KycFormScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 40,
+                      SizedBox(
+                        height: 40.h,
                       ),
                       Row(
                         children: [
@@ -48,11 +50,11 @@ class _KycFormScreenState extends State<KycFormScreen> {
                                 pop(context);
                               },
                               icon: const Icon(Icons.arrow_back)),
-                          Text(
+                          CustomText(
                             "Upload KYC",
                             style:
                                 Helper(context).textTheme.bodySmall?.copyWith(
-                                      fontSize: 22,
+                                      fontSize: 22.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                           ),

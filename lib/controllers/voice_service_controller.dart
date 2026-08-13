@@ -50,8 +50,8 @@ class VoiceServiceController extends GetxController implements GetxService {
       final response = await http.post(
         Uri.parse(endpoint),
         headers: {
-          "Ocp-Apim-Subscription-Key":
-              AppConstants.azureAITextToSpeechAPIKey.trim(),
+          // "Ocp-Apim-Subscription-Key":
+          //     AppConstants.azureAITextToSpeechAPIKey.trim(),
           "Content-Type": "application/ssml+xml",
           "X-Microsoft-OutputFormat":
               "audio-16khz-128kbitrate-mono-mp3", // Request MP3 format
