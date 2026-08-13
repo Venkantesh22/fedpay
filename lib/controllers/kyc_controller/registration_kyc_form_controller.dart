@@ -6,7 +6,7 @@ import 'package:lekra/data/models/status_model.dart';
 class RegistrationKycFromController extends GetxController
     implements GetxService {
   // ============================================================
-  // BASIC DETAILS
+  // REGISTRATION & BASIC DETAILS
   // ============================================================
 
   final TextEditingController firstNameController =
@@ -24,40 +24,38 @@ class RegistrationKycFromController extends GetxController
   final TextEditingController businessEmailController =
       TextEditingController();
 
+  final TextEditingController sellerIdentifierController =
+      TextEditingController();
+
   final TextEditingController businessMCCController =
       TextEditingController();
 
-  final TextEditingController sellerIdentifierController =
+  final TextEditingController shopAddressController =
+      TextEditingController();
+
+  final TextEditingController pincodeController =
+      TextEditingController();
+
+  final TextEditingController cityController =
       TextEditingController();
 
   final TextEditingController dateOfIncorporationController =
       TextEditingController();
 
   // ============================================================
-  // ADDRESS
+  // STATE / DISTRICT
   // ============================================================
-
-  final TextEditingController shopAddressController =
-      TextEditingController();
-
-  final TextEditingController cityController =
-      TextEditingController();
-
-  final TextEditingController pincodeController =
-      TextEditingController();
 
   StateModel? selectState;
 
   DistrictModel? selectDistrict;
 
   // ============================================================
-  // DROPDOWN VALUES
+  // DROPDOWNS
   // ============================================================
 
   String? turnoverType;
-
   String? acceptanceType;
-
   String? ownershipType;
 
   final List<String> turnoverTypeList = [
@@ -106,7 +104,7 @@ class RegistrationKycFromController extends GetxController
   void setState(StateModel? state) {
     selectState = state;
 
-    // State changed, therefore district must be reset.
+    // Reset district whenever state changes.
     selectDistrict = null;
 
     update();
@@ -114,36 +112,6 @@ class RegistrationKycFromController extends GetxController
 
   void setDistrict(DistrictModel? district) {
     selectDistrict = district;
-    update();
-  }
-
-  // ============================================================
-  // CLEAR FORM
-  // ============================================================
-
-  void clearForm() {
-    firstNameController.clear();
-    lastNameController.clear();
-
-    businessNameController.clear();
-    businessNumberController.clear();
-    businessEmailController.clear();
-    businessMCCController.clear();
-
-    sellerIdentifierController.clear();
-    dateOfIncorporationController.clear();
-
-    shopAddressController.clear();
-    cityController.clear();
-    pincodeController.clear();
-
-    turnoverType = null;
-    acceptanceType = null;
-    ownershipType = null;
-
-    selectState = null;
-    selectDistrict = null;
-
     update();
   }
 
@@ -160,11 +128,7 @@ class RegistrationKycFromController extends GetxController
       return false;
     }
 
-    if (businessNameController.text.trim().isEmpty) {
-      return false;
-    }
-
-    if (businessNumberController.text.trim().isEmpty) {
+    if (businessNumberController.text.trim().length != 10) {
       return false;
     }
 
@@ -172,15 +136,19 @@ class RegistrationKycFromController extends GetxController
       return false;
     }
 
+    if (businessNameController.text.trim().isEmpty) {
+      return false;
+    }
+
     if (shopAddressController.text.trim().isEmpty) {
       return false;
     }
 
-    if (cityController.text.trim().isEmpty) {
+    if (pincodeController.text.trim().length != 6) {
       return false;
     }
 
-    if (pincodeController.text.trim().isEmpty) {
+    if (cityController.text.trim().isEmpty) {
       return false;
     }
 
@@ -196,18 +164,18 @@ class RegistrationKycFromController extends GetxController
   }
 
   // ============================================================
-  // REQUEST DATA
+  // FORM DATA
   // ============================================================
 
   Map<String, dynamic> toMap() {
     return {
       'first_name': firstNameController.text.trim(),
       'last_name': lastNameController.text.trim(),
+      'seller_identifier': sellerIdentifierController.text.trim(),
       'business_name': businessNameController.text.trim(),
       'mobile_number': businessNumberController.text.trim(),
       'email': businessEmailController.text.trim(),
       'mcc': businessMCCController.text.trim(),
-      'seller_identifier': sellerIdentifierController.text.trim(),
 
       'turnover_type': turnoverType,
       'acceptance_type': acceptanceType,
@@ -224,22 +192,50 @@ class RegistrationKycFromController extends GetxController
     };
   }
 
+  // ============================================================
+  // CLEAR
+  // ============================================================
+
+  void clearForm() {
+    firstNameController.clear();
+    lastNameController.clear();
+    sellerIdentifierController.clear();
+    businessNameController.clear();
+    businessNumberController.clear();
+    businessEmailController.clear();
+    businessMCCController.clear();
+    shopAddressController.clear();
+    pincodeController.clear();
+    cityController.clear();
+    dateOfIncorporationController.clear();
+
+    turnoverType = null;
+    acceptanceType = null;
+    ownershipType = null;
+
+    selectState = null;
+    selectDistrict = null;
+
+    update();
+  }
+
+  // ============================================================
+  // DISPOSE
+  // ============================================================
+
   @override
   void onClose() {
     firstNameController.dispose();
     lastNameController.dispose();
-
+    sellerIdentifierController.dispose();
     businessNameController.dispose();
     businessNumberController.dispose();
     businessEmailController.dispose();
     businessMCCController.dispose();
-
-    sellerIdentifierController.dispose();
-    dateOfIncorporationController.dispose();
-
     shopAddressController.dispose();
-    cityController.dispose();
     pincodeController.dispose();
+    cityController.dispose();
+    dateOfIncorporationController.dispose();
 
     super.onClose();
   }
