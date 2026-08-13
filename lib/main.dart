@@ -109,22 +109,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return ToastificationWrapper(
       child: ScreenUtilInit(
-                designSize: Size(432.0, 960.0),
-        minTextAdapt: true,
-        // splitScreenMode: true,
-        builder: (_, child) {
-          return MaterialApp(
-            title: AppConstants.appName,
-            navigatorKey: navigatorKey,
-            themeMode: ThemeMode.light,
-            theme: CustomTheme.light,
-            debugShowCheckedModeBanner: false,
-            home: const DashboardScreen(),
-            // home: const SplashScreen(),
-            // home: const PinResetSuccessfullyAndFailsScreen(),
-          );
-        }
-      ),
+          designSize: Size(432.0, 960.0),
+          minTextAdapt: true,
+          // splitScreenMode: true,
+          builder: (_, child) {
+            return MaterialApp(
+              title: AppConstants.appName,
+              navigatorKey: navigatorKey,
+              themeMode: ThemeMode.light,
+              theme: CustomTheme.light,
+              debugShowCheckedModeBanner: false,
+              // home: const DashboardScreen(),
+              home: const SplashScreen(),
+              // home: const PinResetSuccessfullyAndFailsScreen(),
+            );
+          }),
     );
   }
 }
