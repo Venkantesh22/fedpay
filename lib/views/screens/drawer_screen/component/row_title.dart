@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/auth_controller.dart';
 import 'package:lekra/generated/assets.dart';
 import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/screens/auth_screens/login_screen.dart';
 import 'package:lekra/views/screens/dashboard/dashboard_screen.dart';
@@ -90,19 +92,20 @@ class RowOFTitle extends StatelessWidget {
           children: [
             SvgPicture.asset(
               drawerTitleRowModel.icon,
-              height: 24,
-              width: 24,
+              height: 24.h,
+              width: 24.w,
+              colorFilter: ColorFilter.mode(primaryColor, BlendMode.srcIn),
             ),
             const SizedBox(
               width: 16,
             ),
             Expanded(
-              child: Text(
+              child: CustomText(
                 drawerTitleRowModel.title,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 style: Helper(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 16,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: drawerTitleRowModel.islogout ? red : black),
               ),
