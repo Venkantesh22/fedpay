@@ -16,7 +16,7 @@ class MerchantProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AuthController>(builder: (authController) {
-      String activeStutus = (authController.userModel?.isKYCDone ?? false)
+      String activeStatus = (authController.userModel?.isKYCDone ?? false)
           ? 'Active'
           : 'Inactive';
 
@@ -157,12 +157,13 @@ class MerchantProfileCard extends StatelessWidget {
                           vertical: 4.h,
                         ),
                         decoration: BoxDecoration(
-                          color:
-                              const Color(0xFF1BC47D).withValues(alpha: 0.95),
+                          color: (authController.userModel?.isKYCDone ?? false)
+                              ? const Color(0xFF1BC47D).withValues(alpha: 0.95)
+                              : secondaryColor,
                           borderRadius: BorderRadius.circular(20.r),
                         ),
                         child: CustomText(
-                          activeStutus,
+                          activeStatus,
                           style: TextStyle(
                             fontSize: 9.sp,
                             fontWeight: FontWeight.w700,

@@ -11,8 +11,7 @@ import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/screens/auth_screens/login_screen.dart';
-import 'package:lekra/views/screens/dashboard/home_screen/components/graph.dart';
-import 'package:lekra/views/screens/dashboard/home_screen/components/income_overview_section.dart';
+import 'package:lekra/views/screens/dashboard/home_screen/components/banner_image_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/kyc_pending_card.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/merchant_profile_card.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/quick_acitons_section/quick_actions_section.dart';
@@ -106,67 +105,79 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        // actions: [
-        //   GestureDetector(
-        //       onTap: () {
-        //         navigate(context: context, page: const WalletScreen());
-        //       },
-        //       child: Icon(
-        //         Icons.account_balance_wallet_outlined,
-        //         size: 24,
-        //         color: primaryColor,
-        //       )),
-        //   sizedBoxWidth(
-        //     width: 28,
-        //   )
-        // ],
       ),
-      body: GetBuilder<AuthController>(builder: (authController) {
-        if (authController.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(),
+      body: GetBuilder<AuthController>(
+        builder: (authController) {
+          if (authController.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          final bool isKycDone = authController.userModel?.isKYCDone ?? false;
+
+          return SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.only(
+              left: 16.w,
+              right: 16.w,
+              top: 16.h,
+              bottom: 120.h,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ==================================================
+                // MERCHANT PROFILE
+                // ==================================================
+
+                const MerchantProfileCard(),
+
+                SizedBox(height: 16.h),
+
+                // ==================================================
+                // KYC PENDING
+                // ==================================================
+
+                if (!isKycDone) ...[
+                  KycPendingCard(
+                    kycStatus: "Not apply",
+                    onTap: () {
+                      navigate(
+                        context: context,
+                        page: const KycFormScreen(),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20.h),
+                ],
+
+                // ==================================================
+                // QUICK ACTIONS
+                // ==================================================
+
+                const QuickActionsSection(),
+
+                SizedBox(height: 24.h),
+
+                // ==================================================
+                // RECEIVE PAYMENT BANNER
+                // ==================================================
+
+                const BannerImage(),
+
+                SizedBox(height: 20.h),
+
+                // ==================================================
+                // TRANSACTION HISTORY
+                // ==================================================
+
+                const TransactionHistoryWidget(),
+              ],
+            ),
           );
-        }
-        return SingleChildScrollView(
-          // scroll the last transaction above the floating navigation bar.
-          padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 100),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // RechargeAndPaySection(),
-              // SizedBox(
-              //   height: 20,
-              // ),
-
-//* Profile controller
-              MerchantProfileCard(),
-              sizedBoxHeight(height: 24),
-//* Kyc verification section
-              !(authController.userModel?.isKYCDone ?? false)
-                  ? KycPendingCard(
-                      kycStatus: "Not apply",
-                      onTap: () {
-                        navigate(context: context, page: KycFormScreen());
-                      },
-                    )
-                  : SizedBox(),
-
-              //* Quick action section
-
-              sizedBoxHeight(height: 18),
-              QuickActionsSection(),
-
-              // SizedBox(height: 20.h),
-              // IncomeOverviewSection(),
-              // TodayHourlyGraph(),
-              SizedBox(
-                height: 31,
-              ),
-              TransactionHistoryWidget()
-            ],
-          ),
-        );
-      }),
+        },
+      ),
     );
   }
 }
