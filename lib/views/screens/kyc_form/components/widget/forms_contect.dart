@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:lekra/controllers/kyc_controller/form_controller.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/bankDetailsScreen/bank_details_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/business_information/business_information_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/kyc_document_upload/kyc_document_upload_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/liveShopVerificationScreen/live_shop_verification_screen.dart';
@@ -81,6 +82,17 @@ class FormsContent extends StatelessWidget {
                 _completeStep(
                   formController,
                   5,
+                  value,
+                );
+              },
+            ),
+
+            BankDetailsScreen(
+              isComplete: formController.completed[6],
+              onCompleteChanged: (value) {
+                _completeStep(
+                  formController,
+                  6,
                   value,
                 );
               },

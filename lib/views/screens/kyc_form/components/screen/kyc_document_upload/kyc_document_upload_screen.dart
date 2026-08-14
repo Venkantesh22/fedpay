@@ -7,7 +7,7 @@ import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/common_button.dart';
-import 'package:lekra/views/screens/kyc_form/components/screen/kyc_document_upload/document_upload_card_widget.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/kyc_document_upload/widget/document_upload_card_widget.dart';
 
 class KycDocumentUploadScreen extends StatelessWidget {
   final bool isComplete;
