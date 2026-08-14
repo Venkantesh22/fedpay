@@ -85,6 +85,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   audioplayers: ^6.6.0
   flutter_screenutil: ^5.9.3
+  flutter_dotenv: ^6.0.1
 
 dev_dependencies:
   flutter_test:
@@ -110,6 +111,7 @@ flutter:
     - assets/images/
     # - assets/lotties/
     - assets/svgs/
+    - api_keys.env
 
 flutter_assets:
   assets_path: assets/

@@ -1,6 +1,7 @@
 // ignore_for_file: strict_top_level_inference, no_leading_underscores_for_local_identifiers
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:lekra/main.dart';
@@ -274,4 +275,7 @@ class AppConstants {
   static const String fcmToken = 'fcm_token';
   static const String soundNotificationIsOn = 'sound_notification_on';
   static const String soundNotificationLanguage = 'sound_notification_language';
+
+
+  static String azureSpeechKey = dotenv.env['AZURE_SPEECH_KEY'] ?? '';
 }

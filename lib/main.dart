@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 // 🔴 NEW: Import Firebase Messaging so main.dart can use it
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lekra/firebase/get_Fcm_token.dart'; // Ensure this contains firebaseMessagingBackgroundHandler
 import 'package:lekra/firebase_options.dart';
@@ -55,6 +56,8 @@ void main() async {
   await Init().initialize();
   await FCMService.initialize();
   await initializeSecondFirebase();
+
+  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }
