@@ -15,9 +15,9 @@ import 'package:lekra/views/screens/dashboard/home_screen/components/graph.dart'
 import 'package:lekra/views/screens/dashboard/home_screen/components/income_overview_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/kyc_pending_card.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/merchant_profile_card.dart';
+import 'package:lekra/views/screens/dashboard/home_screen/components/quick_acitons_section/quick_actions_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/transaction_history_section.dart';
 import 'package:lekra/views/screens/kyc_form/kyc_form_screen.dart';
-import 'package:lekra/views/screens/wallet/wallet_screen/wallet_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final bool isReload;
@@ -150,6 +150,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     )
                   : SizedBox(),
+
+              //* Quick action section
+
+              sizedBoxHeight(height: 16),
+              QuickActionsSection(),
 
               SizedBox(height: 20.h),
               IncomeOverviewSection(),

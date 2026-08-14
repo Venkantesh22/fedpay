@@ -49,6 +49,7 @@ class MerchantProfileCard extends StatelessWidget {
 
       String todaysCollection = PriceConverter.convertToNumberFormat(120000);
       String growthPercentage = "12.5";
+      String merchantID = "7973379934787467";
       return Container(
         width: double.infinity,
         padding: EdgeInsets.all(18.w),
@@ -131,7 +132,7 @@ class MerchantProfileCard extends StatelessWidget {
                         children: [
                           Flexible(
                             child: CustomText(
-                              'Merchant ID: -',
+                              'Merchant ID:\n $merchantID',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
@@ -146,7 +147,7 @@ class MerchantProfileCard extends StatelessWidget {
                           SizedBox(width: 5.w),
                           GestureDetector(
                             onTap: () {
-                              copyText(text: "");
+                              copyText(text: merchantID);
                             },
                             child: Icon(
                               Icons.copy_outlined,

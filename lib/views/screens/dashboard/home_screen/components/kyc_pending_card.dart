@@ -31,97 +31,102 @@ class KycPendingCard extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 46.w,
-            height: 46.w,
-            decoration: BoxDecoration(
-              color: primaryColor.withValues(alpha: 0.10),
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: Icon(
-              Icons.verified_user_outlined,
-              color: primaryColor,
-              size: 24.r,
-            ),
-          ),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(
-                  'KYC Verification',
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w700,
-                    color: black,
-                  ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 46.w,
+                height: 46.w,
+                decoration: BoxDecoration(
+                  color: primaryColor.withValues(alpha: 0.10),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-                SizedBox(height: 4.h),
-                Row(
+                child: Icon(
+                  Icons.verified_user_outlined,
+                  color: primaryColor,
+                  size: 24.r,
+                ),
+              ),
+              SizedBox(width: 12.w),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 7.w,
-                        vertical: 3.h,
+                    CustomText(
+                      'KYC Verification',
+                      style: TextStyle(
+                        fontSize: 15.sp,
+                        fontWeight: FontWeight.w700,
+                        color: black,
                       ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFF4E5),
-                        borderRadius: BorderRadius.circular(6.r),
-                      ),
-                      child: CustomText(
-                        kycStatus,
-                        style: TextStyle(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFFF59E0B),
+                    ),
+                    SizedBox(height: 4.h),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 7.w,
+                            vertical: 3.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFF4E5),
+                            borderRadius: BorderRadius.circular(6.r),
+                          ),
+                          child: CustomText(
+                            kycStatus,
+                            style: TextStyle(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.w700,
+                              color: const Color(0xFFF59E0B),
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
-                SizedBox(height: 6.h),
-                CustomText(
-                  'Complete your KYC to unlock all account features.',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 11.sp,
-                    height: 1.4,
-                    color: greyText6,
+              ),
+              SizedBox(
+                height: 38.h,
+                child: ElevatedButton(
+                  onPressed: onTap,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primaryColor,
+                    foregroundColor: white,
+                    elevation: 0,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9.r),
+                    ),
+                  ),
+                  child: CustomText(
+                    'Complete KYC',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
-                SizedBox(height: 12.h),
-              ],
+              ),
+            ],
+          ),
+          SizedBox(height: 12.h),
+          CustomText(
+            'Complete your KYC to unlock all account features.',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: 11.sp,
+              height: 1.4,
+              color: greyText6,
             ),
           ),
-          SizedBox(
-            height: 38.h,
-            child: ElevatedButton(
-              onPressed: onTap,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: primaryColor,
-                foregroundColor: white,
-                elevation: 0,
-                padding: EdgeInsets.symmetric(
-                  horizontal: 16.w,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9.r),
-                ),
-              ),
-              child: CustomText(
-                'Complete KYC',
-                style: TextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ),
+          SizedBox(height: 12.h),
         ],
       ),
     );
