@@ -11,7 +11,6 @@ import 'package:lekra/firebase_options.dart';
 import 'package:lekra/firebase_options_second.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/theme.dart';
-import 'package:lekra/views/screens/dashboard/dashboard_screen.dart';
 import 'package:toastification/toastification.dart';
 import 'services/init.dart';
 import 'views/screens/splash_screen/splash_screen.dart';

@@ -72,7 +72,7 @@ class KycPendingCard extends StatelessWidget {
                         color: const Color(0xFFFFF4E5),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
-                      child: Text(
+                      child: CustomText(
                         kycStatus,
                         style: TextStyle(
                           fontSize: 10.sp,
@@ -95,31 +95,31 @@ class KycPendingCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 12.h),
-                SizedBox(
-                  height: 38.h,
-                  child: ElevatedButton(
-                    onPressed: onTap,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      foregroundColor: white,
-                      elevation: 0,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9.r),
-                      ),
-                    ),
-                    child: Text(
-                      'Complete KYC',
-                      style: TextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ),
               ],
+            ),
+          ),
+          SizedBox(
+            height: 38.h,
+            child: ElevatedButton(
+              onPressed: onTap,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: white,
+                elevation: 0,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.w,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(9.r),
+                ),
+              ),
+              child: CustomText(
+                'Complete KYC',
+                style: TextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
           ),
         ],

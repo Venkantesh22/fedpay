@@ -7,12 +7,14 @@ import 'package:lekra/controllers/auth_controller.dart';
 import 'package:lekra/controllers/basic_controlller.dart';
 import 'package:lekra/controllers/report_contoller.dart';
 import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/screens/auth_screens/login_screen.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/graph.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/income_overview_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/kyc_pending_card.dart';
+import 'package:lekra/views/screens/dashboard/home_screen/components/merchant_profile_card.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/transaction_history_section.dart';
 import 'package:lekra/views/screens/kyc_form/kyc_form_screen.dart';
 import 'package:lekra/views/screens/wallet/wallet_screen/wallet_screen.dart';
@@ -85,29 +87,39 @@ class _HomeScreenState extends State<HomeScreen> {
               Icons.menu,
               color: primaryColor,
             )),
-        title: Text(
-          AppConstants.appName,
-          style: Helper(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: secondaryColor,
-              ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+              AppConstants.appName,
+              style: Helper(context).textTheme.bodyLarge?.copyWith(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            CustomText(
+              "UPI Merchant",
+              style: Helper(context).textTheme.bodyMedium?.copyWith(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+            ),
+          ],
         ),
-        centerTitle: true,
-        actions: [
-          GestureDetector(
-              onTap: () {
-                navigate(context: context, page: const WalletScreen());
-              },
-              child: Icon(
-                Icons.account_balance_wallet_outlined,
-                size: 24,
-                color: primaryColor,
-              )),
-          sizedBoxWidth(
-            width: 28,
-          )
-        ],
+        // actions: [
+        //   GestureDetector(
+        //       onTap: () {
+        //         navigate(context: context, page: const WalletScreen());
+        //       },
+        //       child: Icon(
+        //         Icons.account_balance_wallet_outlined,
+        //         size: 24,
+        //         color: primaryColor,
+        //       )),
+        //   sizedBoxWidth(
+        //     width: 28,
+        //   )
+        // ],
       ),
       body: GetBuilder<AuthController>(builder: (authController) {
         if (authController.isLoading) {
@@ -116,7 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
         return SingleChildScrollView(
-          // IMPORTANT: Ensure you have enough bottom padding here so the user can
           // scroll the last transaction above the floating navigation bar.
           padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 100),
           child: Column(
@@ -127,15 +138,16 @@ class _HomeScreenState extends State<HomeScreen> {
               //   height: 20,
               // ),
 
+//* Profile controller
+              MerchantProfileCard(),
+              sizedBoxHeight(height: 16),
+//* Kyc verification section
               !(authController.userModel?.isKYCDone ?? false)
-                  ? Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: KycPendingCard(
-                        kycStatus: "Not apply",
-                        onTap: () {
-                          navigate(context: context, page: KycFormScreen());
-                        },
-                      ),
+                  ? KycPendingCard(
+                      kycStatus: "Not apply",
+                      onTap: () {
+                        navigate(context: context, page: KycFormScreen());
+                      },
                     )
                   : SizedBox(),
 
