@@ -9,35 +9,8 @@ import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/shimmer.dart';
 
 class MerchantProfileCard extends StatelessWidget {
-  // final String businessName;
-  // final String merchantId;
-  // final String todaysCollection;
-
-  // final String transactionCount;
-  // final String successCount;
-  // final String refundCount;
-  // final String successRate;
-
-  // final String growthPercentage;
-
-  // final VoidCallback? onMerchantIdCopy;
-  // final VoidCallback? onCardTap;
-
-  // final bool isActive;
-
   const MerchantProfileCard({
     super.key,
-    // required this.businessName,
-    // required this.merchantId,
-    // required this.todaysCollection,
-    // required this.transactionCount,
-    // required this.successCount,
-    // required this.refundCount,
-    // required this.successRate,
-    // required this.growthPercentage,
-    // this.onMerchantIdCopy,
-    // this.onCardTap,
-    // this.isActive = true,
   });
 
   @override
@@ -128,34 +101,46 @@ class MerchantProfileCard extends StatelessWidget {
 
                       SizedBox(height: 4.h),
 
-                      Row(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Flexible(
-                            child: CustomText(
-                              'Merchant ID:\n $merchantID',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 10.5.sp,
-                                fontWeight: FontWeight.w400,
-                                color: white.withValues(
-                                  alpha: 0.82,
-                                ),
+                          CustomText(
+                            'Merchant ID:',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 10.5.sp,
+                              fontWeight: FontWeight.w400,
+                              color: white.withValues(
+                                alpha: 0.82,
                               ),
                             ),
                           ),
-                          SizedBox(width: 5.w),
-                          GestureDetector(
-                            onTap: () {
-                              copyText(text: merchantID);
-                            },
-                            child: Icon(
-                              Icons.copy_outlined,
-                              size: 14.r,
-                              color: white.withValues(
-                                alpha: 0.80,
+                          Row(
+                            children: [
+                              CustomText(
+                                "$merchantID ",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 10.5.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: white.withValues(
+                                    alpha: 0.82,
+                                  ),
+                                ),
                               ),
-                            ),
+                              GestureDetector(
+                                onTap: () {
+                                  copyText(text: merchantID);
+                                },
+                                child: Icon(
+                                  Icons.copy_outlined,
+                                  size: 14.r,
+                                  color: white.withValues(
+                                    alpha: 0.80,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

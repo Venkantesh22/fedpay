@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/report_contoller.dart';
 import 'package:lekra/data/models/transaction_model.dart';
 import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/views/base/shimmer.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/view_widget.dart';
@@ -44,29 +46,40 @@ class TransactionHistoryWidget extends StatelessWidget {
                   : const SizedBox()
             ],
           ),
-          const SizedBox(
+          sizedBoxHeight(
             height: 20,
           ),
-          ListView.separated(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                final transactionModel = reportController.isLoading
-                    ? TransactionModel()
-                    : reportController.transactionReportList[index];
-                return CustomShimmer(
-                    isLoading: reportController.isLoading,
-                    child: TransactionRow(transactionModel: transactionModel));
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(
-                  height: 12,
-                );
-              },
-              itemCount: reportController.isLoading
-                  ? 4
-                  : reportController.transactionReportList.length)
+          reportController.transactionReportList.isEmpty
+              ? Center(
+                  child: CustomText(
+                    "No Transaction for Today",
+                    style: Helper(context).textTheme.bodyLarge?.copyWith(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                        ),
+                  ),
+                )
+              : ListView.separated(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final transactionModel = reportController.isLoading
+                        ? TransactionModel()
+                        : reportController.transactionReportList[index];
+                    return CustomShimmer(
+                        isLoading: reportController.isLoading,
+                        child:
+                            TransactionRow(transactionModel: transactionModel));
+                  },
+                  separatorBuilder: (_, __) {
+                    return const SizedBox(
+                      height: 12,
+                    );
+                  },
+                  itemCount: reportController.isLoading
+                      ? 4
+                      : reportController.transactionReportList.length)
         ],
       );
     });

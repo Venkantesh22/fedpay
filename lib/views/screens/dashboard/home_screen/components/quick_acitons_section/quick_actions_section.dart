@@ -107,19 +107,45 @@ class _QuickActionCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 58.w,
-            height: 58.w,
+            padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
-              color: item.backgroundColor,
-              borderRadius: BorderRadius.circular(16.r),
-            ),
-            child: Icon(
-              item.icon,
-              color: item.iconColor,
-              size: 27.r,
+                color: white,
+                borderRadius: BorderRadius.circular(12.r),
+                boxShadow: [
+                  BoxShadow(
+                    offset: Offset(
+                      0,
+                      2,
+                    ),
+                    blurRadius: 4,
+                    spreadRadius: -1,
+                    color: black.withValues(alpha: 0.03),
+                  ),
+                  BoxShadow(
+                    offset: Offset(
+                      0,
+                      4,
+                    ),
+                    blurRadius: 6,
+                    spreadRadius: -1,
+                    color: black.withValues(alpha: 0.05),
+                  ),
+                ]),
+            child: Container(
+              width: 58.w,
+              height: 58.w,
+              decoration: BoxDecoration(
+                color: item.backgroundColor,
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: Icon(
+                item.icon,
+                color: item.iconColor,
+                size: 27.r,
+              ),
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: 12.h),
           SizedBox(
             height: 34.h,
             child: CustomText(

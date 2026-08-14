@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 //* Profile controller
               MerchantProfileCard(),
-              sizedBoxHeight(height: 16),
+              sizedBoxHeight(height: 24),
 //* Kyc verification section
               !(authController.userModel?.isKYCDone ?? false)
                   ? KycPendingCard(
@@ -153,12 +153,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
               //* Quick action section
 
-              sizedBoxHeight(height: 16),
+              sizedBoxHeight(height: 18),
               QuickActionsSection(),
 
-              SizedBox(height: 20.h),
-              IncomeOverviewSection(),
-              TodayHourlyGraph(),
+              // SizedBox(height: 20.h),
+              // IncomeOverviewSection(),
+              // TodayHourlyGraph(),
               SizedBox(
                 height: 31,
               ),
