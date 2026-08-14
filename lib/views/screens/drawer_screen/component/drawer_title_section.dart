@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lekra/services/constants.dart';
 import 'package:lekra/views/screens/drawer_screen/component/row_title.dart';
 
 class DrawerTitleSection extends StatelessWidget {
@@ -21,7 +22,7 @@ class DrawerTitleSection extends StatelessWidget {
             );
           },
           separatorBuilder: (_, __) {
-            return const SizedBox(height: 30);
+            return  sizedBoxHeight(height: 30);
           },
           itemCount: drawerTitleList.length),
     );

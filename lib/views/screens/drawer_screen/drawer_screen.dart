@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:lekra/services/constants.dart';
 import 'package:lekra/views/screens/drawer_screen/component/QR_section.dart';
 import 'package:lekra/views/screens/drawer_screen/component/drawer_profile_section.dart';
 import 'package:lekra/views/screens/drawer_screen/component/drawer_title_section.dart';
@@ -20,11 +20,11 @@ class DrawerScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: Colors.white, // Ensure it is pure white
-      child: const SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20),
+            sizedBoxHeight(height: 20),
             DrawerProfileSection(),
             QRSection(),
             DrawerTitleSection()

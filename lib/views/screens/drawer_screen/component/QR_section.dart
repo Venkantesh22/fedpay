@@ -95,7 +95,7 @@ class QRSection extends StatelessWidget {
                             },
                             title: "Download QR",
                             icon: Assets.svgsDownload,
-                            bgColor: secondaryColor,
+                            bgColor: primaryColor,
                             titleColor: white,
                             iconColor:
                                 const ColorFilter.mode(white, BlendMode.srcIn)),
@@ -112,6 +112,7 @@ class QRSection extends StatelessWidget {
                                     message: "KYC is Required",
                                     toastType: ToastType.info);
                               }
+
                               navigate(
                                 context: context,
                                 page: const DownloadQrScreen(autoShare: true),
@@ -119,7 +120,7 @@ class QRSection extends StatelessWidget {
                             },
                             title: "Share QR",
                             icon: Assets.svgsShare,
-                            bgColor: secondaryColor,
+                            bgColor: Color(0xFF0D9488),
                             titleColor: white,
                             iconColor:
                                 const ColorFilter.mode(white, BlendMode.srcIn)),
