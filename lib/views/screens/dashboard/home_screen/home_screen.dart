@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lekra/controllers/auth_controller.dart';
@@ -10,7 +9,6 @@ import 'package:lekra/controllers/report_contoller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/services/theme.dart';
-import 'package:lekra/views/base/custom_image.dart';
 import 'package:lekra/views/screens/auth_screens/login_screen.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/graph.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/income_overview_section.dart';
