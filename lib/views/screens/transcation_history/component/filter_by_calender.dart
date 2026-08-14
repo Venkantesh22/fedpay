@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:math' as math;
 import 'package:lekra/generated/assets.dart';
 import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/common_button.dart';
 import 'package:lekra/views/screens/transcation_history/component/all_status_button.dart';
@@ -40,21 +42,6 @@ class _FilterByCalenderState extends State<FilterByCalender> {
 
   // Custom picking flag: "start" | "end" | null
   String? customPicking;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   selectedSingleDate = today;
-  //   displayedMonth = DateTime(today.year, today.month, 1);
-  //   _initYears();
-  //   log("call --1")
-  // }
-
-  // void _initYears() {
-  //   int current = today.year;
-  //   // default small list; will expand in dialog when opened
-  //   yearOptions = List.generate(5, (i) => current - 3 + i);
-  // }
 
   // ---------------- Centered date/filter dialog ----------------
   void _openDatePicker() {
@@ -133,7 +120,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               alignment: Alignment.center,
-                              child: Text(
+                              child: CustomText(
                                 _monthName(m),
                                 style: Helper(context)
                                     .textTheme
@@ -178,7 +165,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               alignment: Alignment.center,
-                              child: Text(
+                              child: CustomText(
                                 "$y",
                                 style: Helper(context)
                                     .textTheme
@@ -218,7 +205,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                       ];
                       for (final w in weekdays) {
                         dayCells.add(Center(
-                            child: Text(w,
+                            child: CustomText(w,
                                 style: Helper(context)
                                     .textTheme
                                     .bodySmall
@@ -352,7 +339,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
+                                CustomText(
                                   "$d",
                                   style: Helper(context)
                                       .textTheme
@@ -403,7 +390,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          CustomText(
                             "Filter by",
                             style: Helper(context)
                                 .textTheme
@@ -488,7 +475,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                                             size: 12, color: white),
                                       ),
                                       const SizedBox(width: 8),
-                                      Text(
+                                      CustomText(
                                         label,
                                         style: Helper(context)
                                             .textTheme
@@ -542,7 +529,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: primaryColor),
                                       ),
-                                      child: Text(
+                                      child: CustomText(
                                         customStartDate != null
                                             ? "Start: ${_formatDate(customStartDate!)}"
                                             : "Select start date",
@@ -583,7 +570,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                                         borderRadius: BorderRadius.circular(10),
                                         border: Border.all(color: primaryColor),
                                       ),
-                                      child: Text(
+                                      child: CustomText(
                                         customEndDate != null
                                             ? "End: ${_formatDate(customEndDate!)}"
                                             : "Select end date",
@@ -627,7 +614,7 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                                 icon: const Icon(Icons.arrow_back),
                               ),
                               Expanded(
-                                child: Text(
+                                child: CustomText(
                                   "${_monthName(displayedMonth.month)} ${displayedMonth.year}",
                                   textAlign: TextAlign.center,
                                   style: Helper(context)
@@ -734,10 +721,10 @@ class _FilterByCalenderState extends State<FilterByCalender> {
 
                           if (!mounted) return;
                           ScaffoldMessenger.of(context)
-                              .showSnackBar(SnackBar(content: Text(msg)));
+                              .showSnackBar(SnackBar(content: CustomText(msg)));
                           Navigator.of(ctx).pop();
                         },
-                        child: Text(
+                        child: CustomText(
                           "Apply",
                           style: Helper(context).textTheme.bodyMedium?.copyWith(
                                 fontSize: 16,
@@ -815,16 +802,18 @@ class _FilterByCalenderState extends State<FilterByCalender> {
                   children: [
                     SvgPicture.asset(
                       Assets.svgsFilter,
-                      height: 20,
-                      width: 20,
+                      height: 20.h,
+                      width: 20.w,
+                      colorFilter:
+                          ColorFilter.mode(secondaryColor, BlendMode.srcIn),
                     ),
-                    const SizedBox(width: 8),
-                    Text(
+                    sizedBoxWidth(width: 8),
+                    CustomText(
                       "Filter",
-                      style: Helper(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
+                      style: Helper(context).textTheme.bodyLarge?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: white),
                     )
                   ],
                 ),

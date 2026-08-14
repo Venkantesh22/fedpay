@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/report_contoller.dart';
@@ -46,7 +46,7 @@ class _AllStatusButtonState extends State<AllStatusButton> {
                         "Select status",
                         style: Helper(context).textTheme.bodyLarge?.copyWith(
                             fontWeight: FontWeight.w600,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             color: white),
                       ),
                       IconButton(
@@ -132,8 +132,8 @@ class _AllStatusButtonState extends State<AllStatusButton> {
                   reportController.selectedStatus ?? "",
                   style: Helper(context).textTheme.bodyMedium?.copyWith(
                         fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: reportController.statusSelected ? white : null,
+                        fontSize: 14.sp,
+                        color: white,
                       ),
                 )
               ],

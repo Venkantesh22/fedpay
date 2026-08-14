@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/report_contoller.dart';
 import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/common_button.dart';
-import 'package:lekra/views/screens/drawer_screen/drawer_screen.dart';
 import 'package:lekra/views/screens/transcation_history/component/filter_by_calender.dart';
 import 'package:lekra/views/screens/transcation_history/component/transaction_list_section.dart';
 
@@ -27,7 +28,6 @@ class TransactionHistoryScreen extends StatefulWidget {
 }
 
 class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController searchController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   Timer? _debounce;
@@ -121,19 +121,13 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
         if (!res.isSuccess) {
           if (!mounted) return;
           ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(res.message)));
+              .showSnackBar(SnackBar(content: CustomText(res.message)));
         }
       },
       child: Scaffold(
-        // key: _scaffoldKey,
-        // drawer: const DrawerScreen(),
         appBar: AppBar(
-          // leading: IconButton(
-          //   onPressed: () => _scaffoldKey.currentState!.openDrawer(),
-          //   icon: const Icon(Icons.menu, color: white),
-          // ),
           centerTitle: true,
-          title: Text(
+          title: CustomText(
             AppConstants.appName,
             style: Helper(context).textTheme.bodyLarge?.copyWith(
                 fontWeight: FontWeight.w600, fontSize: 18, color: white),
@@ -159,42 +153,45 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
             return Column(
               children: [
                 FilterByCalender(searchController: searchController),
-                SizedBox(
+                sizedBoxHeight(
                   height: 10,
                 ),
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
+                      child: CustomText(
                         reportController.isYesBankTransaction
                             ? "Yes bank merchant Transaction History"
                             : "All Transaction History",
                         style: Helper(context).textTheme.bodyLarge?.copyWith(
-                            fontSize: 16, fontWeight: FontWeight.w700),
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w700,
+                            ),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    sizedBoxWidth(width: 8),
                     CustomButton(
                       onTap: () async {
                         reportController.setIsYesBankTransaction(
                             !reportController.isYesBankTransaction);
                         await loadingData();
                       },
-                      height: 30,
+                      height: 30.h,
                       color: reportController.isYesBankTransaction
                           ? primaryColor
                           : white,
-                      radius: 20,
-                      child: Text(
-                        reportController.isYesBankTransaction
-                            ? "All Transaction"
-                            : "Yes Bank History",
-                        style: Helper(context).textTheme.bodyLarge?.copyWith(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: reportController.isYesBankTransaction
-                                ? white
-                                : greyText3),
+                      radius: 20.r,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: CustomText(
+                          reportController.isYesBankTransaction
+                              ? "All Transaction"
+                              : "Yes Bank History",
+                          style: Helper(context).textTheme.bodyLarge?.copyWith(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: white),
+                        ),
                       ),
                     )
                   ],
@@ -206,7 +203,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                     child: Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: 48.0),
-                        child: Text("No transaction available"),
+                        child: CustomText("No transaction available"),
                       ),
                     ),
                   )
