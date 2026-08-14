@@ -4,6 +4,7 @@ import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/bankDetailsScreen/bank_details_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/bankDocumentUploadScreen/bank_document_upload_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/business_information/business_information_screen.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/document_details_screen/document_details_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/kycReviewScreen/kyc_review_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/kyc_document_upload/kyc_document_upload_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/liveShopVerificationScreen/live_shop_verification_screen.dart';
@@ -46,7 +47,7 @@ class FormsContent extends StatelessWidget {
               },
             ),
             // DocuentDetailsScreen(
-            KycDocumentUploadScreen(
+            DocumentDetailsScreen(
               isComplete: formController.completed[2],
               onCompleteChanged: (value) {
                 _completeStep(

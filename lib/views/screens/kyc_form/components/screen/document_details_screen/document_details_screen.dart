@@ -2,54 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lekra/controllers/kyc_controller/business_information_controller.dart';
+import 'package:lekra/controllers/kyc_controller/document_details_controller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/common_button.dart';
-import 'package:lekra/views/base/custom_dropdown.dart';
 import 'package:lekra/views/screens/widget/text_box/app_text_box.dart';
 
-class BusinessInformationScreen extends StatefulWidget {
+class DocumentDetailsScreen extends StatefulWidget {
   final bool isComplete;
   final ValueChanged<bool> onCompleteChanged;
 
-  const BusinessInformationScreen({
+  const DocumentDetailsScreen({
     super.key,
     required this.isComplete,
     required this.onCompleteChanged,
   });
 
   @override
-  State<BusinessInformationScreen> createState() =>
-      _BusinessInformationScreenState();
+  State<DocumentDetailsScreen> createState() =>
+      _DocumentDetailsScreenState();
 }
 
-class _BusinessInformationScreenState
-    extends State<BusinessInformationScreen> {
-  final GlobalKey<FormState> formKey =
-      GlobalKey<FormState>();
+class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<BusinessInformationController>(
-      builder: (businessController) {
+    return GetBuilder<DocumentDetailsController>(
+      builder: (controller) {
         return Form(
           key: formKey,
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               // ==================================================
               // TITLE
               // ==================================================
 
               CustomText(
-                'Business Information',
-                style: Helper(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                'Document Details',
+                style: Helper(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                       color: Colors.black87,
@@ -59,11 +53,8 @@ class _BusinessInformationScreenState
               SizedBox(height: 4.h),
 
               CustomText(
-                'Provide information about your business',
-                style: Helper(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                'Enter details as per your documents',
+                style: Helper(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       color: greyDark,
@@ -73,173 +64,146 @@ class _BusinessInformationScreenState
               SizedBox(height: 24.h),
 
               // ==================================================
-              // BUSINESS CATEGORY
-              // ==================================================
-
-              CustomDropDownList<String>(
-                heading: 'Business Category',
-                isRequired: true,
-                items: businessController.businessCategoryList,
-                value: businessController.businessCategory,
-                hintText: 'Select business category',
-                bgColor: primaryColorLight,
-                borderColor: primaryColor,
-                onChanged:
-                    businessController.setBusinessCategory,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select business category';
-                  }
-                  return null;
-                },
-              ),
-
-              SizedBox(height: 18.h),
-
-              // ==================================================
-              // NATURE OF BUSINESS
-              // ==================================================
-
-              CustomDropDownList<String>(
-                heading: 'Nature of Business',
-                isRequired: true,
-                items: businessController.natureOfBusinessList,
-                value: businessController.natureOfBusiness,
-                hintText: 'Select nature of business',
-                bgColor: primaryColorLight,
-                borderColor: primaryColor,
-                onChanged:
-                    businessController.setNatureOfBusiness,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select nature of business';
-                  }
-                  return null;
-                },
-              ),
-
-              SizedBox(height: 18.h),
-
-              // ==================================================
-              // TRANSACTION VOLUME
-              // ==================================================
-
-              CustomDropDownList<String>(
-                heading:
-                    'Expected Monthly Transaction Volume',
-                isRequired: true,
-                items:
-                    businessController.transactionVolumeList,
-                value: businessController
-                    .expectedMonthlyTransactionVolume,
-                hintText:
-                    'Select monthly transaction volume',
-                bgColor: primaryColorLight,
-                borderColor: primaryColor,
-                onChanged: businessController
-                    .setExpectedMonthlyTransactionVolume,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select transaction volume';
-                  }
-                  return null;
-                },
-              ),
-
-              SizedBox(height: 18.h),
-
-              // ==================================================
-              // OWNERSHIP TYPE
-              // ==================================================
-
-              CustomDropDownList<String>(
-                heading: 'Business Ownership Type',
-                isRequired: true,
-                items:
-                    businessController.businessOwnershipTypeList,
-                value:
-                    businessController.businessOwnershipType,
-                hintText: 'Select ownership type',
-                bgColor: primaryColorLight,
-                borderColor: primaryColor,
-                onChanged: businessController
-                    .setBusinessOwnershipType,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select ownership type';
-                  }
-                  return null;
-                },
-              ),
-
-              SizedBox(height: 18.h),
-
-              // ==================================================
-              // BUSINESS DESCRIPTION
+              // AADHAAR NUMBER
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: businessController
-                    .businessDescriptionController,
-                heading: 'Business Description',
-                hindText:
-                    'Enter a brief description of your business',
-                keyboardType: TextInputType.multiline,
-                maxLines: 4,
-                textInputAction:
-                    TextInputAction.newline,
-                bgColor: primaryColorLight,
-                borderColor: primaryColor,
+                controller: controller.aadhaarNumberController,
+                heading: 'Aadhaar Number',
+                hindText: 'Enter 12 digit Aadhaar number',
+                isRequired: true,
+                keyboardType: TextInputType.number,
+                textInputAction: TextInputAction.next,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(500),
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(12),
                 ],
+                validator: (value) {
+                  final aadhaar = value?.trim() ?? '';
+
+                  if (aadhaar.isEmpty) {
+                    return 'Please enter Aadhaar number';
+                  }
+
+                  if (aadhaar.length != 12) {
+                    return 'Aadhaar number must be 12 digits';
+                  }
+
+                  return null;
+                },
               ),
 
               SizedBox(height: 18.h),
 
               // ==================================================
-              // BUSINESS START DATE
+              // PAN NUMBER
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller: businessController
-                    .businessStartDateController,
-                heading: 'Business Start Date',
-                hindText: 'Select business start date',
+                controller: controller.panNumberController,
+                heading: 'PAN Number',
+                hindText: 'Enter PAN number',
                 isRequired: true,
-                readOnly: true,
-                bgColor: primaryColorLight,
-                borderColor: primaryColor,
-                suffix: Icon(
-                  Icons.calendar_today_outlined,
-                  size: 19.r,
-                  color: primaryColor,
-                ),
-                onTap: () async {
-                  final DateTime now =
-                      DateTime.now();
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'[a-zA-Z0-9]'),
+                  ),
+                  LengthLimitingTextInputFormatter(10),
+                  UpperCaseTextFormatter(),
+                ],
+                validator: (value) {
+                  final pan = value?.trim().toUpperCase() ?? '';
 
-                  final DateTime? pickedDate =
-                      await showDatePicker(
-                    context: context,
-                    initialDate: now,
-                    firstDate: DateTime(1900),
-                    lastDate: now,
-                  );
-
-                  if (pickedDate == null) {
-                    return;
+                  if (pan.isEmpty) {
+                    return 'Please enter PAN number';
                   }
 
-                  businessController
-                      .setBusinessStartDate(
-                    pickedDate,
-                  );
+                  if (!RegExp(
+                    r'^[A-Z]{5}[0-9]{4}[A-Z]$',
+                  ).hasMatch(pan)) {
+                    return 'Please enter a valid PAN number';
+                  }
+
+                  return null;
                 },
+              ),
+
+              SizedBox(height: 18.h),
+
+              // ==================================================
+              // GSTIN
+              // ==================================================
+
+              AppTextFieldWithHeading(
+                controller: controller.gstNumberController,
+                heading: 'GSTIN',
+                hindText: 'Enter GSTIN',
+                isRequired: true,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(15),
+                  UpperCaseTextFormatter(),
+                ],
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
-                    return 'Please select business start date';
+                  final gstin = value?.trim().toUpperCase() ?? '';
+
+                  if (gstin.isEmpty) {
+                    return 'Please enter GSTIN';
+                  }
+
+                  if (gstin.length != 15) {
+                    return 'GSTIN must be 15 characters';
+                  }
+
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 18.h),
+
+              // ==================================================
+              // TRADE LICENCE
+              // ==================================================
+
+              AppTextFieldWithHeading(
+                controller: controller.tradeLicenseNumberController,
+                heading: 'Trade Licence Number',
+                hindText: 'Enter trade licence number',
+                isRequired: true,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.next,
+                validator: (value) {
+                  final tradeLicense = value?.trim() ?? '';
+
+                  if (tradeLicense.isEmpty) {
+                    return 'Please enter trade licence number';
+                  }
+
+                  return null;
+                },
+              ),
+
+              SizedBox(height: 18.h),
+
+              // ==================================================
+              // MSME / UDYAM
+              // ==================================================
+
+              AppTextFieldWithHeading(
+                controller: controller.msmeNumberController,
+                heading: 'MSME / Udyam Registration Number',
+                hindText: 'Enter MSME / Udyam number',
+                isRequired: true,
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.done,
+                validator: (value) {
+                  final msme = value?.trim() ?? '';
+
+                  if (msme.isEmpty) {
+                    return 'Please enter MSME / Udyam number';
                   }
 
                   return null;
@@ -249,7 +213,7 @@ class _BusinessInformationScreenState
               SizedBox(height: 24.h),
 
               // ==================================================
-              // CONTINUE
+              // CONTINUE BUTTON
               // ==================================================
 
               CustomButton(
@@ -259,34 +223,63 @@ class _BusinessInformationScreenState
                 gradient: LinearGradient(
                   colors: [
                     primaryColor,
-                    secondaryColor,
+                    const Color(0xFFE91E63),
                   ],
                 ),
                 onTap: () {
-                  FocusScope.of(context).unfocus();
+                  // ----------------------------------------------
+                  // Flutter UI validation
+                  // ----------------------------------------------
 
-                  final bool valid =
-                      formKey.currentState
-                              ?.validate() ??
-                          false;
+                  final isValid =
+                      formKey.currentState?.validate() ?? false;
 
-                  if (!valid) {
+                  if (!isValid) {
                     return;
                   }
 
-                  if (!businessController
-                      .validateBusinessInformation()) {
+                  // ----------------------------------------------
+                  // Controller validation
+                  // ----------------------------------------------
+
+                  final success =
+                      controller.validateDocumentDetails();
+
+                  if (!success) {
                     return;
                   }
 
-                  // FormController handles navigation.
+                  // ----------------------------------------------
+                  // Mark KYC step completed
+                  // ----------------------------------------------
+
                   widget.onCompleteChanged(true);
                 },
               ),
+
+              SizedBox(height: 8.h),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+
+// ============================================================
+// UPPERCASE FORMATTER
+// ============================================================
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return newValue.copyWith(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }

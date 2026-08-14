@@ -1,9 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
+import 'package:lekra/views/screens/dashboard/card/form_for_apply_card/form_for_apply_card_screen.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/home_screen.dart';
 import 'package:lekra/views/screens/transcation_history/transaction_history_screen.dart';
 import 'package:lekra/views/screens/drawer_screen/drawer_screen.dart';
@@ -20,23 +19,24 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final GlobalKey<ScaffoldState> _dashboardScaffoldKey = GlobalKey<ScaffoldState>();
-  
+  final GlobalKey<ScaffoldState> _dashboardScaffoldKey =
+      GlobalKey<ScaffoldState>();
+
   // 1. Add a boolean to track if the drawer is currently open
-  bool _isDrawerOpen = false; 
+  bool _isDrawerOpen = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _dashboardScaffoldKey,
-      
+
       // 2. Listen for drawer state changes
       onDrawerChanged: (isOpened) {
         setState(() {
           _isDrawerOpen = isOpened;
         });
       },
-      
+
       drawer: const DrawerScreen(),
       body: GetBuilder<DashBoardController>(
         builder: (DashBoardController controller) {
@@ -50,13 +50,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     isReload: true,
                     scaffoldKey: _dashboardScaffoldKey,
                   ),
+                  FormForApplyCardScreen(),
                   TransactionHistoryScreen(
                     fromDateValue: DateTime(2024, 1, 1),
                     todateValue: getDateTime(),
                   ),
                 ],
               ),
-              
+
               // --- TOP LAYER: THE FLOATING NAVIGATION BAR ---
               // 3. Use AnimatedPositioned to smoothly slide it out of view
               AnimatedPositioned(
@@ -69,7 +70,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 right: 40,
                 child: SafeArea(
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(40),
@@ -92,9 +94,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         BottomNavigationItemWidget(
                           onTap: () => controller.dashPage = 1,
+                          title: 'Card',
+                          icon: Assets.svgsCard,
+                          isActive: controller.dashPage == 1,
+                        ),
+                        BottomNavigationItemWidget(
+                          onTap: () => controller.dashPage = 2,
                           title: 'Report',
                           icon: Assets.svgsReport,
-                          isActive: controller.dashPage == 1,
+                          isActive: controller.dashPage == 2,
                         ),
                       ],
                     ),
