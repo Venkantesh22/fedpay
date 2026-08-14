@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lekra/controllers/report_contoller.dart';
+import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/shimmer.dart';
 import 'dart:math';
@@ -19,7 +22,7 @@ class TodayHourlyGraph extends StatefulWidget {
   const TodayHourlyGraph({
     super.key,
     this.hoursData,
-    this.title = "Today's earnings (per hour)",
+    this.title = "Latest Transaction Report",
   });
 
   @override
@@ -69,7 +72,7 @@ class _TodayHourlyGraphState extends State<TodayHourlyGraph> {
         elevation: 4,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding:  EdgeInsets.all(12.0.w),
           child: Column(
             children: [
               // Title row
@@ -77,26 +80,26 @@ class _TodayHourlyGraphState extends State<TodayHourlyGraph> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Text(
+                    child: CustomText(
                       widget.title,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w700,
                           ),
                     ),
                   ),
-                  Text(
+                  CustomText(
                     "Today",
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              sizedBoxHeight(height: 12),
 
               // Chart or placeholder
               CustomShimmer(
                 isLoading: reportController.isLoading,
                 child: SizedBox(
-                  height: 260,
+                  height: 260.h,
                   child: showEmptyPlaceholder
                       ? Center(
                           child: Text(
@@ -105,8 +108,8 @@ class _TodayHourlyGraphState extends State<TodayHourlyGraph> {
                           ),
                         )
                       : SfCartesianChart(
-                          margin: const EdgeInsets.only(
-                              top: 8, bottom: 8, left: 0, right: 8),
+                          margin:  EdgeInsets.only(
+                              top: 8.h, bottom: 8.h, left: 0, right: 8.w),
                           tooltipBehavior: _tooltipBehavior,
                           trackballBehavior: _trackballBehavior,
                           primaryXAxis: DateTimeAxis(
@@ -149,7 +152,7 @@ class _TodayHourlyGraphState extends State<TodayHourlyGraph> {
                 ),
               ),
 
-              const SizedBox(height: 8),
+              sizedBoxHeight(height: 8),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

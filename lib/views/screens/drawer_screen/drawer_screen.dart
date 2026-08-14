@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lekra/services/constants.dart';
-import 'package:lekra/views/screens/drawer_screen/component/QR_section.dart';
+import 'package:lekra/views/screens/drawer_screen/component/qr_section.dart';
 import 'package:lekra/views/screens/drawer_screen/component/drawer_profile_section.dart';
 import 'package:lekra/views/screens/drawer_screen/component/drawer_title_section.dart';
 
