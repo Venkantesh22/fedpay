@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lekra/controllers/dashboard_controller.dart';
 
 import 'package:lekra/controllers/kyc_controller/bank_details_controller.dart';
 import 'package:lekra/controllers/kyc_controller/business_information_controller.dart';
@@ -14,7 +15,9 @@ import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/common_button.dart';
+import 'package:lekra/views/screens/dashboard/dashboard_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/kycReviewScreen/widget/review_section_card.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/kycSubmittedSuccessScreen/kyc_submitted_success_screen.dart';
 
 class KycReviewScreen extends StatelessWidget {
   final bool isComplete;
@@ -406,31 +409,40 @@ class KycReviewScreen extends StatelessWidget {
               onTap: reviewController.isSubmitting
                   ? null
                   : () async {
-                      if (!reviewController.validateBeforeSubmit()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Please accept the declaration before submitting.',
-                            ),
-                          ),
-                        );
-                        return;
-                      }
+                      // if (!reviewController.validateBeforeSubmit()) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text(
+                      //         'Please accept the declaration before submitting.',
+                      //       ),
+                      //     ),
+                      //   );
+                      //   return;
+                      // }
 
-                      final success = await reviewController.submitKyc();
+                      // final success = await reviewController.submitKyc();
 
-                      if (!success) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Unable to submit KYC.',
-                            ),
-                          ),
-                        );
-                        return;
-                      }
+                      // if (!success) {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     const SnackBar(
+                      //       content: Text(
+                      //         'Unable to submit KYC.',
+                      //       ),
+                      //     ),
+                      //   );
+                      //   return;
+                      // }
 
                       onCompleteChanged(true);
+                      navigate(
+                          context: context,
+                          page: KycSubmittedSuccessScreen(
+                            onGoToDashboard: () {
+                              Get.find<DashBoardController>().dashPage = 0;
+                              navigate(
+                                  context: context, page: DashboardScreen());
+                            },
+                          ));
                     },
             ),
 
