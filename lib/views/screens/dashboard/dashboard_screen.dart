@@ -50,7 +50,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     isReload: true,
                     scaffoldKey: _dashboardScaffoldKey,
                   ),
-                  FormForApplyCardScreen(),
+                  // FormForApplyCardScreen(),
                   TransactionHistoryScreen(
                     fromDateValue: DateTime(2024, 1, 1),
                     todateValue: getDateTime(),
@@ -92,17 +92,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           icon: Assets.svgsHome,
                           isActive: controller.dashPage == 0,
                         ),
+                        // BottomNavigationItemWidget(
+                        //   onTap: () => controller.dashPage = 1,
+                        //   title: 'Card',
+                        //   icon: Assets.svgsCard,
+                        //   isActive: controller.dashPage == 1,
+                        // ),
                         BottomNavigationItemWidget(
                           onTap: () => controller.dashPage = 1,
-                          title: 'Card',
-                          icon: Assets.svgsCard,
-                          isActive: controller.dashPage == 1,
-                        ),
-                        BottomNavigationItemWidget(
-                          onTap: () => controller.dashPage = 2,
                           title: 'Report',
                           icon: Assets.svgsReport,
-                          isActive: controller.dashPage == 2,
+                          isActive: controller.dashPage == 1,
                         ),
                       ],
                     ),
