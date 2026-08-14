@@ -3,6 +3,7 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/business_information/business_information_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/kyc_document_upload/kyc_document_upload_screen.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/liveShopVerificationScreen/live_shop_verification_screen.dart';
 import 'package:lekra/views/screens/kyc_form/components/screen/registration_details_form.dart';
 
 class FormsContent extends StatelessWidget {
@@ -57,6 +58,17 @@ class FormsContent extends StatelessWidget {
                 _completeStep(
                   formController,
                   0,
+                  value,
+                );
+              },
+            ),
+
+            LiveShopVerificationScreen(
+              isComplete: formController.completed[4],
+              onCompleteChanged: (value) {
+                _completeStep(
+                  formController,
+                  4,
                   value,
                 );
               },

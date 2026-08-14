@@ -111,7 +111,7 @@ flutter:
     - assets/images/
     # - assets/lotties/
     - assets/svgs/
-    - api_keys.env
+    - .env
 
 flutter_assets:
   assets_path: assets/
