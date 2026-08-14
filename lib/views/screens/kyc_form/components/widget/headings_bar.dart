@@ -17,6 +17,7 @@ class HeadingsBar extends StatelessWidget {
     'Selfie',
     'Bank',
     'Bank Doc',
+    'Review',
   ];
 
   @override

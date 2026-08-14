@@ -5,11 +5,13 @@ import 'package:lekra/controllers/card_controller.dart';
 import 'package:lekra/controllers/dashboard_controller.dart';
 import 'package:lekra/controllers/dispute_controller.dart';
 import 'package:lekra/controllers/kyc_controller/bank_details_controller.dart';
+import 'package:lekra/controllers/kyc_controller/bank_document_upload_controller.dart';
 import 'package:lekra/controllers/kyc_controller/business_information_controller.dart';
 import 'package:lekra/controllers/kyc_controller/document_details_controller.dart';
 import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/controllers/kyc_controller.dart';
 import 'package:lekra/controllers/kyc_controller/kyc_document_upload_controller.dart';
+import 'package:lekra/controllers/kyc_controller/kyc_review_controller.dart';
 import 'package:lekra/controllers/kyc_controller/live_shop_verification_controller.dart';
 import 'package:lekra/controllers/kyc_controller/registration_kyc_form_controller.dart';
 import 'package:lekra/controllers/kyc_controller/self_live_verification_controller.dart';
@@ -111,6 +113,8 @@ class Init {
       Get.lazyPut(() => LiveShopVerificationController());
       Get.lazyPut(() => SelfLiveVerificationController());
       Get.lazyPut(() => BankDetailsController());
+      Get.lazyPut(() => BankDocumentUploadController());
+      Get.lazyPut(() => KycReviewController());
     } catch (e) {
       log('---- ${e.toString()} ----', name: "ERROR AT initialize()");
     }

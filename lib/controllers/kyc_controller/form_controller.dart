@@ -10,7 +10,7 @@ class FormController extends GetxController implements GetxService {
   // KYC STEP CONFIGURATION
   // ============================================================
 
-  static const int totalSteps = 8;
+  static const int totalSteps = 9;
 
   /// Current step index.
   ///
@@ -40,6 +40,7 @@ class FormController extends GetxController implements GetxService {
     'Selfie',
     'Bank',
     'Bank Doc',
+    'Review',
   ];
 
   // ============================================================
