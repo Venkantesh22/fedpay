@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,10 +11,10 @@ import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/custom_image.dart';
+import 'package:lekra/views/screens/auth_screens/login_screen.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/graph.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/income_overview_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/kyc_pending_card.dart';
-import 'package:lekra/views/screens/dashboard/home_screen/components/recharge_and_pay_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/transaction_history_section.dart';
 import 'package:lekra/views/screens/kyc_form/kyc_form_screen.dart';
 import 'package:lekra/views/screens/wallet/wallet_screen/wallet_screen.dart';
@@ -66,8 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 todate: dateFormat.format(getDateTime()),
                 isShowOnly10: true);
           } else {
-            // auth.logout(context);
-            // navigate(context: context, page: LoginScreen());
+            auth.logout(context);
+            navigate(context: context, page: LoginScreen());
           }
         });
       }
@@ -86,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             icon: Icon(
               Icons.menu,
-              color: secondaryColor,
+              color: primaryColor,
             )),
         title: Text(
           AppConstants.appName,
@@ -99,16 +98,15 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           GestureDetector(
-            onTap: () {
-              navigate(context: context, page: const WalletScreen());
-            },
-            child: SvgPicture.asset(
-              Assets.svgsWallet,
-              height: 24,
-              width: 24,
-            ),
-          ),
-          const SizedBox(
+              onTap: () {
+                navigate(context: context, page: const WalletScreen());
+              },
+              child: Icon(
+                Icons.account_balance_wallet_outlined,
+                size: 24,
+                color: primaryColor,
+              )),
+          sizedBoxWidth(
             width: 28,
           )
         ],
