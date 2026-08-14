@@ -11,6 +11,7 @@ import 'package:lekra/controllers/kyc_controller.dart';
 import 'package:lekra/controllers/kyc_controller/kyc_document_upload_controller.dart';
 import 'package:lekra/controllers/kyc_controller/live_shop_verification_controller.dart';
 import 'package:lekra/controllers/kyc_controller/registration_kyc_form_controller.dart';
+import 'package:lekra/controllers/kyc_controller/self_live_verification_controller.dart';
 import 'package:lekra/controllers/mobile_service_controller.dart';
 import 'package:lekra/controllers/product_controller.dart';
 import 'package:lekra/controllers/recharge_controller.dart';
@@ -107,6 +108,7 @@ class Init {
       Get.lazyPut(() => DocumentDetailsController());
       Get.lazyPut(() => BusinessInformationController());
       Get.lazyPut(() => LiveShopVerificationController());
+      Get.lazyPut(() => SelfLiveVerificationController());
     } catch (e) {
       log('---- ${e.toString()} ----', name: "ERROR AT initialize()");
     }
