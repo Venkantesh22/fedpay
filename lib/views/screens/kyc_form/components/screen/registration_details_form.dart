@@ -23,12 +23,10 @@ class RegistrationDetailForm extends StatefulWidget {
   });
 
   @override
-  State<RegistrationDetailForm> createState() =>
-      _RegistrationDetailFormState();
+  State<RegistrationDetailForm> createState() => _RegistrationDetailFormState();
 }
 
-class _RegistrationDetailFormState
-    extends State<RegistrationDetailForm> {
+class _RegistrationDetailFormState extends State<RegistrationDetailForm> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   List<String> _uniqueNames(List<String> items) {
@@ -68,19 +66,17 @@ class _RegistrationDetailFormState
                   .toList(),
             );
 
-            final String? selectedStateName =
-                stateNames.contains(
+            final String? selectedStateName = stateNames.contains(
               registrationController.selectState?.stateName,
             )
-                    ? registrationController.selectState?.stateName
-                    : null;
+                ? registrationController.selectState?.stateName
+                : null;
 
-            final String? selectedDistrictName =
-                districtNames.contains(
+            final String? selectedDistrictName = districtNames.contains(
               registrationController.selectDistrict?.districtName,
             )
-                    ? registrationController.selectDistrict?.districtName
-                    : null;
+                ? registrationController.selectDistrict?.districtName
+                : null;
 
             return Form(
               key: formKey,
@@ -93,13 +89,9 @@ class _RegistrationDetailFormState
 
                   CustomText(
                     'Registration & Basic Details',
-                    style: Helper(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(
+                    style: Helper(context).textTheme.bodyMedium?.copyWith(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w700,
-                          color: secondaryColor,
                         ),
                   ),
 
@@ -107,10 +99,7 @@ class _RegistrationDetailFormState
 
                   CustomText(
                     'Enter your basic and shop details',
-                    style: Helper(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(
+                    style: Helper(context).textTheme.bodyMedium?.copyWith(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.w400,
                           color: greyDark,
@@ -124,8 +113,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.firstNameController,
+                    controller: registrationController.firstNameController,
                     heading: 'First Name',
                     hindText: 'Enter first name',
                     isRequired: true,
@@ -153,8 +141,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.lastNameController,
+                    controller: registrationController.lastNameController,
                     heading: 'Last Name',
                     hindText: 'Enter last name',
                     isRequired: true,
@@ -182,8 +169,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.businessNumberController,
+                    controller: registrationController.businessNumberController,
                     heading: 'Mobile Number',
                     hindText: 'Enter mobile number',
                     isRequired: true,
@@ -216,8 +202,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.businessEmailController,
+                    controller: registrationController.businessEmailController,
                     heading: 'Email Address',
                     hindText: 'Enter email address',
                     isRequired: true,
@@ -249,8 +234,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.businessNameController,
+                    controller: registrationController.businessNameController,
                     heading: 'Business / Shop Name',
                     hindText: 'Enter business or shop name',
                     isRequired: true,
@@ -273,8 +257,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.shopAddressController,
+                    controller: registrationController.shopAddressController,
                     heading: 'Shop Address',
                     hindText: 'Enter complete shop address',
                     isRequired: true,
@@ -299,8 +282,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.pincodeController,
+                    controller: registrationController.pincodeController,
                     heading: 'PIN Code',
                     hindText: 'Enter PIN code',
                     isRequired: true,
@@ -332,8 +314,7 @@ class _RegistrationDetailFormState
                   // ==================================================
 
                   AppTextFieldWithHeading(
-                    controller:
-                        registrationController.cityController,
+                    controller: registrationController.cityController,
                     heading: 'City',
                     hindText: 'Enter city',
                     isRequired: true,
@@ -416,8 +397,7 @@ class _RegistrationDetailFormState
 
                       final selectedDistrict =
                           basicController.districtList.firstWhere(
-                        (district) =>
-                            district.districtName == value,
+                        (district) => district.districtName == value,
                       );
 
                       registrationController.setDistrict(
@@ -442,11 +422,10 @@ class _RegistrationDetailFormState
                         secondaryColor,
                       ],
                     ),
-                    textStyle:
-                        Helper(context).textTheme.titleSmall?.copyWith(
-                              color: white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    textStyle: Helper(context).textTheme.titleSmall?.copyWith(
+                          color: white,
+                          fontWeight: FontWeight.w600,
+                        ),
                     onTap: () {
                       FocusScope.of(context).unfocus();
 
@@ -459,8 +438,7 @@ class _RegistrationDetailFormState
 
                       if (!registrationController.validateRegistration()) {
                         showToast(
-                          message:
-                              'Please complete all registration details',
+                          message: 'Please complete all registration details',
                           typeCheck: false,
                         );
                         return;
