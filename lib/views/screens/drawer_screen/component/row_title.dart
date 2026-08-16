@@ -137,12 +137,12 @@ List<DrawerTitleRowModel> drawerTitleList = [
       icon: Assets.svgsHome, title: "Home", page: const DashboardScreen()),
   DrawerTitleRowModel(
       icon: Assets.svgsPerson, title: "Profile", page: const MyProfileScreen()),
-  DrawerTitleRowModel(
-      icon: Assets.svgsImage,
-      title: "Set QR as Wallpaper",
-      page: const DownloadQrScreen(
-        setAsWellPaper: true,
-      )),
+  // DrawerTitleRowModel(
+  //     icon: Assets.svgsImage,
+  //     title: "Set QR as Wallpaper",
+  //     page: const DownloadQrScreen(
+  //       setAsWellPaper: true,
+  //     )),
   DrawerTitleRowModel(
       icon: Assets.svgsVolumeUp,
       title: "Payment Sound Setting",
