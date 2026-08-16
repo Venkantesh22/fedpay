@@ -160,7 +160,7 @@ class AppConstants {
   static String baseUrlForPrepaidCard = 'https://partner.tpipay.net/';
   // static String baseUrl = 'http://192.168.1.5:9000/'; ///USE FOR LOCAL
   //TODO: Change Base Url
-  static String appName = 'Banking point 24';
+  static String appName = 'FedPay';
 
   // Auth
   static const String loginUri = 'api/application/v1/login';

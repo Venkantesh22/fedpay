@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/auth_controller.dart';
 import 'package:lekra/controllers/dashboard_controller.dart';
@@ -45,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       {required AuthController authController,
       required PermissionController permissionController}) async {
     if (_formKey.currentState?.validate() ?? false) {
-     await  authController.setUserInfor(
+      await authController.setUserInfor(
           authController.passwordController.text,
           authController.phoneNumberController.text,
           permissionController.latitude.toString(),
@@ -58,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await permissionController.requestLocationPermissionAndFetch(context);
       }
 
-    await  authController.loginUser(context: context).then((value) {
+      await authController.loginUser(context: context).then((value) {
         if (value.isSuccess) {
           showToast(message: value.message, typeCheck: value.isSuccess);
           Get.find<DashBoardController>().dashPage = 0;
@@ -93,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Positioned(
-                      bottom: -10,
+                      bottom: 0,
                       left: 0,
                       right: 0,
                       child: Align(
@@ -101,9 +102,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             Alignment.center, // 🔹 This centers it horizontally
                         child: CustomImage(
                           path: Assets.imagesLogo,
-                          width: 106,
-                          height: 114,
+                          width: 106.w,
+                          height: 100.h,
                           fit: BoxFit.cover,
+                          radius: 24.r,
                         ),
                       ),
                     ),

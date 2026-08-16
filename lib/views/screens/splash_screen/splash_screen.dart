@@ -1,7 +1,7 @@
-
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/auth_controller.dart';
 import 'package:lekra/controllers/basic_controlller.dart';
@@ -162,11 +162,16 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Spacer(),
-            CustomImage(
-              path: Assets.imagesLogo,
-              height: size.height * .3,
-              width: size.height * .3,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(24.r),
+              child: Image.asset(
+                Assets.imagesLogo,
+                height: size.height * .2,
+                width: size.height * .3,
+                fit: BoxFit.cover,
+              ),
             ),
+
             const Spacer(flex: 3),
             Text(
               AppConstants.appName,

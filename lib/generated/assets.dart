@@ -6,6 +6,10 @@ class Assets {
   /// assets/images/add-money-widget.png
   static const String imagesAddMoneyWidget = "assets/images/add-money-widget.png";
 
+  /// Assets for imagesAppLogo
+  /// assets/images/app-logo.png
+  static const String imagesAppLogo = "assets/images/app-logo.png";
+
   /// Assets for imagesBankLogo
   /// assets/images/bank-logo.png
   static const String imagesBankLogo = "assets/images/bank-logo.png";
@@ -61,10 +65,6 @@ class Assets {
   /// Assets for imagesLogoWithBg
   /// assets/images/logo-with-bg.png
   static const String imagesLogoWithBg = "assets/images/logo-with-bg.png";
-
-  /// Assets for imagesLogoWithSquareBg
-  /// assets/images/logo-with-square-bg.png
-  static const String imagesLogoWithSquareBg = "assets/images/logo-with-square-bg.png";
 
   /// Assets for imagesNoCard
   /// assets/images/no-card.png
