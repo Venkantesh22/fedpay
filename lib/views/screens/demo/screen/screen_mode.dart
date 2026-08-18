@@ -6,6 +6,7 @@ import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/custom_image.dart';
+import 'package:lekra/views/screens/demo/screen/widget/slider_2_scree_widget.dart';
 
 class DemoScreenModel {
   final Widget title;
@@ -101,6 +102,8 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
         ),
       ),
     ),
+    //* 2 screen
+
     DemoScreenModel(
       title: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -109,7 +112,7 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: "Accept Payments\nwith ",
+              text: "Introducing\n",
               style: Helper(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 26.sp,
@@ -117,19 +120,19 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
                   ),
               children: [
                 TextSpan(
-                  text: "Sound Box\n",
-                  style: Helper(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 26.sp,
-                        color: secondaryColor,
-                      ),
-                ),
-                TextSpan(
-                  text: "Merchant QR",
+                  text: "FedPay ",
                   style: Helper(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
                         fontSize: 26.sp,
                         color: sidlerTitle,
+                      ),
+                ),
+                TextSpan(
+                  text: "RuPay Card",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: secondaryColor,
                       ),
                 ),
               ],
@@ -137,43 +140,33 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
           ),
         ),
       ),
-      subTitle: "One QR for all UPI Apps.\nSimple, fast and secure payments.",
+      subTitle: "One Card. Endless Possibilities.",
       imageSection: SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
+        // height: MediaQuery.of(context).size.height / 3,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 30.h),
-          child: Row(
+          child: Column(
             children: [
-              Expanded(
-                flex: 4,
-                child: CustomImage(
-                  path: Assets.imagesSilder1,
-                  width: double.infinity,
-                  fit: BoxFit.fitHeight,
-                ),
+              CustomImage(
+                path: Assets.imagesSilder2,
+                width: double.infinity,
+                height: 300.h,
+                fit: BoxFit.contain,
               ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Slider1Container(
-                      context,
-                      Assets.svgsSound,
-                      "Instant\nVoice Alerts",
-                    ),
-                    Slider1Container(
-                      context,
-                      Assets.svgsQr2,
-                      "One QR for\n All UPI Apps",
-                    ),
-                    Slider1Container(
-                      context,
-                      Assets.svgsSecure,
-                      "Secure &\nReliable",
-                    ),
-                  ],
-                ),
+              sizedBoxHeight(height: 24.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Slider2ScreenWidget(
+                      icon: Icons.shopping_bag_outlined,
+                      title: "Shop\nAnywhere"),
+                  Slider2ScreenWidget(
+                      icon: Icons.language, title: "Pay\nOnline"),
+                  Slider2ScreenWidget(
+                      icon: Icons.payments_outlined, title: "Cash\nWithdrawal"),
+                  Slider2ScreenWidget(
+                      icon: Icons.flight_outlined, title: "Travel\nMore"),
+                ],
               )
             ],
           ),
@@ -268,6 +261,7 @@ Container Slider1Container(
   String title,
 ) {
   return Container(
+    width: 100.w,
     padding: EdgeInsets.all(12.w),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(16.r),

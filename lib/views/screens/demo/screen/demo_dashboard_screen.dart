@@ -150,10 +150,10 @@ class _DemoDashboardScreenState extends State<DemoDashboardScreen> {
                     children: [
                       Padding(
                         padding: EdgeInsets.only(
-                            left: 20.w, right: 20.w, bottom: 10.h),
+                            left: 20.w, right: 20.w, bottom: 0.h),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment
-                              .spaceBetween, // ✅ Spreads items Left, Center, Right
+                              .spaceBetween, 
                           children: [
                             // 1️⃣ Left Arrow (Back)
                             // Using Visibility to hide it on the first page, but keep the layout centered
@@ -208,6 +208,7 @@ class _DemoDashboardScreenState extends State<DemoDashboardScreen> {
                           ],
                         ),
                       ),
+                      sizedBoxHeight(height: 10.h)
                     ],
                   ),
                   Positioned(
