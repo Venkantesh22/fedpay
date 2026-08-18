@@ -126,6 +126,22 @@ class Assets {
   /// assets/images/silder-3.png
   static const String imagesSilder3 = "assets/images/silder-3.png";
 
+  /// Assets for imagesSlider31
+  /// assets/images/slider-3-1.png
+  static const String imagesSlider31 = "assets/images/slider-3-1.png";
+
+  /// Assets for imagesSlider32
+  /// assets/images/slider-3-2.png
+  static const String imagesSlider32 = "assets/images/slider-3-2.png";
+
+  /// Assets for imagesSlider33
+  /// assets/images/slider-3-3.png
+  static const String imagesSlider33 = "assets/images/slider-3-3.png";
+
+  /// Assets for imagesSlider34
+  /// assets/images/slider-3-4.png
+  static const String imagesSlider34 = "assets/images/slider-3-4.png";
+
   /// Assets for imagesTpipayWithLogo
   /// assets/images/tpipay-with-logo.png
   static const String imagesTpipayWithLogo = "assets/images/tpipay-with-logo.png";

@@ -7,6 +7,7 @@ import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/custom_image.dart';
 import 'package:lekra/views/screens/demo/screen/widget/slider_2_scree_widget.dart';
+import 'package:lekra/views/screens/demo/screen/widget/slider_3_screen_widget.dart';
 
 class DemoScreenModel {
   final Widget title;
@@ -173,6 +174,8 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
         ),
       ),
     ),
+
+    //* slider 3
     DemoScreenModel(
       title: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -181,7 +184,7 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
           child: RichText(
             textAlign: TextAlign.center,
             text: TextSpan(
-              text: "Accept Payments\nwith ",
+              text: "Use Your FedPay Card\n",
               style: Helper(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 26.sp,
@@ -189,19 +192,11 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
                   ),
               children: [
                 TextSpan(
-                  text: "Sound Box\n",
+                  text: "Everywhere",
                   style: Helper(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
                         fontSize: 26.sp,
                         color: secondaryColor,
-                      ),
-                ),
-                TextSpan(
-                  text: "Merchant QR",
-                  style: Helper(context).textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 26.sp,
-                        color: sidlerTitle,
                       ),
                 ),
               ],
@@ -209,44 +204,47 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
           ),
         ),
       ),
-      subTitle: "One QR for all UPI Apps.\nSimple, fast and secure payments.",
+      subTitle: "Shop, pay, travel and more\nwith complete convenience.",
       imageSection: SizedBox(
-        height: MediaQuery.of(context).size.height / 2,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 30.h),
-          child: Row(
+          child: Column(
             children: [
-              Expanded(
-                flex: 4,
-                child: CustomImage(
-                  path: Assets.imagesSilder1,
-                  width: double.infinity,
-                  fit: BoxFit.fitHeight,
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Slider3ScreenWidget(
+                        image: Assets.imagesSlider31,
+                        title: "Shopping",
+                        subTitle: "Use your card at stores & malls."),
+                  ),
+                  sizedBoxWidth(width: 12.w),
+                  Expanded(
+                    child: Slider3ScreenWidget(
+                        image: Assets.imagesSlider32,
+                        title: "Online Shopping",
+                        subTitle: "Secure payments for all online purchases."),
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Slider1Container(
-                      context,
-                      Assets.svgsSound,
-                      "Instant\nVoice Alerts",
-                    ),
-                    Slider1Container(
-                      context,
-                      Assets.svgsQr2,
-                      "One QR for\n All UPI Apps",
-                    ),
-                    Slider1Container(
-                      context,
-                      Assets.svgsSecure,
-                      "Secure &\nReliable",
-                    ),
-                  ],
-                ),
-              )
+              sizedBoxHeight(height: 20.h),
+              Row(
+                children: [
+                  Expanded(
+                    child: Slider3ScreenWidget(
+                        image: Assets.imagesSlider33,
+                        title: "Cash Withdrawal",
+                        subTitle: "Withdraw cash easily from ATMs."),
+                  ),
+                  sizedBoxWidth(width: 12.w),
+                  Expanded(
+                    child: Slider3ScreenWidget(
+                        image: Assets.imagesSlider34,
+                        title: "Travel & More",
+                        subTitle: "Flights, hotels, fuel and much more."),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

@@ -142,7 +142,7 @@ class _DemoDashboardScreenState extends State<DemoDashboardScreen> {
             bool isFirstPage = controller.demoPage == 0;
             bool isLastPage = controller.demoPage == demoData.length - 1;
             return SizedBox(
-              height: 80.h,
+              height: 100.h,
               child: Stack(
                 children: [
                   Column(
