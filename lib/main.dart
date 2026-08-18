@@ -11,6 +11,8 @@ import 'package:lekra/firebase_options.dart';
 import 'package:lekra/firebase_options_second.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/theme.dart';
+import 'package:lekra/views/screens/demo/screen/demo_dashboard_screen.dart';
+import 'package:lekra/views/screens/demo/screen/demo_screen.dart';
 import 'package:toastification/toastification.dart';
 import 'services/init.dart';
 import 'views/screens/splash_screen/splash_screen.dart';
@@ -122,7 +124,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               theme: CustomTheme.light,
               debugShowCheckedModeBanner: false,
               // home: const DashboardScreen(),
-              home: const SplashScreen(),
+              home: DemoDashboardScreen(),
+              // home: const SplashScreen(),
               // home: const PinResetSuccessfullyAndFailsScreen(),
             );
           }),

@@ -42,6 +42,14 @@ class Assets {
   /// assets/images/demo-3.png
   static const String imagesDemo3 = "assets/images/demo-3.png";
 
+  /// Assets for imagesFedpayLogoTop
+  /// assets/images/fedpay_logo_top.png
+  static const String imagesFedpayLogoTop = "assets/images/fedpay_logo_top.png";
+
+  /// Assets for imagesFedpayLogoWithBg
+  /// assets/images/fedpay-logo-with-bg.png
+  static const String imagesFedpayLogoWithBg = "assets/images/fedpay-logo-with-bg.png";
+
   /// Assets for imagesGpay
   /// assets/images/gpay.png
   static const String imagesGpay = "assets/images/gpay.png";
@@ -105,6 +113,18 @@ class Assets {
   /// Assets for imagesShimmer
   /// assets/images/shimmer.gif
   static const String imagesShimmer = "assets/images/shimmer.gif";
+
+  /// Assets for imagesSilder1
+  /// assets/images/silder-1.png
+  static const String imagesSilder1 = "assets/images/silder-1.png";
+
+  /// Assets for imagesSilder2
+  /// assets/images/silder-2.png
+  static const String imagesSilder2 = "assets/images/silder-2.png";
+
+  /// Assets for imagesSilder3
+  /// assets/images/silder-3.png
+  static const String imagesSilder3 = "assets/images/silder-3.png";
 
   /// Assets for imagesTpipayWithLogo
   /// assets/images/tpipay-with-logo.png
@@ -298,6 +318,10 @@ class Assets {
   /// assets/svgs/qr.svg
   static const String svgsQr = "assets/svgs/qr.svg";
 
+  /// Assets for svgsQr2
+  /// assets/svgs/qr-2.svg
+  static const String svgsQr2 = "assets/svgs/qr-2.svg";
+
   /// Assets for svgsReferralCode
   /// assets/svgs/referral-code.svg
   static const String svgsReferralCode = "assets/svgs/referral-code.svg";
@@ -305,6 +329,10 @@ class Assets {
   /// Assets for svgsReport
   /// assets/svgs/report.svg
   static const String svgsReport = "assets/svgs/report.svg";
+
+  /// Assets for svgsSecure
+  /// assets/svgs/Secure.svg
+  static const String svgsSecure = "assets/svgs/Secure.svg";
 
   /// Assets for svgsSecurity
   /// assets/svgs/security.svg
@@ -329,6 +357,10 @@ class Assets {
   /// Assets for svgsShopCard
   /// assets/svgs/shop-card.svg
   static const String svgsShopCard = "assets/svgs/shop-card.svg";
+
+  /// Assets for svgsSound
+  /// assets/svgs/sound.svg
+  static const String svgsSound = "assets/svgs/sound.svg";
 
   /// Assets for svgsStar
   /// assets/svgs/star.svg

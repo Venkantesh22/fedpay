@@ -203,7 +203,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const Color primaryColor = Color(0xFF0052D9);
+const Color primaryColor = Color(0xFF02174C);
 Color secondaryColor = const Color(0xFFE53935);
 const Color thiryaryColor = Color(0xFF2F80ED);
 Color backgroundDark = const Color(0xFF0F172A);
@@ -237,6 +237,8 @@ Color origin = const Color(0xFFEA580C);
 Color cyanDark = const Color(0xFF355355);
 Color primaryColorLight = const Color(0xFFE8F1FF);
 Color yellow = const Color(0xFFFACC15);
+
+Color sidlerTitle = const Color(0xFF001A41);
 
 List<Color> loginBgColor = [
   const Color(0xFF003B9A),

@@ -1,81 +1,310 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lekra/generated/assets.dart';
 import 'package:lekra/services/constants.dart';
+import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
+import 'package:lekra/views/base/custom_image.dart';
 
 class DemoScreenModel {
   final Widget title;
   final String subTitle;
-  final String image;
-  final String descr;
+  final Widget imageSection;
+  final Widget? descr;
 
   DemoScreenModel(
       {required this.title,
       required this.subTitle,
-      required this.image,
-      required this.descr});
+      required this.imageSection,
+      this.descr});
 }
 
 List<DemoScreenModel> getDemoData(BuildContext context) {
   return [
     DemoScreenModel(
-      title: RichText(
-        text: TextSpan(
-            text: "Accept Payments\nInstantly with",
-            style: Helper(context)
-                .textTheme
-                .titleSmall
-                ?.copyWith(fontWeight: FontWeight.w600, fontSize: 26),
-            children: [
-              TextSpan(
-                text: "\nFed",
-                style: Helper(context).textTheme.titleSmall?.copyWith(
+      title: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w),
+        child: SizedBox(
+          width: double.infinity,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: "Accept Payments\nwith ",
+              style: Helper(context).textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
-                    fontSize: 26,
-                    color: primaryColor),
-              ),
-              TextSpan(
-                text: "Pay",
-                style: Helper(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 26,
-                    color: greyText3),
-              ),
-            ]),
+                    fontSize: 26.sp,
+                    color: sidlerTitle,
+                  ),
+              children: [
+                TextSpan(
+                  text: "Sound Box\n",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: secondaryColor,
+                      ),
+                ),
+                TextSpan(
+                  text: "Merchant QR",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: sidlerTitle,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      subTitle: "Fast, secure UPI & QR-based payments designed for merchants",
-      image: Assets.imagesDemo1,
-      descr: "Dynamic QR for every transaction\nAccept all UPI apps",
+      subTitle: "One QR for all UPI Apps.\nSimple, fast and secure payments.",
+      imageSection: SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 30.h),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: CustomImage(
+                  path: Assets.imagesSilder1,
+                  width: double.infinity,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Slider1Container(
+                      context,
+                      Assets.svgsSound,
+                      "Instant\nVoice Alerts",
+                    ),
+                    Slider1Container(
+                      context,
+                      Assets.svgsQr2,
+                      "One QR for\n All UPI Apps",
+                    ),
+                    Slider1Container(
+                      context,
+                      Assets.svgsSecure,
+                      "Secure &\nReliable",
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     ),
     DemoScreenModel(
-      title: Text("Smart Wallet.\nInstant Alerts",
-          style: Helper(context)
-              .textTheme
-              .titleSmall
-              ?.copyWith(fontWeight: FontWeight.w600, fontSize: 26)),
-      subTitle: "Get paid, store balance, and hear confirmations in real-time",
-      image: Assets.imagesDemo2, // Ensure these assets exist
-      descr:
-          "Built-in wallet for fast settlements\nInstant voice alerts via Soundbox\nDaily transaction tracking",
+      title: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w),
+        child: SizedBox(
+          width: double.infinity,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: "Accept Payments\nwith ",
+              style: Helper(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 26.sp,
+                    color: sidlerTitle,
+                  ),
+              children: [
+                TextSpan(
+                  text: "Sound Box\n",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: secondaryColor,
+                      ),
+                ),
+                TextSpan(
+                  text: "Merchant QR",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: sidlerTitle,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      subTitle: "One QR for all UPI Apps.\nSimple, fast and secure payments.",
+      imageSection: SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 30.h),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: CustomImage(
+                  path: Assets.imagesSilder1,
+                  width: double.infinity,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Slider1Container(
+                      context,
+                      Assets.svgsSound,
+                      "Instant\nVoice Alerts",
+                    ),
+                    Slider1Container(
+                      context,
+                      Assets.svgsQr2,
+                      "One QR for\n All UPI Apps",
+                    ),
+                    Slider1Container(
+                      context,
+                      Assets.svgsSecure,
+                      "Secure &\nReliable",
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     ),
     DemoScreenModel(
-      title: RichText(
-        text: TextSpan(
-            text: "Secure\n",
-            style: Helper(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600, fontSize: 26, color: primaryColor),
-            children: [
-              TextSpan(
-                text: "Reliable. Built for\nMerchants.",
-                style: Helper(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600, fontSize: 26, color: black),
-              ),
-            ]),
+      title: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w),
+        child: SizedBox(
+          width: double.infinity,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: "Accept Payments\nwith ",
+              style: Helper(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 26.sp,
+                    color: sidlerTitle,
+                  ),
+              children: [
+                TextSpan(
+                  text: "Sound Box\n",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: secondaryColor,
+                      ),
+                ),
+                TextSpan(
+                  text: "Merchant QR",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: sidlerTitle,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
-      subTitle: "Everything you need to run your business smoothly",
-      image: Assets.imagesDemo3, // Ensure these assets exist
-      descr:
-          "Bank-grade security & encrypted transactions\nQR Standee for counter display\nDetailed reports & payment history",
+      subTitle: "One QR for all UPI Apps.\nSimple, fast and secure payments.",
+      imageSection: SizedBox(
+        height: MediaQuery.of(context).size.height / 2,
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 30.h),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: CustomImage(
+                  path: Assets.imagesSilder1,
+                  width: double.infinity,
+                  fit: BoxFit.fitHeight,
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Slider1Container(
+                      context,
+                      Assets.svgsSound,
+                      "Instant\nVoice Alerts",
+                    ),
+                    Slider1Container(
+                      context,
+                      Assets.svgsQr2,
+                      "One QR for\n All UPI Apps",
+                    ),
+                    Slider1Container(
+                      context,
+                      Assets.svgsSecure,
+                      "Secure &\nReliable",
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
     ),
   ];
+}
+
+Container Slider1Container(
+  BuildContext context,
+  String icon,
+  String title,
+) {
+  return Container(
+    padding: EdgeInsets.all(12.w),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(16.r),
+      border: Border.all(width: 2.w, color: greyBorder),
+      color: white,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 48.w,
+          height: 48.h,
+          padding: EdgeInsets.all(12.w),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16.r),
+            color: primaryColor,
+          ),
+          child: SvgPicture.asset(
+            icon,
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              white,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        sizedBoxHeight(height: 12.h),
+        CustomText(
+          title,
+          maxLines: 2,
+          style: Helper(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                fontSize: 12.sp,
+                color: sidlerTitle,
+              ),
+        ),
+      ],
+    ),
+  );
 }

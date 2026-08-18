@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/basic_controlller.dart';
 import 'package:lekra/services/constants.dart';
@@ -47,6 +48,18 @@ class _DemoDashboardScreenState extends State<DemoDashboardScreen> {
   void dispose() {
     _pageController.dispose();
     super.dispose();
+  }
+
+  // ✅ Added _onBack to slide left
+  void _onBack(BasicController controller) {
+    if (controller.demoPage > 0) {
+      controller.demoPageSet = controller.demoPage - 1;
+      _pageController.animateToPage(
+        controller.demoPage,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 
   void _onNext(BasicController controller) async {
@@ -125,31 +138,115 @@ class _DemoDashboardScreenState extends State<DemoDashboardScreen> {
       bottomNavigationBar: SafeArea(
         child: GetBuilder<BasicController>(
           builder: (controller) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: GestureDetector(
-                onTap: () => _onNext(controller),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 49,
-                    vertical: 14,
-                  ),
-                  decoration: BoxDecoration(
-                    color: greyText3,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: Text(
-                    controller.demoPage < pages.length - 1
-                        ? "NEXT"
-                        : "Get Started",
-                    textAlign: TextAlign.center,
-                    style: Helper(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          color: white,
+            final demoData = getDemoData(context);
+            bool isFirstPage = controller.demoPage == 0;
+            bool isLastPage = controller.demoPage == demoData.length - 1;
+            return SizedBox(
+              height: 80.h,
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 20.w, right: 20.w, bottom: 10.h),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment
+                              .spaceBetween, // ✅ Spreads items Left, Center, Right
+                          children: [
+                            // 1️⃣ Left Arrow (Back)
+                            // Using Visibility to hide it on the first page, but keep the layout centered
+                            Visibility(
+                              visible: !isFirstPage,
+                              maintainSize: true,
+                              maintainAnimation: true,
+                              maintainState: true,
+                              child: IconButton(
+                                onPressed: () => _onBack(controller),
+                                icon:
+                                    Icon(Icons.arrow_back, color: primaryColor),
+                              ),
+                            ),
+
+                            // 2️⃣ Center Dots
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: List.generate(
+                                demoData.length,
+                                (index) {
+                                  bool isSelected =
+                                      controller.demoPage == index;
+                                  return AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    height: 10.h,
+                                    width: isSelected ? 24.w : 10.w,
+                                    margin:
+                                        EdgeInsets.symmetric(horizontal: 4.w),
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? primaryColor
+                                          : Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(50),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+
+                            // 3️⃣ Right Arrow (Next/Done)
+                            FloatingActionButton(
+                              elevation: 0,
+                              mini: true,
+                              backgroundColor: primaryColor,
+                              onPressed: () => _onNext(controller),
+                              child: Icon(
+                                isLastPage ? Icons.check : Icons.arrow_forward,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
+                      ),
+                    ],
                   ),
-                ),
+                  Positioned(
+                    bottom: -500.h,
+                    top: 50.h,
+                    right: -350.w,
+                    left: 10.w,
+                    child: Container(
+                      height: 1000.h,
+                      width: 1000.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: secondaryColor),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -400.h,
+                    top: 30.h,
+                    left: -100.w,
+                    right: 30.w,
+                    child: Container(
+                      height: 500.h,
+                      width: 500.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: backgroundLight),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: -400.w,
+                    top: 25.h,
+                    left: -130.w,
+                    right: 80.w,
+                    child: Container(
+                      height: 500.h,
+                      width: 500.w,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: primaryColor),
+                    ),
+                  )
+                ],
               ),
             );
           },

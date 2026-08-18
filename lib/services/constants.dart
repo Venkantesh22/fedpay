@@ -155,7 +155,7 @@ class AppConstants {
   set setBaseUrl(String url) => baseUrl = url;
 
   //TODO: Change Base Url
-  static String baseUrl = 'https://app.bankingpoint-24.com/';
+  static String baseUrl = 'https://app.fedpay.net.in/';
   // static String baseUrl = 'https://banking.mytpipay.com/';
   static String baseUrlForPrepaidCard = 'https://partner.tpipay.net/';
   // static String baseUrl = 'http://192.168.1.5:9000/'; ///USE FOR LOCAL
