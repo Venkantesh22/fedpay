@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: MediaQuery.of(context).size.height * 0.26,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [primaryColor, white],
+                          colors: [thiryaryColor, white],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                         ),
