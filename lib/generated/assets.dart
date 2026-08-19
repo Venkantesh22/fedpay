@@ -122,10 +122,6 @@ class Assets {
   /// assets/images/silder-2.png
   static const String imagesSilder2 = "assets/images/silder-2.png";
 
-  /// Assets for imagesSilder3
-  /// assets/images/silder-3.png
-  static const String imagesSilder3 = "assets/images/silder-3.png";
-
   /// Assets for imagesSlider31
   /// assets/images/slider-3-1.png
   static const String imagesSlider31 = "assets/images/slider-3-1.png";
@@ -141,6 +137,10 @@ class Assets {
   /// Assets for imagesSlider34
   /// assets/images/slider-3-4.png
   static const String imagesSlider34 = "assets/images/slider-3-4.png";
+
+  /// Assets for imagesSlider4
+  /// assets/images/Slider-4.png
+  static const String imagesSlider4 = "assets/images/Slider-4.png";
 
   /// Assets for imagesTpipayWithLogo
   /// assets/images/tpipay-with-logo.png

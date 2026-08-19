@@ -8,6 +8,7 @@ import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/custom_image.dart';
 import 'package:lekra/views/screens/demo/screen/widget/slider_2_scree_widget.dart';
 import 'package:lekra/views/screens/demo/screen/widget/slider_3_screen_widget.dart';
+import 'package:lekra/views/screens/demo/screen/widget/slider_4_screen_widget.dart';
 
 class DemoScreenModel {
   final Widget title;
@@ -24,6 +25,8 @@ class DemoScreenModel {
 
 List<DemoScreenModel> getDemoData(BuildContext context) {
   return [
+   
+    //* Slider screen 1
     DemoScreenModel(
       title: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -248,6 +251,101 @@ List<DemoScreenModel> getDemoData(BuildContext context) {
             ],
           ),
         ),
+      ),
+    ),
+     //* slider 4
+    DemoScreenModel(
+      title: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w),
+        child: SizedBox(
+          width: double.infinity,
+          child: RichText(
+            textAlign: TextAlign.center,
+            text: TextSpan(
+              text: "All-in-One\n",
+              style: Helper(context).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 26.sp,
+                    color: sidlerTitle,
+                  ),
+              children: [
+                TextSpan(
+                  text: "POS Machine",
+                  style: Helper(context).textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 26.sp,
+                        color: secondaryColor,
+                      ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      subTitle: "One Machine. All Payments.\nGrow your business effortlessly.",
+      imageSection: SizedBox(
+        height: MediaQuery.of(context).size.height / 1.8,
+        child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 30.h),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Slider4ScreenWidget(
+                        icon: Icons.credit_card,
+                        title: "Accept Cards",
+                        subTitle: "(Credit & Debit)",
+                      ),
+                      Slider4ScreenWidget(
+                        icon: Icons.contactless_outlined,
+                        title: "Tap & Pay",
+                        subTitle: "Contactless",
+                      ),
+                      Slider4ScreenWidget(
+                        icon: Icons.qr_code_scanner_sharp,
+                        title: "UPI QR",
+                        subTitle: "Payments",
+                      ),
+                      Slider4ScreenWidget(
+                        icon: Icons.payments_outlined,
+                        title: "Cash",
+                        subTitle: "Withdrawal",
+                      ),
+                      Slider4ScreenWidget(
+                        icon: Icons.receipt_long_sharp,
+                        title: "Receipt",
+                        subTitle: "Printing",
+                      ),
+                      Slider4ScreenWidget(
+                        icon: Icons.replay_10_outlined,
+                        title: "Real-Time",
+                        subTitle: "Status",
+                      ),
+                      Slider4ScreenWidget(
+                        icon: Icons.security_outlined,
+                        title: "Secure",
+                        subTitle: "PIN",
+                      ),
+                      Slider4ScreenWidget(
+                        icon: Icons.assignment,
+                        title: "Reports &",
+                        subTitle: "History",
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: CustomImage(
+                    path: Assets.imagesSlider4,
+                    fit: BoxFit.contain,
+                  ),
+                )
+              ],
+            )),
       ),
     ),
   ];
