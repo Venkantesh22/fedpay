@@ -27,7 +27,7 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(FileInputStream(keystorePropertiesFile))
 }
 android {
-    namespace = "com.myfoozzybusiness"
+    namespace = "com.app.fedpay"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -48,7 +48,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-       applicationId = "com.myfoozzybusiness"
+       applicationId = "com.app.fedpay"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

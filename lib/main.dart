@@ -8,7 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lekra/firebase/get_Fcm_token.dart'; // Ensure this contains firebaseMessagingBackgroundHandler
 import 'package:lekra/firebase_options.dart';
-import 'package:lekra/firebase_options_second.dart';
+// import 'package:lekra/firebase_options_second.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:toastification/toastification.dart';
@@ -54,28 +54,28 @@ void main() async {
   // services that depend on main firebase
   await Init().initialize();
   await FCMService.initialize();
-  await initializeSecondFirebase();
+  // await initializeSecondFirebase();
 
   await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }
 
-Future<void> initializeSecondFirebase() async {
-  try {
-    if (!Firebase.apps.any((app) => app.name == 'secondProject')) {
-      await Firebase.initializeApp(
-        name: 'secondProject',
-        options: DefaultFirebaseOptionsSecond.currentPlatform,
-      );
-      log("Second Firebase project initialized successfully");
-    } else {
-      log('Second Firebase already exists: ${Firebase.apps.map((a) => a.name).toList()}');
-    }
-  } catch (e, s) {
-    log("Second Firebase init error: $e\n$s");
-  }
-}
+// Future<void> initializeSecondFirebase() async {
+//   try {
+//     if (!Firebase.apps.any((app) => app.name == 'secondProject')) {
+//       await Firebase.initializeApp(
+//         name: 'secondProject',
+//         options: DefaultFirebaseOptionsSecond.currentPlatform,
+//       );
+//       log("Second Firebase project initialized successfully");
+//     } else {
+//       log('Second Firebase already exists: ${Firebase.apps.map((a) => a.name).toList()}');
+//     }
+//   } catch (e, s) {
+//     log("Second Firebase init error: $e\n$s");
+//   }
+// }
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<ScaffoldMessengerState> snackBarKey =

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "47514061845",
-    "project_id": "tpipay-5650e",
-    "storage_bucket": "tpipay-5650e.firebasestorage.app"
+    "project_number": "922132508615",
+    "project_id": "fedpay-9a87a",
+    "storage_bucket": "fedpay-9a87a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:47514061845:android:7808eb3145eb8fa0a7521c",
+        "mobilesdk_app_id": "1:922132508615:android:2d0cfdefc67ee0d258f3e2",
         "android_client_info": {
-          "package_name": "com.myfoozzybusiness"
+          "package_name": "com.app.fedpay"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDPy3qEM6gi5l16mIqA50dPvJ8BR82hGeI"
+          "current_key": "AIzaSyDB0MuTU37D_bTb1IWJnKoGlSImh0K6A9A"
         }
       ],
       "services": {
