@@ -539,63 +539,111 @@ class CardController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  PrepaidDetailsModel? prepaidDetailsModel;
-  Future<ResponseModel> fetchPrepaidCardDetails({
-    required BuildContext context,
-  }) async {
-    log('----------- fetchPrepaidCardDetails Called ----------');
+PrepaidDetailsModel? prepaidDetailsModel;
 
-    ResponseModel responseModel;
-    isLoading = true;
-    update();
+Future<ResponseModel> fetchPrepaidCardDetails({
+  required BuildContext context,
+}) async {
+  log('----------- fetchPrepaidCardDetails Called ----------');
 
-    try {
-      final userMobileNumber =
-          Get.find<AuthController>().userModel?.mobile ?? "";
+  isLoading = true;
+  update();
 
-      Map<String, dynamic> data = {
-        "mobile_number": userMobileNumber,
-        // "mobile_number": "8600529640",
-        // "mobile_number": "9583789855",
-      };
+  try {
+    final userMobileNumber =
+        Get.find<AuthController>().userModel?.mobile ?? '';
 
-      Response response =
-          await cardRepo.fetchPrepaidCardDetails(data: FormData(data));
+    final FormData data = FormData({
+      'mobile_number': userMobileNumber,
+    });
 
-      if (response.statusCode == 200 && response.body['status'] == true) {
+    final Response response =
+        await cardRepo.fetchPrepaidCardDetails(
+      data: data,
+    );
+
+    log('STATUS CODE: ${response.statusCode}');
+    log('RESPONSE BODY: ${response.body}');
+    log('RESPONSE TYPE: ${response.body.runtimeType}');
+
+    final body = response.body;
+
+    // ==========================================================
+    // SUCCESS
+    // ==========================================================
+
+    if (response.statusCode == 200 &&
+        body is Map &&
+        body['status'] == true) {
+      final responseData = body['data'];
+
+      if (responseData is Map) {
         prepaidDetailsModel =
-            PrepaidDetailsModel.fromJson(response.body['data']);
+            PrepaidDetailsModel.fromJson(
+          Map<String, dynamic>.from(responseData),
+        );
 
-        if (prepaidDetailsModel?.mobileNumber != null &&
-            prepaidDetailsModel?.mobileNumber != "null" &&
-            (prepaidDetailsModel?.mobileNumber?.isNotEmpty ?? false)) {
+        final mobileNumber =
+            prepaidDetailsModel?.mobileNumber;
+
+        if (mobileNumber != null &&
+            mobileNumber.trim().isNotEmpty &&
+            mobileNumber != 'null') {
           isApplyForPrepaidCard = true;
 
-          responseModel = ResponseModel(true,
-              response.body['message'] ?? " fetchPrepaidCardDetails success");
-        } else {
-          isApplyForPrepaidCard = false;
-
-          responseModel = ResponseModel(
-              false,
-              response.body['message'] ??
-                  "Error while fetchPrepaidCardDetails");
+          return ResponseModel(
+            true,
+            body['message']?.toString() ??
+                'Prepaid card details fetched successfully',
+          );
         }
-      } else {
-        isApplyForPrepaidCard = false;
-        responseModel = ResponseModel(false,
-            response.body['message'] ?? "Error while fetchPrepaidCardDetails");
       }
-    } catch (e) {
-      log('ERROR AT fetchPrepaidCardDetails(): $e');
-      responseModel =
-          ResponseModel(false, "Error while fetchPrepaidCardDetails user $e");
+
+      isApplyForPrepaidCard = false;
+
+      return ResponseModel(
+        false,
+        body['message']?.toString() ??
+            'Prepaid card details are not available',
+      );
     }
 
+    // ==========================================================
+    // API ERROR / NULL RESPONSE
+    // ==========================================================
+
+    isApplyForPrepaidCard = false;
+
+    String message = 'Unable to fetch prepaid card details';
+
+    if (body is Map && body['message'] != null) {
+      message = body['message'].toString();
+    } else if (response.statusText != null &&
+        response.statusText!.trim().isNotEmpty) {
+      message = response.statusText!;
+    }
+
+    return ResponseModel(
+      false,
+      message,
+    );
+  } catch (e, stackTrace) {
+    log(
+      'ERROR AT fetchPrepaidCardDetails(): $e',
+      stackTrace: stackTrace,
+    );
+
+    isApplyForPrepaidCard = false;
+
+    return ResponseModel(
+      false,
+      'Error while fetchPrepaidCardDetails: $e',
+    );
+  } finally {
     isLoading = false;
     update();
-    return responseModel;
   }
+}
 
   Future<ResponseModel> fetchPrepaidCardCVVNo({
     required BuildContext context,

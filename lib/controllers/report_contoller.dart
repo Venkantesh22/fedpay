@@ -21,38 +21,89 @@ class ReportController extends GetxController implements GetxService {
   }) async {
     log('----------- fetchYesBankMerchantCollection Called ----------');
 
-    ResponseModel responseModel;
     isLoading = true;
     update();
 
     try {
-      Response response = await reportRepo.fetchYesBankMerchantCollection(
-          fromdate: fromdate, todate: todate);
+      final Response response = await reportRepo.fetchYesBankMerchantCollection(
+        fromdate: fromdate,
+        todate: todate,
+      );
 
-      if (response.statusCode == 200 && response.body['status'] == "success") {
-        yesBankMerchantCollectionList = (response.body['reports'] as List)
-            .map((trans) => TransactionModel.fromJson(trans))
-            .toList();
-        responseModel = ResponseModel(
-            true,
-            response.body['message'] ??
-                "fetch fetchYesBankMerchantCollection success");
-        log("yesBankMerchantCollectionList = ${yesBankMerchantCollectionList.length}");
-      } else {
-        responseModel = ResponseModel(
-            false,
-            response.body['message'] ??
-                "Error while fetchYesBankMerchantCollection");
+      log('STATUS CODE: ${response.statusCode}');
+      log('RESPONSE BODY: ${response.body}');
+
+      final body = response.body;
+
+      if (response.statusCode == 200 &&
+          body is Map &&
+          body['status'] == 'success') {
+        final reports = body['reports'];
+
+        if (reports is List) {
+          yesBankMerchantCollectionList = reports
+              .map(
+                (trans) => TransactionModel.fromJson(
+                  Map<String, dynamic>.from(trans),
+                ),
+              )
+              .toList();
+        } else {
+          yesBankMerchantCollectionList = [];
+        }
+
+        log(
+          'yesBankMerchantCollectionList = '
+          '${yesBankMerchantCollectionList.length}',
+        );
+
+        return ResponseModel(
+          true,
+          body['message']?.toString() ??
+              'Merchant collection fetched successfully',
+        );
       }
-    } catch (e) {
-      log('ERROR AT fetchYesBankMerchantCollection(): $e');
-      responseModel = ResponseModel(
-          false, "Error while fetchYesBankMerchantCollection user $e");
-    }
 
-    isLoading = false;
-    update();
-    return responseModel;
+      // ==========================================================
+      // SERVICE NOT ACTIVE / API FAILURE
+      // ==========================================================
+
+      yesBankMerchantCollectionList = [];
+
+      String message = 'Unable to fetch merchant collection';
+
+      if (body is Map && body['message'] != null) {
+        message = body['message'].toString();
+      } else if (response.statusText != null &&
+          response.statusText!.trim().isNotEmpty) {
+        message = response.statusText!;
+      }
+
+      if (message.toLowerCase() == 'service not active!') {
+        message =
+            'Yes Bank merchant collection service is currently not active.';
+      }
+
+      return ResponseModel(
+        false,
+        message,
+      );
+    } catch (e, stackTrace) {
+      log(
+        'ERROR AT fetchYesBankMerchantCollection(): $e',
+        stackTrace: stackTrace,
+      );
+
+      yesBankMerchantCollectionList = [];
+
+      return ResponseModel(
+        false,
+        'Unable to load merchant collection right now.',
+      );
+    } finally {
+      isLoading = false;
+      update();
+    }
   }
 
   bool isYesBankTransaction = false;
