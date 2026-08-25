@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:lekra/controllers/basic_controlller.dart';
+import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
@@ -23,7 +24,9 @@ class _KycFormScreenState extends State<KycFormScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Get.find<BasicController>().fetchStatusList();
+      // Get.find<BasicController>().fetchStatusList();
+      Get.find<FormController>().venderKycStatus();
+      Get.find<FormController>().venderKycDetail();
     });
   }
 
@@ -70,38 +73,45 @@ class _KycFormScreenState extends State<KycFormScreen> {
               ),
             ];
           },
-          body: Container(
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(50),
-                topRight: Radius.circular(50),
+          body: GetBuilder<FormController>(builder: (formController) {
+            if (formController.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
               ),
-            ),
-            child: const Column(
-              children: [
-                SizedBox(height: 24),
-                HeadingsBar(),
-                SizedBox(height: 12),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 16, left: 16, bottom: 12),
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Column(
-                        children: [
-                          SizedBox(height: 24),
-                          FormsContent(),
-                          SizedBox(height: 40),
-                        ],
+              child: const Column(
+                children: [
+                  SizedBox(height: 24),
+                  HeadingsBar(),
+                  SizedBox(height: 12),
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 16, left: 16, bottom: 12),
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 24),
+                            FormsContent(),
+                            SizedBox(height: 40),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              ),
+            );
+          }),
         ));
   }
 }

@@ -26,10 +26,8 @@ class BusinessInformationScreen extends StatefulWidget {
       _BusinessInformationScreenState();
 }
 
-class _BusinessInformationScreenState
-    extends State<BusinessInformationScreen> {
-  final GlobalKey<FormState> formKey =
-      GlobalKey<FormState>();
+class _BusinessInformationScreenState extends State<BusinessInformationScreen> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +44,7 @@ class _BusinessInformationScreenState
 
               CustomText(
                 'Business Information',
-                style: Helper(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                style: Helper(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                       color: Colors.black87,
@@ -60,10 +55,7 @@ class _BusinessInformationScreenState
 
               CustomText(
                 'Provide information about your business',
-                style: Helper(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                style: Helper(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       color: greyDark,
@@ -100,20 +92,24 @@ class _BusinessInformationScreenState
               // NATURE OF BUSINESS
               // ==================================================
 
-              CustomDropDownList<String>(
+              AppTextFieldWithHeading(
+                controller: businessController.natureOfBusinessController,
                 heading: 'Nature of Business',
+                hindText: 'Enter Nature of Business',
                 isRequired: true,
-                items: businessController.natureOfBusinessList,
-                value: businessController.natureOfBusiness,
-                hintText: 'Select nature of business',
-                bgColor: primaryColorLight,
+                keyboardType: TextInputType.name,
+                textInputAction: TextInputAction.next,
                 borderColor: primaryColor,
-                onChanged: businessController.setNatureOfBusiness,
+                bgColor: primaryColorLight,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                    RegExp(r'[a-zA-Z ]'),
+                  ),
+                ],
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please select nature of business';
+                  if (value == null || value.trim().isEmpty) {
+                    return 'Please enter Nature of Business';
                   }
-
                   return null;
                 },
               ),
@@ -128,8 +124,7 @@ class _BusinessInformationScreenState
                 heading: 'Expected Monthly Transaction Volume',
                 isRequired: true,
                 items: businessController.transactionVolumeList,
-                value:
-                    businessController.expectedMonthlyTransactionVolume,
+                value: businessController.expectedMonthlyTransactionVolume,
                 hintText: 'Select monthly transaction volume',
                 bgColor: primaryColorLight,
                 borderColor: primaryColor,
@@ -153,14 +148,12 @@ class _BusinessInformationScreenState
               CustomDropDownList<String>(
                 heading: 'Business Ownership Type',
                 isRequired: true,
-                items:
-                    businessController.businessOwnershipTypeList,
+                items: businessController.businessOwnershipTypeList,
                 value: businessController.businessOwnershipType,
                 hintText: 'Select ownership type',
                 bgColor: primaryColorLight,
                 borderColor: primaryColor,
-                onChanged:
-                    businessController.setBusinessOwnershipType,
+                onChanged: businessController.setBusinessOwnershipType,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select ownership type';
@@ -177,13 +170,12 @@ class _BusinessInformationScreenState
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller:
-                    businessController.businessDescriptionController,
+                controller: businessController.businessDescriptionController,
                 heading: 'Business Description',
-                hindText:
-                    'Enter a brief description of your business',
+                hindText: 'Enter a brief description of your business',
                 keyboardType: TextInputType.multiline,
                 maxLines: 4,
+                isRequired: true,
                 textInputAction: TextInputAction.newline,
                 bgColor: primaryColorLight,
                 borderColor: primaryColor,
@@ -199,8 +191,7 @@ class _BusinessInformationScreenState
               // ==================================================
 
               AppTextFieldWithHeading(
-                controller:
-                    businessController.businessStartDateController,
+                controller: businessController.businessStartDateController,
                 heading: 'Business Start Date',
                 hindText: 'Select business start date',
                 isRequired: true,
@@ -215,8 +206,7 @@ class _BusinessInformationScreenState
                 onTap: () async {
                   final DateTime now = DateTime.now();
 
-                  final DateTime? pickedDate =
-                      await showDatePicker(
+                  final DateTime? pickedDate = await showDatePicker(
                     context: context,
                     initialDate: now,
                     firstDate: DateTime(1900),
@@ -227,13 +217,17 @@ class _BusinessInformationScreenState
                     return;
                   }
 
-                  businessController.setBusinessStartDate(
-                    pickedDate,
-                  );
+                  // 1. Format the date to yyyy-MM-dd
+                  String formattedDate =
+                      "${pickedDate.year}-${pickedDate.month.toString().padLeft(2, '0')}-${pickedDate.day.toString().padLeft(2, '0')}";
+
+                  // 2. Set the formatted string to the text field controller so it displays on the screen
+                  businessController.businessStartDateController.text =
+                      formattedDate;
+                  businessController.update();
                 },
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Please select business start date';
                   }
 
@@ -260,20 +254,20 @@ class _BusinessInformationScreenState
                 onTap: () {
                   FocusScope.of(context).unfocus();
 
-                  final bool valid =
-                      formKey.currentState?.validate() ?? false;
-
-                  if (!valid) {
-                    return;
+                  if (formKey.currentState?.validate() ?? false) {
+                    return businessController
+                        .venderKycBusinessInfo()
+                        .then((value) {
+                      if (value.isSuccess) {
+                        showToast(
+                            message: value.message, typeCheck: value.isSuccess);
+                        widget.onCompleteChanged(true);
+                      } else {
+                        showToast(
+                            message: value.message, typeCheck: value.isSuccess);
+                      }
+                    });
                   }
-
-                  if (!businessController
-                      .validateBusinessInformation()) {
-                    return;
-                  }
-
-                  // Navigation remains in FormController.
-                  widget.onCompleteChanged(true);
                 },
               ),
             ],

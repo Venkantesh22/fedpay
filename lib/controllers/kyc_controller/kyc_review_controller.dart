@@ -1,7 +1,14 @@
-import 'package:get/get.dart';
+import 'dart:developer';
 
-class KycReviewController extends GetxController
-    implements GetxService {
+import 'package:get/get.dart';
+import 'package:lekra/data/models/response/response_model.dart';
+import 'package:lekra/data/repositories/vender_kyc_repo.dart';
+
+class KycReviewController extends GetxController implements GetxService {
+  final VenderKycRepo venderKycRepo;
+
+  KycReviewController({required this.venderKycRepo});
+
   // ============================================================
   // DECLARATION
   // ============================================================
@@ -40,32 +47,65 @@ class KycReviewController extends GetxController
   // SUBMIT
   // ============================================================
 
-  Future<bool> submitKyc() async {
-    if (!declarationAccepted) {
-      return false;
-    }
+  //* submit Vender kyc   venderKycBasicDetails()
+  Future<ResponseModel> venderKycFinalSubmit() async {
+    log('----------- venderKycBasicDetails Called ----------');
+
+    setSubmitting(true);
+
+    update();
 
     try {
-      setSubmitting(true);
+      final Map<String, dynamic> data = {
+        "declaration_accepted": declarationAccepted
+      };
 
-      // ========================================================
-      // TODO:
-      // Call your final KYC submit API here.
-      // ========================================================
-
-      await Future.delayed(
-        const Duration(milliseconds: 800),
+      final response = await venderKycRepo.venderKycFinalSubmit(
+        data: data,
       );
 
-      setSubmitting(false);
+      log('STATUS CODE: ${response.statusCode}');
+      log('RESPONSE BODY: ${response.body}');
+      log('RESPONSE TYPE: ${response.body.runtimeType}');
 
-      return true;
-    } catch (e) {
-      setSubmitting(false);
+      final body = response.body;
 
-      return false;
+      if (response.statusCode == 200 &&
+          body is Map &&
+          body['status']?.toString().toLowerCase() == 'success') {
+        return ResponseModel(
+          true,
+          body['message']?.toString() ??
+              'venderKycFinalSubmit submitted successfully',
+        );
+      }
+
+      String message = 'Something went wrong';
+
+      if (body is Map && body['message'] != null) {
+        message = body['message'].toString();
+      } else if (response.statusText != null &&
+          response.statusText!.isNotEmpty) {
+        message = response.statusText!;
+      }
+
+      return ResponseModel(false, message);
+    } catch (e, stackTrace) {
+      log(
+        'ERROR AT venderKycFinalSubmit(): $e',
+        stackTrace: stackTrace,
+      );
+
+      return ResponseModel(
+        false,
+        'Error while submitting venderKycFinalSubmit(): $e',
+      );
+    } finally {
+      setSubmitting(false);
+      update();
     }
   }
+
 
   // ============================================================
   // CLEAR

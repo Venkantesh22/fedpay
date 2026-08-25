@@ -7,6 +7,7 @@ import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/theme.dart';
 import 'package:lekra/views/base/common_button.dart';
+import 'package:lekra/views/screens/kyc_form/components/widget/uppper_case_text_formatter.dart';
 import 'package:lekra/views/screens/widget/text_box/app_text_box.dart';
 
 class DocumentDetailsScreen extends StatefulWidget {
@@ -20,8 +21,7 @@ class DocumentDetailsScreen extends StatefulWidget {
   });
 
   @override
-  State<DocumentDetailsScreen> createState() =>
-      _DocumentDetailsScreenState();
+  State<DocumentDetailsScreen> createState() => _DocumentDetailsScreenState();
 }
 
 class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
@@ -36,7 +36,6 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               // ==================================================
               // TITLE
               // ==================================================
@@ -140,26 +139,12 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                 controller: controller.gstNumberController,
                 heading: 'GSTIN',
                 hindText: 'Enter GSTIN',
-                isRequired: true,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(15),
                   UpperCaseTextFormatter(),
                 ],
-                validator: (value) {
-                  final gstin = value?.trim().toUpperCase() ?? '';
-
-                  if (gstin.isEmpty) {
-                    return 'Please enter GSTIN';
-                  }
-
-                  if (gstin.length != 15) {
-                    return 'GSTIN must be 15 characters';
-                  }
-
-                  return null;
-                },
               ),
 
               SizedBox(height: 18.h),
@@ -172,18 +157,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                 controller: controller.tradeLicenseNumberController,
                 heading: 'Trade Licence Number',
                 hindText: 'Enter trade licence number',
-                isRequired: true,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.next,
-                validator: (value) {
-                  final tradeLicense = value?.trim() ?? '';
-
-                  if (tradeLicense.isEmpty) {
-                    return 'Please enter trade licence number';
-                  }
-
-                  return null;
-                },
               ),
 
               SizedBox(height: 18.h),
@@ -196,18 +171,8 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                 controller: controller.msmeNumberController,
                 heading: 'MSME / Udyam Registration Number',
                 hindText: 'Enter MSME / Udyam number',
-                isRequired: true,
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.done,
-                validator: (value) {
-                  final msme = value?.trim() ?? '';
-
-                  if (msme.isEmpty) {
-                    return 'Please enter MSME / Udyam number';
-                  }
-
-                  return null;
-                },
               ),
 
               SizedBox(height: 24.h),
@@ -223,37 +188,22 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
                 gradient: LinearGradient(
                   colors: [
                     primaryColor,
-                    const Color(0xFFE91E63),
+                    secondaryColor,
                   ],
                 ),
                 onTap: () {
-                  // ----------------------------------------------
-                  // Flutter UI validation
-                  // ----------------------------------------------
-
-                  final isValid =
-                      formKey.currentState?.validate() ?? false;
-
-                  if (!isValid) {
-                    return;
+                  if (formKey.currentState?.validate() ?? false) {
+                    controller.venderKycDocumentDetails().then((value) {
+                      if (value.isSuccess) {
+                        showToast(
+                            message: value.message, typeCheck: value.isSuccess);
+                        widget.onCompleteChanged(true);
+                      } else {
+                        showToast(
+                            message: value.message, typeCheck: value.isSuccess);
+                      }
+                    });
                   }
-
-                  // ----------------------------------------------
-                  // Controller validation
-                  // ----------------------------------------------
-
-                  final success =
-                      controller.validateDocumentDetails();
-
-                  if (!success) {
-                    return;
-                  }
-
-                  // ----------------------------------------------
-                  // Mark KYC step completed
-                  // ----------------------------------------------
-
-                  widget.onCompleteChanged(true);
                 },
               ),
 
@@ -262,24 +212,6 @@ class _DocumentDetailsScreenState extends State<DocumentDetailsScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-
-// ============================================================
-// UPPERCASE FORMATTER
-// ============================================================
-
-class UpperCaseTextFormatter extends TextInputFormatter {
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
-    return newValue.copyWith(
-      text: newValue.text.toUpperCase(),
-      selection: newValue.selection,
     );
   }
 }

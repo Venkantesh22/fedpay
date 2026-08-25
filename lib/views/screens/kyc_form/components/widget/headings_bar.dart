@@ -8,17 +8,7 @@ import 'package:lekra/services/theme.dart';
 class HeadingsBar extends StatelessWidget {
   const HeadingsBar({super.key});
 
-  static const List<String> headings = [
-    'Basic',
-    'Documents',
-    'KYC Info',
-    'Business',
-    'Shop',
-    'Selfie',
-    'Bank',
-    'Bank Doc',
-    'Review',
-  ];
+  
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +22,7 @@ class HeadingsBar extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 24.w),
             child: Row(
               children: List.generate(
-                headings.length,
+              formController.headings.length,
                 (index) {
                   final bool isCurrent = formController.selectedIndex == index;
 
@@ -55,7 +45,7 @@ class HeadingsBar extends StatelessWidget {
                                 // --------------------------------
                                 // LINE TO NEXT STEP
                                 // --------------------------------
-                                if (index != headings.length - 1)
+                                if (index != formController.headings.length - 1)
                                   Positioned(
                                     left: 40.w,
                                     right: 0,
@@ -147,7 +137,7 @@ class HeadingsBar extends StatelessWidget {
                           SizedBox(
                             width: 80.w,
                             child: CustomText(
-                              headings[index],
+                              formController.headings[index],
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,

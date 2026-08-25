@@ -1,32 +1,41 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lekra/data/models/response/response_model.dart';
+import 'package:lekra/data/repositories/vender_kyc_repo.dart';
 
-class BankDetailsController extends GetxController
-    implements GetxService {
+class BankDetailsController extends GetxController implements GetxService {
+  final VenderKycRepo venderKycRepo;
+
+  BankDetailsController({required this.venderKycRepo});
+
+  bool isLoading = false;
+
   // ============================================================
   // ACCOUNT DETAILS
   // ============================================================
 
   final TextEditingController accountNameController =
-      TextEditingController();
+      TextEditingController(text: "Ajeet das");
 
   final TextEditingController accountNumberController =
-      TextEditingController();
+      TextEditingController(text: "12345678901");
 
   final TextEditingController confirmAccountNumberController =
-      TextEditingController();
+      TextEditingController(text: "12345678901");
 
   final TextEditingController ifscController =
-      TextEditingController();
+      TextEditingController(text: "SBIN0012345");
 
   final TextEditingController bankNameController =
-      TextEditingController();
+      TextEditingController(text: "State Bank of India");
 
   final TextEditingController branchNameController =
-      TextEditingController();
+      TextEditingController(text: "Karnul");
 
   final TextEditingController registeredMobileController =
-      TextEditingController();
+      TextEditingController(text: "8926600327");
 
   // ============================================================
   // ACCOUNT TYPE
@@ -86,32 +95,73 @@ class BankDetailsController extends GetxController
   }
 
   // ============================================================
-  // REQUEST DATA
+  //! Api call
   // ============================================================
 
-  Map<String, dynamic> toMap() {
-    return {
-      'settlement_account_name':
-          accountNameController.text.trim(),
+  //* submit Vender kyc   venderKycBankDetails()
+  Future<ResponseModel> venderKycBankDetails() async {
+    log('----------- venderKycBankDetails Called ----------');
 
-      'settlement_account_number':
-          accountNumberController.text.trim(),
+    isLoading = true;
+    update();
 
-      'settlement_account_ifsc':
-          ifscController.text.trim().toUpperCase(),
+    try {
+      final Map<String, dynamic> data = {
+        "section": "bank_details",
+        "account_holder_name": accountNameController.text.trim(),
+        "bank_name": bankNameController.text.trim(),
+        "account_number": accountNumberController.text.trim(),
+        "confirm_account_number": confirmAccountNumberController.text.trim(),
+        "ifsc_code": ifscController.text.trim(),
+        "branch_name": branchNameController.text.trim(),
+        "account_type": accountType.toLowerCase(),
+        "bank_registered_mobile": registeredMobileController.text.trim()
+      };
 
-      'bank_name':
-          bankNameController.text.trim(),
+      final response = await venderKycRepo.venderKycBankDetails(
+        data: data,
+      );
 
-      'branch_name':
-          branchNameController.text.trim(),
+      log('STATUS CODE: ${response.statusCode}');
+      log('RESPONSE BODY: ${response.body}');
+      log('RESPONSE TYPE: ${response.body.runtimeType}');
 
-      'account_type':
-          accountType,
+      final body = response.body;
 
-      'bank_registered_mobile':
-          registeredMobileController.text.trim(),
-    };
+      if (response.statusCode == 200 &&
+          body is Map &&
+          body['status']?.toString().toLowerCase() == 'success') {
+        return ResponseModel(
+          true,
+          body['message']?.toString() ??
+              'venderKycBankDetails() submitted successfully',
+        );
+      }
+
+      String message = 'Something went wrong';
+
+      if (body is Map && body['message'] != null) {
+        message = body['message'].toString();
+      } else if (response.statusText != null &&
+          response.statusText!.isNotEmpty) {
+        message = response.statusText!;
+      }
+
+      return ResponseModel(false, message);
+    } catch (e, stackTrace) {
+      log(
+        'ERROR AT venderKycBankDetails(): $e',
+        stackTrace: stackTrace,
+      );
+
+      return ResponseModel(
+        false,
+        'Error while submitting venderKycBankDetails(): $e',
+      );
+    } finally {
+      isLoading = false;
+      update();
+    }
   }
 
   // ============================================================

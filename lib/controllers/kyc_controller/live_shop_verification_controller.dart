@@ -1,12 +1,21 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lekra/controllers/permission_controller.dart';
+import 'package:lekra/data/models/response/response_model.dart';
+import 'package:lekra/data/repositories/vender_kyc_repo.dart';
 
 class LiveShopVerificationController extends GetxController
     implements GetxService {
+  final VenderKycRepo venderKycRepo;
+
+  LiveShopVerificationController({required this.venderKycRepo});
+
+  bool isLoading = false;
+
   final ImagePicker _imagePicker = ImagePicker();
 
   // ============================================================
@@ -26,6 +35,9 @@ class LiveShopVerificationController extends GetxController
   bool locationCaptured = false;
 
   DateTime? capturedAt;
+
+  String? shopLivePhotoPath;
+  String? insideShopPhotoPath;
 
   // ============================================================
   // LOCATION
@@ -70,6 +82,10 @@ class LiveShopVerificationController extends GetxController
       }
 
       shopLivePhoto = File(image.path);
+
+      // Remove old server image from UI.
+      shopLivePhotoPath = null;
+
       capturedAt = DateTime.now();
 
       update();
@@ -128,11 +144,13 @@ class LiveShopVerificationController extends GetxController
 
   void removeShopPhoto() {
     shopLivePhoto = null;
+    shopLivePhotoPath = null;
     update();
   }
 
   void removeInsideShopPhoto() {
     insideShopPhoto = null;
+    insideShopPhotoPath = null;
     update();
   }
 
@@ -155,8 +173,8 @@ class LiveShopVerificationController extends GetxController
     final PermissionController permissionController =
         Get.find<PermissionController>();
 
-    final bool success = await permissionController
-        .requestLocationPermissionAndFetch(context);
+    final bool success =
+        await permissionController.requestLocationPermissionAndFetch(context);
 
     if (!success) {
       locationCaptured = false;
@@ -164,8 +182,7 @@ class LiveShopVerificationController extends GetxController
       return false;
     }
 
-    locationCaptured =
-        permissionController.latitude != null &&
+    locationCaptured = permissionController.latitude != null &&
         permissionController.longitude != null;
 
     update();
@@ -210,21 +227,64 @@ class LiveShopVerificationController extends GetxController
   }
 
   // ============================================================
-  // FORM DATA
+  //! Api Call
   // ============================================================
 
-  Map<String, dynamic> toMap() {
-    return {
-      'shop_latitude': latitude,
-      'shop_longitude': longitude,
-      'shop_signboard_visible': shopSignboardVisible,
-      'shop_captured_at':
-          capturedAt?.toIso8601String(),
-      'shop_live_photo':
-          shopLivePhoto?.path,
-      'inside_shop_photo':
-          insideShopPhoto?.path,
-    };
+  //* submit Vender Live shop verification  venderKycLiveShopVerification()
+  Future<ResponseModel> venderKycLiveShopVerification() async {
+    log('----------- venderKycLiveShopVerification Called ----------');
+
+    isLoading = true;
+    update();
+
+    try {
+      final response = await venderKycRepo.venderKycLiveShopVerification(
+        documentType: 'shop_live_photo',
+        latitude: latitude!.toString(),
+        longitude: longitude!.toString(),
+        documentFilePath: shopLivePhoto!.path,
+      );
+
+      log('STATUS CODE: ${response.statusCode}');
+      log('RESPONSE BODY: ${response.body}');
+      log('RESPONSE TYPE: ${response.body.runtimeType}');
+
+      final body = response.body;
+
+      if (response.statusCode == 200 &&
+          body is Map &&
+          body['status']?.toString().toLowerCase() == 'success') {
+        return ResponseModel(
+          true,
+          body['message']?.toString() ??
+              'venderKycLiveShopVerification submitted successfully',
+        );
+      }
+
+      String message = 'Something went wrong';
+
+      if (body is Map && body['message'] != null) {
+        message = body['message'].toString();
+      } else if (response.statusText != null &&
+          response.statusText!.isNotEmpty) {
+        message = response.statusText!;
+      }
+
+      return ResponseModel(false, message);
+    } catch (e, stackTrace) {
+      log(
+        'ERROR AT venderKycLiveShopVerification(): $e',
+        stackTrace: stackTrace,
+      );
+
+      return ResponseModel(
+        false,
+        'Error while submitting venderKycLiveShopVerification(): $e',
+      );
+    } finally {
+      isLoading = false;
+      update();
+    }
   }
 
   // ============================================================

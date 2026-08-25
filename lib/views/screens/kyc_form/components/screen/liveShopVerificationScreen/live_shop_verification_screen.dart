@@ -1,7 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import 'package:lekra/controllers/kyc_controller/live_shop_verification_controller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
@@ -76,6 +76,7 @@ class _LiveShopVerificationScreenState
               onRemove: controller.removeShopPhoto,
               isLoading: controller.isCapturingShopPhoto,
               icon: Icons.storefront_outlined,
+              imageUrl: controller.shopLivePhotoPath ?? "",
             ),
 
             SizedBox(height: 22.h),
@@ -97,6 +98,7 @@ class _LiveShopVerificationScreenState
               onRemove: controller.removeInsideShopPhoto,
               isLoading: controller.isCapturingInsidePhoto,
               icon: Icons.store_outlined,
+              imageUrl: controller.shopLivePhotoPath ?? "",
             ),
 
             SizedBox(height: 22.h),
@@ -148,6 +150,7 @@ class _LiveShopVerificationScreenState
                         SizedBox(height: 2.h),
                         CustomText(
                           'Make sure your business name is clearly visible.',
+                          overflow: TextOverflow.clip,
                           style: Helper(context).textTheme.bodyMedium?.copyWith(
                                 fontSize: 11.sp,
                                 color: greyText6,
@@ -314,6 +317,7 @@ class _LiveShopVerificationScreenState
                       'Please capture the shop front clearly, '
                       'make sure the business signboard is visible, '
                       'and capture your current live location.',
+                      overflow: TextOverflow.clip,
                       style: Helper(context).textTheme.bodyMedium?.copyWith(
                             fontSize: 11.sp,
                             color: primaryColor,
@@ -332,6 +336,7 @@ class _LiveShopVerificationScreenState
             // ==================================================
 
             CustomButton(
+              isLoading: controller.isLoading,
               title: 'Continue',
               height: 48.h,
               radius: 8.r,
@@ -351,9 +356,16 @@ class _LiveShopVerificationScreenState
                   );
                   return;
                 }
-
-                // Only FormController handles navigation.
-                widget.onCompleteChanged(true);
+                controller.venderKycLiveShopVerification().then((value) {
+                  if (value.isSuccess) {
+                    showToast(
+                        message: value.message, typeCheck: value.isSuccess);
+                    widget.onCompleteChanged(true);
+                  } else {
+                    showToast(
+                        message: value.message, typeCheck: value.isSuccess);
+                  }
+                });
               },
             ),
 
@@ -384,10 +396,6 @@ class _LiveShopVerificationScreenState
       message = 'Please complete shop verification.';
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    showToast(message: message, toastType: ToastType.warning);
   }
 }

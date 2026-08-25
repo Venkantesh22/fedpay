@@ -142,7 +142,7 @@ class _BankDocumentUploadScreenState extends State<BankDocumentUploadScreen> {
             // ==================================================
 
             CustomButton(
-              title: 'Continue',
+              title: 'Next',
               height: 48.h,
               radius: 8.r,
               gradient: LinearGradient(
@@ -155,7 +155,7 @@ class _BankDocumentUploadScreenState extends State<BankDocumentUploadScreen> {
                 final bool valid = controller.validateBankDocuments();
 
                 if (!valid) {
-                  return;
+                  return showToast(message: "Add a document of bank");
                 }
 
                 // Navigation remains in FormController.

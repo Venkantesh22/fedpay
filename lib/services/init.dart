@@ -29,6 +29,7 @@ import 'package:lekra/data/repositories/mobile_service_repo.dart';
 import 'package:lekra/data/repositories/product_repo.dart';
 import 'package:lekra/data/repositories/recharge_repo.dart';
 import 'package:lekra/data/repositories/report_repo.dart';
+import 'package:lekra/data/repositories/vender_kyc_repo.dart';
 import 'package:lekra/data/repositories/wallet_repo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../controllers/auth_controller.dart';
@@ -80,6 +81,10 @@ class Init {
             prepaidClient: Get.find<ApiClient>(tag: "prepaid"),
           ));
 
+//* Vendor repo
+      Get.lazyPut(
+          () => VenderKycRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
+
       // Get Controller's...
       Get.lazyPut(() => DashBoardController());
       Get.lazyPut(() => AuthController(
@@ -88,7 +93,7 @@ class Init {
           sharedPreferences: sharedPreferences, basicRepo: Get.find()));
       Get.lazyPut(() => ReportController(reportRepo: Get.find()));
       Get.lazyPut(() => WalletController(walletRepo: Get.find()));
-      Get.lazyPut(() => FormController(formRepo: Get.find()));
+      Get.lazyPut(() => FormController(venderKycRepo: Get.find()));
       Get.lazyPut(() => RechargeController(
           rechargeRepo: Get.find(), sharedPreferences: sharedPreferences));
       Get.lazyPut(() => ProductController(
@@ -105,16 +110,19 @@ class Init {
           sharedPreferences: sharedPreferences));
       Get.lazyPut(() => VoiceServiceController());
 
-      //KYC controller list
-      Get.lazyPut(() => RegistrationKycFromController());
-      Get.lazyPut(() => KycDocumentUploadController());
-      Get.lazyPut(() => DocumentDetailsController());
-      Get.lazyPut(() => BusinessInformationController());
-      Get.lazyPut(() => LiveShopVerificationController());
+//*KYC controller list
+      Get.lazyPut(
+          () => RegistrationKycFromController(venderKycRepo: Get.find()));
+      Get.lazyPut(() => KycDocumentUploadController(venderKycRepo: Get.find()));
+      Get.lazyPut(() => DocumentDetailsController(venderKycRepo: Get.find()));
+      Get.lazyPut(
+          () => BusinessInformationController(venderKycRepo: Get.find()));
+      Get.lazyPut(
+          () => LiveShopVerificationController(venderKycRepo: Get.find()));
       Get.lazyPut(() => SelfLiveVerificationController());
-      Get.lazyPut(() => BankDetailsController());
+      Get.lazyPut(() => BankDetailsController(venderKycRepo: Get.find()));
       Get.lazyPut(() => BankDocumentUploadController());
-      Get.lazyPut(() => KycReviewController());
+      Get.lazyPut(() => KycReviewController(venderKycRepo: Get.find()));
     } catch (e) {
       log('---- ${e.toString()} ----', name: "ERROR AT initialize()");
     }

@@ -32,10 +32,7 @@ class KycDocumentUploadScreen extends StatelessWidget {
 
             CustomText(
               'KYC Document Upload',
-              style: Helper(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(
+              style: Helper(context).textTheme.bodyMedium?.copyWith(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w700,
                     color: Colors.black87,
@@ -46,10 +43,7 @@ class KycDocumentUploadScreen extends StatelessWidget {
 
             CustomText(
               'Upload clear and valid documents',
-              style: Helper(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.copyWith(
+              style: Helper(context).textTheme.bodyMedium?.copyWith(
                     fontSize: 13.sp,
                     fontWeight: FontWeight.w400,
                     color: greyDark,
@@ -66,25 +60,18 @@ class KycDocumentUploadScreen extends StatelessWidget {
               documentController.kycDocumentNames.length,
               (index) {
                 return Padding(
-                  padding:
-                      EdgeInsets.only(bottom: 10.h),
+                  padding: EdgeInsets.only(bottom: 10.h),
                   child: DocumentUploadCardWidget(
                     index: index,
-                    title:
-                        documentController.kycDocumentNames[index],
-                    subtitle:
-                        documentController.kycDocumentDescriptions[index],
-                    file:
-                        documentController.kycDocuments[index],
-                    isRequired:
-                        documentController.isDocumentRequired(index),
+                    title: documentController.kycDocumentNames[index],
+                    subtitle: documentController.kycDocumentDescriptions[index],
+                    file: documentController.kycDocuments[index],
+                    isRequired: documentController.isDocumentRequired(index),
                     onUpload: () {
-                      documentController
-                          .pickKycDocument(index);
+                      documentController.pickKycDocument(index);
                     },
                     onRemove: () {
-                      documentController
-                          .removeKycDocument(index);
+                      documentController.removeKycDocument(index);
                     },
                   ),
                 );
@@ -107,8 +94,7 @@ class KycDocumentUploadScreen extends StatelessWidget {
                 color: primaryColor.withValues(
                   alpha: 0.08,
                 ),
-                borderRadius:
-                    BorderRadius.circular(10.r),
+                borderRadius: BorderRadius.circular(10.r),
               ),
               child: Row(
                 children: [
@@ -125,10 +111,8 @@ class KycDocumentUploadScreen extends StatelessWidget {
                       '${documentController.totalDocuments}'
                       ' documents selected. '
                       'You can replace documents before submission.',
-                      style: Helper(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
+                      overflow: TextOverflow.clip,
+                      style: Helper(context).textTheme.bodyMedium?.copyWith(
                             fontSize: 11.sp,
                             color: primaryColor,
                             fontWeight: FontWeight.w500,
@@ -146,7 +130,7 @@ class KycDocumentUploadScreen extends StatelessWidget {
             // ====================================================
 
             CustomButton(
-              title: 'Continue',
+              title: 'Next',
               height: 48.h,
               radius: 8.r,
               gradient: LinearGradient(
@@ -156,18 +140,19 @@ class KycDocumentUploadScreen extends StatelessWidget {
                 ],
               ),
               onTap: () {
-                final bool success =
-                    documentController
-                        .validateAndComplete();
+                final bool success = documentController.validateAndComplete();
 
                 if (!success) {
+                  showToast(
+                      message: 'Please upload all required documents.',
+                      toastType: ToastType.error);
+
                   return;
                 }
 
-                // Only navigation is handled outside
-                // this screen.
                 onCompleteChanged(true);
               },
+
             ),
           ],
         );

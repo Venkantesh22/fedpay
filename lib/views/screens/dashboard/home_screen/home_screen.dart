@@ -5,17 +5,23 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lekra/controllers/auth_controller.dart';
 import 'package:lekra/controllers/basic_controlller.dart';
+import 'package:lekra/controllers/dashboard_controller.dart';
+import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/controllers/report_contoller.dart';
 import 'package:lekra/services/constants.dart';
 import 'package:lekra/services/custom_text.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/services/theme.dart';
+import 'package:lekra/views/base/shimmer.dart';
 import 'package:lekra/views/screens/auth_screens/login_screen.dart';
+import 'package:lekra/views/screens/dashboard/dashboard_screen.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/banner_image_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/kyc_pending_card.dart';
+import 'package:lekra/views/screens/dashboard/home_screen/components/kyc_successfull_card.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/merchant_profile_card.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/quick_acitons_section/quick_actions_section.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/components/transaction_history_section.dart';
+import 'package:lekra/views/screens/kyc_form/components/screen/kycSubmittedSuccessScreen/kyc_submitted_success_screen.dart';
 import 'package:lekra/views/screens/kyc_form/kyc_form_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       final auth = Get.find<AuthController>();
       final reportContro = Get.find<ReportController>();
+      Get.find<FormController>().venderKycStatus();
 
       if (widget.isReload) {
         auth.checkBalance().then((value) {
@@ -114,7 +121,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           }
 
-          final bool isKycDone = authController.userModel?.isKYCDone ?? false;
 
           return SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -139,18 +145,59 @@ class _HomeScreenState extends State<HomeScreen> {
                 // KYC PENDING
                 // ==================================================
 
-                if (!isKycDone) ...[
-                  KycPendingCard(
-                    kycStatus: "Not apply",
-                    onTap: () {
-                      navigate(
-                        context: context,
-                        page: const KycFormScreen(),
+                GetBuilder<FormController>(
+                  builder: (formController) {
+                    final String status = formController
+                            .venderKycStatusModel?.kycStatus
+                            ?.trim()
+                            .toLowerCase() ??
+                        '';
+
+                    if (status == 'approved') {
+                      return CustomShimmer(
+                        isLoading: formController.isLoading,
+                        child: const KycSuccessCard(),
                       );
-                    },
-                  ),
-                  SizedBox(height: 20.h),
-                ],
+                    }
+
+                    return CustomShimmer(
+                      isLoading: formController.isLoading,
+                      child: KycPendingCard(
+                        kycStatus:
+                            formController.venderKycStatusModel?.kycStatus ??
+                                '',
+                        onTap: () {
+                          final isRegistrationStarted = formController
+                                  .venderKycStatusModel
+                                  ?.isRegistrationStarted ??
+                              false;
+
+                          if (isRegistrationStarted) {
+                            navigate(
+                              context: context,
+                              page: const KycFormScreen(),
+                            );
+                          } else {
+                            navigate(
+                              context: context,
+                              page: KycSubmittedSuccessScreen(
+                                onGoToDashboard: () {
+                                  Get.find<DashBoardController>().dashPage = 0;
+
+                                  navigate(
+                                    context: context,
+                                    page: DashboardScreen(),
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    );
+                  },
+                ),
+                SizedBox(height: 20.h),
 
                 // ==================================================
                 // QUICK ACTIONS

@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:lekra/controllers/dashboard_controller.dart';
 
 import 'package:lekra/controllers/kyc_controller/bank_details_controller.dart';
+import 'package:lekra/controllers/kyc_controller/bank_document_upload_controller.dart';
 import 'package:lekra/controllers/kyc_controller/business_information_controller.dart';
 import 'package:lekra/controllers/kyc_controller/document_details_controller.dart';
+import 'package:lekra/controllers/kyc_controller/form_controller.dart';
 import 'package:lekra/controllers/kyc_controller/kyc_review_controller.dart';
 import 'package:lekra/controllers/kyc_controller/kyc_document_upload_controller.dart';
 import 'package:lekra/controllers/kyc_controller/live_shop_verification_controller.dart';
@@ -23,16 +25,6 @@ class KycReviewScreen extends StatelessWidget {
   final bool isComplete;
   final ValueChanged<bool> onCompleteChanged;
 
-  /// Callback used when the user taps Edit.
-  ///
-  /// 0 = Registration
-  /// 1 = Documents
-  /// 2 = Document Details
-  /// 3 = Business
-  /// 4 = Shop
-  /// 5 = Selfie
-  /// 6 = Bank
-  /// 7 = Bank Document
   final ValueChanged<int> onEdit;
 
   const KycReviewScreen({
@@ -56,11 +48,8 @@ class KycReviewScreen extends StatelessWidget {
 
         final businessController = Get.find<BusinessInformationController>();
 
-        final shopController = Get.find<LiveShopVerificationController>();
-
-        final selfieController = Get.find<SelfLiveVerificationController>();
-
         final bankController = Get.find<BankDetailsController>();
+        final formController = Get.find<FormController>();
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,39 +108,13 @@ class KycReviewScreen extends StatelessWidget {
                   label: 'Business Name',
                   value: registrationController.businessNameController.text,
                 ),
-                ReviewItem(
-                  label: 'City',
-                  value: registrationController.cityController.text,
-                ),
+                // ReviewItem(
+                //   label: 'City',
+                //   value: registrationController.cityController.text,
+                // ),
                 ReviewItem(
                   label: 'PIN Code',
                   value: registrationController.pincodeController.text,
-                ),
-              ],
-            ),
-
-            // ==================================================
-            // KYC DOCUMENTS
-            // ==================================================
-
-            ReviewSectionCard(
-              title: 'KYC Documents',
-              icon: Icons.description_outlined,
-              onEdit: () => onEdit(1),
-              items: [
-                ReviewItem(
-                  label: 'Documents Uploaded',
-                  value: '${documentUploadController.uploadedDocumentCount}',
-                ),
-                ReviewItem(
-                  label: 'Total Documents',
-                  value: '${documentUploadController.totalDocuments}',
-                ),
-                ReviewItem(
-                  label: 'Status',
-                  value: documentUploadController.allRequiredDocumentsUploaded
-                      ? 'Completed'
-                      : 'Incomplete',
                 ),
               ],
             ),
@@ -163,7 +126,7 @@ class KycReviewScreen extends StatelessWidget {
             ReviewSectionCard(
               title: 'Document Details',
               icon: Icons.badge_outlined,
-              onEdit: () => onEdit(2),
+              onEdit: () => onEdit(1),
               items: [
                 ReviewItem(
                   label: 'Aadhaar',
@@ -198,7 +161,7 @@ class KycReviewScreen extends StatelessWidget {
             ReviewSectionCard(
               title: 'Business Information',
               icon: Icons.business_outlined,
-              onEdit: () => onEdit(3),
+              onEdit: () => onEdit(2),
               items: [
                 ReviewItem(
                   label: 'Category',
@@ -206,7 +169,7 @@ class KycReviewScreen extends StatelessWidget {
                 ),
                 ReviewItem(
                   label: 'Nature',
-                  value: businessController.natureOfBusiness ?? '',
+                  value: businessController.natureOfBusinessController.text,
                 ),
                 ReviewItem(
                   label: 'Description',
@@ -235,61 +198,31 @@ class KycReviewScreen extends StatelessWidget {
             ReviewSectionCard(
               title: 'Shop Verification',
               icon: Icons.storefront_outlined,
-              onEdit: () => onEdit(4),
+              onEdit: () => onEdit(3),
               items: [
                 ReviewItem(
                   label: 'Shop Photo',
-                  value: shopController.shopLivePhoto != null
+                  value: formController.isShopVerifiedSectionComplete
                       ? 'Captured'
                       : 'Not captured',
                 ),
                 ReviewItem(
                   label: 'Signboard',
-                  value: shopController.shopSignboardVisible
+                  value: formController.isShopVerifiedSectionComplete
                       ? 'Visible'
                       : 'Not confirmed',
                 ),
                 ReviewItem(
                   label: 'Inside Shop',
-                  value: shopController.insideShopPhoto != null
+                  value: formController.isShopVerifiedSectionComplete
                       ? 'Captured'
                       : 'Optional / Not uploaded',
                 ),
                 ReviewItem(
                   label: 'Location',
-                  value: shopController.locationCaptured
-                      ? shopController.locationText
+                  value: formController.isShopVerifiedSectionComplete
+                      ? "${formController.venderKycDetails?.shopLatitude} - ${formController.venderKycDetails?.shopLongitude}"
                       : 'Not captured',
-                ),
-              ],
-            ),
-
-            // ==================================================
-            // SELFIE
-            // ==================================================
-
-            ReviewSectionCard(
-              title: 'Self Verification',
-              icon: Icons.face_outlined,
-              onEdit: () => onEdit(5),
-              items: [
-                ReviewItem(
-                  label: 'Selfie',
-                  value: selfieController.selfLivePhoto != null
-                      ? 'Captured'
-                      : 'Not captured',
-                ),
-                ReviewItem(
-                  label: 'Liveness',
-                  value: selfieController.livenessCompleted
-                      ? 'Completed'
-                      : 'Pending',
-                ),
-                ReviewItem(
-                  label: 'KYC Match',
-                  value: selfieController.photoToKycMatched
-                      ? 'Matched'
-                      : 'Pending',
                 ),
               ],
             ),
@@ -301,7 +234,7 @@ class KycReviewScreen extends StatelessWidget {
             ReviewSectionCard(
               title: 'Bank Details',
               icon: Icons.account_balance_outlined,
-              onEdit: () => onEdit(6),
+              onEdit: () => onEdit(4),
               items: [
                 ReviewItem(
                   label: 'Account Holder',
@@ -324,6 +257,85 @@ class KycReviewScreen extends StatelessWidget {
                 ReviewItem(
                   label: 'Account Type',
                   value: bankController.accountType,
+                ),
+              ],
+            ),
+
+            // ==================================================
+            // KYC DOCUMENTS
+            // ==================================================
+
+            ReviewSectionCard(
+              title: 'KYC Documents',
+              icon: Icons.description_outlined,
+              onEdit: () => onEdit(6),
+              items: [
+                ReviewItem(
+                  label: 'Documents Uploaded',
+                  value: '${documentUploadController.uploadedDocumentCount}',
+                ),
+                ReviewItem(
+                  label: 'Total Documents',
+                  value: '${documentUploadController.totalDocuments}',
+                ),
+                ReviewItem(
+                  label: 'Status',
+                  value: formController.isDocSectionComplete
+                      ? 'Completed'
+                      : 'Incomplete',
+                ),
+              ],
+            ),
+            // ==================================================
+            // Bank DOCUMENTS
+            // ==================================================
+
+            ReviewSectionCard(
+              title: 'Bank Documents',
+              icon: Icons.account_balance_outlined,
+              onEdit: () => onEdit(6),
+              items: [
+                ReviewItem(
+                  label: 'Cancelled Cheque',
+                  value: formController.isDocSectionComplete
+                      ? 'Captured'
+                      : 'Not captured',
+                ),
+                ReviewItem(
+                  label: 'Bank Statement',
+                  value: formController.isDocSectionComplete
+                      ? 'Captured'
+                      : 'Not captured',
+                ),
+              ],
+            ),
+
+            // ==================================================
+            // SELFIE
+            // ==================================================
+
+            ReviewSectionCard(
+              title: 'Self Verification',
+              icon: Icons.face_outlined,
+              onEdit: () => onEdit(7),
+              items: [
+                ReviewItem(
+                  label: 'Selfie',
+                  value: formController.isDocSectionComplete
+                      ? 'Captured'
+                      : 'Not captured',
+                ),
+                ReviewItem(
+                  label: 'Liveness',
+                  value: formController.isDocSectionComplete
+                      ? 'Completed'
+                      : 'Pending',
+                ),
+                ReviewItem(
+                  label: 'KYC Match',
+                  value: formController.isDocSectionComplete
+                      ? 'Matched'
+                      : 'Pending',
                 ),
               ],
             ),
@@ -395,6 +407,7 @@ class KycReviewScreen extends StatelessWidget {
             // ==================================================
 
             CustomButton(
+              isLoading: reviewController.isSubmitting,
               title: reviewController.isSubmitting
                   ? 'Submitting...'
                   : 'Submit KYC',
@@ -406,44 +419,34 @@ class KycReviewScreen extends StatelessWidget {
                   secondaryColor,
                 ],
               ),
-              onTap: reviewController.isSubmitting
-                  ? null
-                  : () async {
-                      // if (!reviewController.validateBeforeSubmit()) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(
-                      //       content: Text(
-                      //         'Please accept the declaration before submitting.',
-                      //       ),
-                      //     ),
-                      //   );
-                      //   return;
-                      // }
+              onTap: () async {
+                if (!reviewController.validateBeforeSubmit()) {
+                  return showToast(
+                      message:
+                          'Please accept the declaration before submitting.',
+                      toastType: ToastType.info);
+                }
 
-                      // final success = await reviewController.submitKyc();
+                reviewController.venderKycFinalSubmit().then((value) {
+                  if (value.isSuccess) {
+                    showToast(
+                        message: value.message, typeCheck: value.isSuccess);
 
-                      // if (!success) {
-                      //   ScaffoldMessenger.of(context).showSnackBar(
-                      //     const SnackBar(
-                      //       content: Text(
-                      //         'Unable to submit KYC.',
-                      //       ),
-                      //     ),
-                      //   );
-                      //   return;
-                      // }
-
-                      onCompleteChanged(true);
-                      navigate(
-                          context: context,
-                          page: KycSubmittedSuccessScreen(
-                            onGoToDashboard: () {
-                              Get.find<DashBoardController>().dashPage = 0;
-                              navigate(
-                                  context: context, page: DashboardScreen());
-                            },
-                          ));
-                    },
+                    onCompleteChanged(true);
+                    navigate(
+                        context: context,
+                        page: KycSubmittedSuccessScreen(
+                          onGoToDashboard: () {
+                            Get.find<DashBoardController>().dashPage = 0;
+                            navigate(context: context, page: DashboardScreen());
+                          },
+                        ));
+                  } else {
+                    showToast(
+                        message: value.message, typeCheck: value.isSuccess);
+                  }
+                });
+              },
             ),
 
             SizedBox(height: 20.h),

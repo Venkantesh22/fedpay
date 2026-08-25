@@ -23,14 +23,11 @@ class BankDetailsScreen extends StatefulWidget {
   });
 
   @override
-  State<BankDetailsScreen> createState() =>
-      _BankDetailsScreenState();
+  State<BankDetailsScreen> createState() => _BankDetailsScreenState();
 }
 
-class _BankDetailsScreenState
-    extends State<BankDetailsScreen> {
-  final GlobalKey<FormState> formKey =
-      GlobalKey<FormState>();
+class _BankDetailsScreenState extends State<BankDetailsScreen> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +36,7 @@ class _BankDetailsScreenState
         return Form(
           key: formKey,
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ==================================================
               // TITLE
@@ -48,10 +44,7 @@ class _BankDetailsScreenState
 
               CustomText(
                 'Bank Details',
-                style: Helper(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                style: Helper(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w700,
                       color: black,
@@ -62,10 +55,7 @@ class _BankDetailsScreenState
 
               CustomText(
                 'Enter your bank account details for settlement',
-                style: Helper(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(
+                style: Helper(context).textTheme.bodyMedium?.copyWith(
                       fontSize: 13.sp,
                       color: greyDark,
                     ),
@@ -78,15 +68,12 @@ class _BankDetailsScreenState
               // ==================================================
 
               BankDetailField(
-                controller:
-                    controller.accountNameController,
+                controller: controller.accountNameController,
                 heading: 'Account Holder Name',
-                hintText:
-                    'Enter name as per bank account',
+                hintText: 'Enter name as per bank account',
                 keyboardType: TextInputType.name,
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Please enter account holder name';
                   }
 
@@ -101,11 +88,9 @@ class _BankDetailsScreenState
               // ==================================================
 
               AccountTypeSelector(
-                selectedValue:
-                    controller.accountType,
+                selectedValue: controller.accountType,
                 items: controller.accountTypeList,
-                onChanged:
-                    controller.setAccountType,
+                onChanged: controller.setAccountType,
               ),
 
               SizedBox(height: 18.h),
@@ -115,18 +100,15 @@ class _BankDetailsScreenState
               // ==================================================
 
               BankDetailField(
-                controller:
-                    controller.accountNumberController,
+                controller: controller.accountNumberController,
                 heading: 'Account Number',
                 hintText: 'Enter account number',
-                keyboardType:
-                    TextInputType.number,
+                keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Please enter account number';
                   }
 
@@ -145,28 +127,20 @@ class _BankDetailsScreenState
               // ==================================================
 
               BankDetailField(
-                controller:
-                    controller
-                        .confirmAccountNumberController,
+                controller: controller.confirmAccountNumberController,
                 heading: 'Confirm Account Number',
-                hintText:
-                    'Re-enter account number',
-                keyboardType:
-                    TextInputType.number,
+                hintText: 'Re-enter account number',
+                keyboardType: TextInputType.number,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Please confirm account number';
                   }
 
                   if (value.trim() !=
-                      controller
-                          .accountNumberController
-                          .text
-                          .trim()) {
+                      controller.accountNumberController.text.trim()) {
                     return 'Account numbers do not match';
                   }
 
@@ -181,19 +155,16 @@ class _BankDetailsScreenState
               // ==================================================
 
               BankDetailField(
-                controller:
-                    controller.ifscController,
+                controller: controller.ifscController,
                 heading: 'IFSC Code',
                 hintText: 'Enter IFSC code',
-                keyboardType:
-                    TextInputType.text,
+                keyboardType: TextInputType.text,
                 inputFormatters: [
                   UpperCaseTextFormatter(),
                   LengthLimitingTextInputFormatter(11),
                 ],
                 validator: (value) {
-                  final String ifsc =
-                      value?.trim().toUpperCase() ?? '';
+                  final String ifsc = value?.trim().toUpperCase() ?? '';
 
                   if (ifsc.isEmpty) {
                     return 'Please enter IFSC code';
@@ -216,14 +187,12 @@ class _BankDetailsScreenState
               // ==================================================
 
               BankDetailField(
-                controller:
-                    controller.bankNameController,
+                controller: controller.bankNameController,
                 heading: 'Bank Name',
                 hintText: 'Enter bank name',
                 keyboardType: TextInputType.text,
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Please enter bank name';
                   }
 
@@ -238,14 +207,12 @@ class _BankDetailsScreenState
               // ==================================================
 
               BankDetailField(
-                controller:
-                    controller.branchNameController,
+                controller: controller.branchNameController,
                 heading: 'Branch Name',
                 hintText: 'Enter branch name',
                 keyboardType: TextInputType.text,
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Please enter branch name';
                   }
 
@@ -260,19 +227,16 @@ class _BankDetailsScreenState
               // ==================================================
 
               BankDetailField(
-                controller:
-                    controller.registeredMobileController,
+                controller: controller.registeredMobileController,
                 heading: 'Registered Mobile Number',
                 hintText: 'Enter bank registered mobile',
-                keyboardType:
-                    TextInputType.phone,
+                keyboardType: TextInputType.phone,
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(10),
                 ],
                 validator: (value) {
-                  if (value == null ||
-                      value.trim().isEmpty) {
+                  if (value == null || value.trim().isEmpty) {
                     return 'Please enter mobile number';
                   }
 
@@ -294,16 +258,13 @@ class _BankDetailsScreenState
                 width: double.infinity,
                 padding: EdgeInsets.all(14.w),
                 decoration: BoxDecoration(
-                  color:
-                      primaryColor.withValues(
+                  color: primaryColor.withValues(
                     alpha: 0.07,
                   ),
-                  borderRadius:
-                      BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
                 child: Row(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(
                       Icons.account_balance_outlined,
@@ -315,14 +276,10 @@ class _BankDetailsScreenState
                       child: CustomText(
                         'Make sure the bank account belongs to the registered business or account holder.',
                         overflow: TextOverflow.clip,
-                        style: Helper(context)
-                            .textTheme
-                            .bodyMedium
-                            ?.copyWith(
+                        style: Helper(context).textTheme.bodyMedium?.copyWith(
                               fontSize: 11.sp,
                               color: primaryColor,
-                              fontWeight:
-                                  FontWeight.w500,
+                              fontWeight: FontWeight.w500,
                             ),
                       ),
                     ),
@@ -337,6 +294,7 @@ class _BankDetailsScreenState
               // ==================================================
 
               CustomButton(
+                isLoading: controller.isLoading,
                 title: 'Continue',
                 height: 48.h,
                 radius: 8.r,
@@ -349,22 +307,18 @@ class _BankDetailsScreenState
                 onTap: () {
                   FocusScope.of(context).unfocus();
 
-                  final bool valid =
-                      formKey.currentState
-                              ?.validate() ??
-                          false;
-
-                  if (!valid) {
-                    return;
+                  if (formKey.currentState?.validate() ?? false) {
+                    controller.venderKycBankDetails().then((value) {
+                      if (value.isSuccess) {
+                        showToast(
+                            message: value.message, typeCheck: value.isSuccess);
+                        widget.onCompleteChanged(true);
+                      } else {
+                        showToast(
+                            message: value.message, typeCheck: value.isSuccess);
+                      }
+                    });
                   }
-
-                  if (!controller
-                      .validateBankDetails()) {
-                    return;
-                  }
-
-                  // Navigation stays in FormController.
-                  widget.onCompleteChanged(true);
                 },
               ),
 
@@ -376,4 +330,3 @@ class _BankDetailsScreenState
     );
   }
 }
-

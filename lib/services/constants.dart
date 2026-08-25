@@ -249,6 +249,34 @@ class AppConstants {
   static const String postPrepaidCardMiniStatement =
       'api/prepaid-card/v1/mini-statement';
 
+
+  //* Vender KYC API
+  static const String postVenderKycBasicDetails =
+      "api/application/v1/merchant-kyc/save-section";
+
+  static const String postVenderKycDocumentDetails =
+      "api/application/v1/merchant-kyc/save-section";
+
+  static const String postVenderKycBusinessInfo =
+      "api/application/v1/merchant-kyc/save-section";
+
+  static const String postVenderKycLiveShopVerification =
+      "api/application/v1/merchant-kyc/upload-shop-photo";
+
+  static const String postVenderKycBankDetails =
+      "api/application/v1/merchant-kyc/save-section";
+
+  static const String postVenderKycKYCDocUpload =
+      "api/application/v1/merchant-kyc/upload-document";
+
+  static const String venderKycDetail = "api/application/v1/merchant-kyc";
+
+  static const String getVenderKycStatus =
+      "api/application/v1/merchant-kyc/status";
+
+  static const String postVenderKycFinalSubmit =
+      "api/application/v1/merchant-kyc/submit";
+
   // helper
   static const double horizontalPadding = 16;
   static const double verticalPadding = 20;
@@ -273,7 +301,6 @@ class AppConstants {
   static const String fcmToken = 'fcm_token';
   static const String soundNotificationIsOn = 'sound_notification_on';
   static const String soundNotificationLanguage = 'sound_notification_language';
-
 
   static String azureSpeechKey = dotenv.env['AZURE_SPEECH_KEY'] ?? '';
 }

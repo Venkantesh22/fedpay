@@ -3,12 +3,20 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:lekra/data/models/response/response_model.dart';
+import 'package:lekra/data/repositories/vender_kyc_repo.dart';
 
 class KycDocumentUploadController extends GetxController
     implements GetxService {
+  final VenderKycRepo venderKycRepo;
+
+  KycDocumentUploadController({required this.venderKycRepo});
+
   // ============================================================
   // DOCUMENT CONFIGURATION
   // ============================================================
+
+  bool isLoading = false;
 
   final List<String> kycDocumentNames = [
     'Aadhaar Front',
@@ -45,8 +53,7 @@ class KycDocumentUploadController extends GetxController
 
   int? uploadingDocumentIndex;
 
-  bool get isUploadingDocument =>
-      uploadingDocumentIndex != null;
+  bool get isUploadingDocument => uploadingDocumentIndex != null;
 
   // ============================================================
   // PICK DOCUMENT
@@ -67,8 +74,7 @@ class KycDocumentUploadController extends GetxController
 
       final bool isPassportPhoto = index == 3;
 
-      final FilePickerResult? result =
-          await FilePicker.platform.pickFiles(
+      final FilePickerResult? result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: false,
         allowedExtensions: isPassportPhoto
@@ -141,8 +147,7 @@ class KycDocumentUploadController extends GetxController
   // ============================================================
 
   void removeKycDocument(int index) {
-    if (index < 0 ||
-        index >= kycDocuments.length) {
+    if (index < 0 || index >= kycDocuments.length) {
       return;
     }
 
@@ -156,8 +161,7 @@ class KycDocumentUploadController extends GetxController
   // ============================================================
 
   bool isDocumentUploaded(int index) {
-    if (index < 0 ||
-        index >= kycDocuments.length) {
+    if (index < 0 || index >= kycDocuments.length) {
       return false;
     }
 
@@ -169,8 +173,7 @@ class KycDocumentUploadController extends GetxController
   // ============================================================
 
   String getDocumentFileName(int index) {
-    if (index < 0 ||
-        index >= kycDocuments.length) {
+    if (index < 0 || index >= kycDocuments.length) {
       return '';
     }
 
@@ -180,9 +183,11 @@ class KycDocumentUploadController extends GetxController
       return '';
     }
 
-    return file.path.split(
-      Platform.pathSeparator,
-    ).last;
+    return file.path
+        .split(
+          Platform.pathSeparator,
+        )
+        .last;
   }
 
   // ============================================================
@@ -190,9 +195,7 @@ class KycDocumentUploadController extends GetxController
   // ============================================================
 
   int get uploadedDocumentCount {
-    return kycDocuments
-        .where((file) => file != null)
-        .length;
+    return kycDocuments.where((file) => file != null).length;
   }
 
   int get totalDocuments {
@@ -214,8 +217,7 @@ class KycDocumentUploadController extends GetxController
 
   bool get allRequiredDocumentsUploaded {
     for (int i = 0; i < kycDocuments.length; i++) {
-      if (isDocumentRequired(i) &&
-          kycDocuments[i] == null) {
+      if (isDocumentRequired(i) && kycDocuments[i] == null) {
         return false;
       }
     }
@@ -228,17 +230,7 @@ class KycDocumentUploadController extends GetxController
   // ============================================================
 
   bool validateAndComplete() {
-    if (!allRequiredDocumentsUploaded) {
-      Get.snackbar(
-        'Documents Required',
-        'Please upload all required documents.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
-
-      return false;
-    }
-
-    return true;
+    return allRequiredDocumentsUploaded;
   }
 
   // ============================================================
@@ -246,14 +238,274 @@ class KycDocumentUploadController extends GetxController
   // ============================================================
 
   void clearForm() {
-    for (int i = 0;
-        i < kycDocuments.length;
-        i++) {
+    for (int i = 0; i < kycDocuments.length; i++) {
       kycDocuments[i] = null;
     }
 
     uploadingDocumentIndex = null;
 
     update();
+  }
+
+  // ============================================================
+  // Call Api
+  // ============================================================
+
+  //* submit Vender kyc Document upload  venderKycKYCDocUpload()
+  Future<ResponseModel> venderKycKYCDocUpload({
+    required File? cancelledChequeImage,
+    required File? bankStatementImage,
+    required File? liveSelfieImage,
+  }) async {
+    log('----------- venderKycKYCDocUpload Called ----------');
+
+    isLoading = true;
+    update();
+
+    try {
+      // ----------------------------------------------------------
+      // CHECK REQUIRED DOCUMENTS
+      // ----------------------------------------------------------
+
+      if (!allRequiredDocumentsUploaded) {
+        return ResponseModel(
+          false,
+          'Please upload all required documents.',
+        );
+      }
+
+      // ----------------------------------------------------------
+      // LOG SELECTED DOCUMENTS
+      // ----------------------------------------------------------
+
+      for (int i = 0; i < kycDocuments.length; i++) {
+        final file = kycDocuments[i];
+
+        log(
+          '[KYC DOCUMENT] '
+          '${kycDocumentNames[i]} '
+          '=> ${file?.path ?? 'NOT SELECTED'}',
+        );
+      }
+
+      log(
+        '[EXTRA DOCUMENT] cancelled_cheque => '
+        '${cancelledChequeImage?.path ?? 'NOT SELECTED'}',
+      );
+
+      log(
+        '[EXTRA DOCUMENT] bank_statement => '
+        '${bankStatementImage?.path ?? 'NOT SELECTED'}',
+      );
+
+      log(
+        '[EXTRA DOCUMENT] self_live_photo => '
+        '${liveSelfieImage?.path ?? 'NOT SELECTED'}',
+      );
+
+      // ----------------------------------------------------------
+      // BUILD MULTIPART DATA
+      // ----------------------------------------------------------
+
+      final Map<String, dynamic> data = {};
+
+      // 1. Aadhaar Front
+      if (kycDocuments[0] != null) {
+        data['aadhaar_front'] = MultipartFile(
+          kycDocuments[0]!.path,
+          filename: _getFileName(kycDocuments[0]!),
+        );
+      }
+
+      // 2. Aadhaar Back
+      if (kycDocuments[1] != null) {
+        data['aadhaar_back'] = MultipartFile(
+          kycDocuments[1]!.path,
+          filename: _getFileName(kycDocuments[1]!),
+        );
+      }
+
+      // 3. PAN Card
+      if (kycDocuments[2] != null) {
+        data['pan_card'] = MultipartFile(
+          kycDocuments[2]!.path,
+          filename: _getFileName(kycDocuments[2]!),
+        );
+      }
+
+      // 4. Passport Photo
+      if (kycDocuments[3] != null) {
+        data['passport_photo'] = MultipartFile(
+          kycDocuments[3]!.path,
+          filename: _getFileName(kycDocuments[3]!),
+        );
+      }
+
+      // 5. GST Certificate
+      if (kycDocuments[4] != null) {
+        data['gst_certificate'] = MultipartFile(
+          kycDocuments[4]!.path,
+          filename: _getFileName(kycDocuments[4]!),
+        );
+      }
+
+      // 6. Trade Licence
+      if (kycDocuments[5] != null) {
+        data['trade_licence'] = MultipartFile(
+          kycDocuments[5]!.path,
+          filename: _getFileName(kycDocuments[5]!),
+        );
+      }
+
+      // 7. MSME Certificate
+      if (kycDocuments[6] != null) {
+        data['msme_certificate'] = MultipartFile(
+          kycDocuments[6]!.path,
+          filename: _getFileName(kycDocuments[6]!),
+        );
+      }
+
+      // 8. Cancelled Cheque
+      if (cancelledChequeImage != null) {
+        data['cancelled_cheque'] = MultipartFile(
+          cancelledChequeImage.path,
+          filename: _getFileName(cancelledChequeImage),
+        );
+      }
+
+      // 9. Bank Statement
+      if (bankStatementImage != null) {
+        data['bank_statement'] = MultipartFile(
+          bankStatementImage.path,
+          filename: _getFileName(bankStatementImage),
+        );
+      }
+
+      // 10. Live Selfie
+      if (liveSelfieImage != null) {
+        data['self_live_photo'] = MultipartFile(
+          liveSelfieImage.path,
+          filename: _getFileName(liveSelfieImage),
+        );
+      }
+
+      // ----------------------------------------------------------
+      // LOG ALL KEYS BEFORE FORM DATA
+      // ----------------------------------------------------------
+
+      log('========== KYC MULTIPART REQUEST ==========');
+
+      log('Total keys: ${data.length}');
+
+      log(
+        'Keys being sent: '
+        '${data.keys.toList()}',
+      );
+
+      for (final entry in data.entries) {
+        final value = entry.value;
+
+        if (value is MultipartFile) {
+          log(
+            'KEY: ${entry.key} | '
+            'FILE: ${value.filename}',
+          );
+        } else {
+          log(
+            'KEY: ${entry.key} | '
+            'VALUE: $value',
+          );
+        }
+      }
+
+      log('==========================================');
+
+      // ----------------------------------------------------------
+      // CREATE FORM DATA
+      // ----------------------------------------------------------
+
+      final FormData formData = FormData(data);
+
+      // ----------------------------------------------------------
+      // LOG FORMDATA FIELDS
+      // ----------------------------------------------------------
+
+      log('========== FORM DATA FIELDS ==========');
+
+      for (final field in formData.fields) {
+        log(
+          'FIELD KEY: ${field.key} | '
+          'VALUE: ${field.value}',
+        );
+      }
+
+      log('======================================');
+
+      // ----------------------------------------------------------
+      // LOG FORMDATA FILES
+      // ----------------------------------------------------------
+
+      log('========== FORM DATA FILES ==========');
+
+      for (final file in formData.files) {
+        log(
+          'FILE KEY: ${file.key} | '
+          'FILENAME: ${file.value.filename}',
+        );
+      }
+
+      log('=====================================');
+
+      // ----------------------------------------------------------
+      // API CALL
+      // ----------------------------------------------------------
+
+      final response = await venderKycRepo.venderKycKYCDocUpload(
+        data: formData,
+      );
+
+      log('STATUS CODE: ${response.statusCode}');
+      log('RESPONSE BODY: ${response.body}');
+      log('RESPONSE TYPE: ${response.body.runtimeType}');
+
+      final body = response.body;
+
+      if (response.statusCode == 200 &&
+          body is Map &&
+          body['status']?.toString().toLowerCase() == 'success') {
+        return ResponseModel(
+          true,
+          body['message']?.toString() ?? 'KYC documents uploaded successfully',
+        );
+      }
+
+      String message = 'Something went wrong';
+
+      if (body is Map && body['message'] != null) {
+        message = body['message'].toString();
+      } else if (response.statusText != null &&
+          response.statusText!.isNotEmpty) {
+        message = response.statusText!;
+      }
+
+      return ResponseModel(false, message);
+    } catch (e, stackTrace) {
+      log(
+        'ERROR AT venderKycKYCDocUpload(): $e',
+        stackTrace: stackTrace,
+      );
+
+      return ResponseModel(
+        false,
+        'Error while uploading KYC documents: $e',
+      );
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
+
+  String _getFileName(File? file) {
+    return file?.path.split(Platform.pathSeparator).last ?? "";
   }
 }

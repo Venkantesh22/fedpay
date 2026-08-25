@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lekra/controllers/kyc_controller/bank_document_upload_controller.dart';
+import 'package:lekra/controllers/kyc_controller/form_controller.dart';
+import 'package:lekra/controllers/kyc_controller/kyc_document_upload_controller.dart';
 
 import 'package:lekra/controllers/kyc_controller/self_live_verification_controller.dart';
 import 'package:lekra/services/constants.dart';
@@ -232,30 +235,58 @@ class _SelfLiveVerificationScreenState
             // CONTINUE
             // ==================================================
 
-            CustomButton(
-              title: 'Continue',
-              height: 48.h,
-              radius: 8.r,
-              gradient: LinearGradient(
-                colors: [
-                  primaryColor,
-                  secondaryColor,
-                ],
-              ),
-              onTap: () {
-                final bool valid = controller.validateSelfVerification();
+            GetBuilder<KycDocumentUploadController>(
+                builder: (kycDocumentUploadController) {
+              return CustomButton(
+                isLoading: kycDocumentUploadController.isLoading,
+                title: 'Continue',
+                height: 48.h,
+                radius: 8.r,
+                gradient: LinearGradient(
+                  colors: [
+                    primaryColor,
+                    secondaryColor,
+                  ],
+                ),
+                onTap: () async {
+                  final bankDocumentUploadController =
+                      Get.find<BankDocumentUploadController>();
+                  final bool valid = controller.validateSelfVerification();
 
-                if (!valid) {
-                  _showValidationMessage(
-                    context,
-                    controller,
-                  );
-                  return;
-                }
-
-                widget.onCompleteChanged(true);
-              },
-            ),
+                  if (!valid) {
+                    _showValidationMessage(
+                      context,
+                      controller,
+                    );
+                    return;
+                  }
+                  await kycDocumentUploadController
+                      .venderKycKYCDocUpload(
+                    cancelledChequeImage:
+                        bankDocumentUploadController.cancelledCheque,
+                    bankStatementImage:
+                        bankDocumentUploadController.bankStatement,
+                    liveSelfieImage: controller.selfLivePhoto,
+                  )
+                      .then((value) {
+                    if (value.isSuccess) {
+                      showToast(
+                          message: value.message, typeCheck: value.isSuccess);
+                      Get.find<FormController>()
+                          .venderKycDetail()
+                          .then((value) {
+                        if (value.isSuccess) {
+                          widget.onCompleteChanged(true);
+                        }
+                      });
+                    } else {
+                      showToast(
+                          message: value.message, typeCheck: value.isSuccess);
+                    }
+                  });
+                },
+              );
+            }),
 
             SizedBox(height: 20.h),
           ],
@@ -324,10 +355,6 @@ class _SelfLiveVerificationScreenState
       message = 'Please complete self verification.';
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
+    showToast(message: message, toastType: ToastType.warning);
   }
 }
