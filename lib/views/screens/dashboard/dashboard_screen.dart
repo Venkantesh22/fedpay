@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lekra/services/date_formatters_and_converters.dart';
 import 'package:lekra/views/screens/dashboard/card/card_screen/main_card_screen/main_card_screen.dart';
 import 'package:lekra/views/screens/dashboard/home_screen/home_screen.dart';
+import 'package:lekra/views/screens/dashboard/shop/shop_screen/shop_screen.dart';
 import 'package:lekra/views/screens/transcation_history/transaction_history_screen.dart';
 import 'package:lekra/views/screens/drawer_screen/drawer_screen.dart';
 
@@ -50,6 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     isReload: true,
                     scaffoldKey: _dashboardScaffoldKey,
                   ),
+                  ShopScreen(),
                   MainCardScreen(),
                   TransactionHistoryScreen(
                     fromDateValue: DateTime(2024, 1, 1),
@@ -94,15 +96,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         BottomNavigationItemWidget(
                           onTap: () => controller.dashPage = 1,
-                          title: 'Card',
+                          title: 'Shop',
                           icon: Assets.svgsCard,
                           isActive: controller.dashPage == 1,
                         ),
                         BottomNavigationItemWidget(
                           onTap: () => controller.dashPage = 2,
+                          title: 'Card',
+                          icon: Assets.svgsCard,
+                          isActive: controller.dashPage == 2,
+                        ),
+                        BottomNavigationItemWidget(
+                          onTap: () => controller.dashPage = 3,
                           title: 'Report',
                           icon: Assets.svgsReport,
-                          isActive: controller.dashPage == 2,
+                          isActive: controller.dashPage == 3,
                         ),
                       ],
                     ),
