@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lekra/controllers/dashboard_controller.dart';
@@ -95,7 +96,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                     CustomButton(
-                      radius: 16,
+                      radius: 16.r,
                       color: primaryColor,
                       onTap: () {
                         Get.find<ProductController>()
@@ -115,8 +116,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         });
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 17, horizontal: 40),
+                        padding: EdgeInsets.symmetric(horizontal: 40.w),
                         child: Row(
                           children: [
                             SvgPicture.asset(
@@ -124,14 +124,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               colorFilter: const ColorFilter.mode(
                                   white, BlendMode.srcIn),
                             ),
-                            const SizedBox(
+                            sizedBoxWidth(
                               width: 8,
                             ),
                             Text(
                               "Buy Now",
                               style:
                                   Helper(context).textTheme.bodySmall?.copyWith(
-                                        fontSize: 13,
+                                        fontSize: 13.sp,
                                         fontWeight: FontWeight.w700,
                                         color: white,
                                       ),
